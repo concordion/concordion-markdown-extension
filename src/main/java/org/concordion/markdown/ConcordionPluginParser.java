@@ -1,6 +1,5 @@
 package org.concordion.markdown;
 
-import com.sun.org.apache.xpath.internal.axes.NodeSequence;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 import org.parboiled.support.StringBuilderVar;
