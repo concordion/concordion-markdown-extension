@@ -11,14 +11,14 @@ public class ConcordionPluginParser extends Parser {
         super(ALL, 1000l, DefaultParseRunnerProvider);
     }
 
-    public Rule ConcordionEqualsPlugin() {
+    public Rule concordionEqualsRule() {
         StringBuilderVar expression = new StringBuilderVar();
         StringBuilderVar text = new StringBuilderVar();
         return NodeSequence(
                 "{",
                 OneOrMore(TestNot("="), BaseParser.ANY, expression.append(matchedChar())),
                 "==\"",
-                OneOrMore(TestNot("\""), BaseParser.ANY, text.append(matchedChar())),
+                OneOrMore(TestNot("\"}"), BaseParser.ANY, text.append(matchedChar())),
                 push(new ConcordionEqualsNode(expression.getString(), text.getString())),
                 "\"}"
                 );
@@ -34,14 +34,14 @@ public class ConcordionPluginParser extends Parser {
 //        );
 //    }
 
-    public Rule ConcordionSetRule() {
+    public Rule concordionSetRule() {
         StringBuilderVar varName = new StringBuilderVar();
         StringBuilderVar text = new StringBuilderVar();
         return NodeSequence(
                 "{#",
                 OneOrMore(TestNot("="), BaseParser.ANY, varName.append("#" + matchedChar())),
                 "=\"",
-                OneOrMore(TestNot("\""), BaseParser.ANY, text.append(matchedChar())),
+                OneOrMore(TestNot("\"}"), BaseParser.ANY, text.append(matchedChar())),
                 push(new ConcordionSetNode(varName.getString(), text.getString())),
                 "\"}"
         );
