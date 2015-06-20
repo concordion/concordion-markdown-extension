@@ -16,6 +16,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
 
     private static final class ConcordionSerializerPlugin implements ToHtmlSerializerPlugin {
         private String action;
+        private String varName;
         private String text;
         
         @Override
@@ -23,6 +24,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             if (node instanceof ConcordionSetNode) {
                 setAction("set");
                 setText(((ConcordionSetNode)node).getText());
+                setVarName(((ConcordionSetNode)node).getVarName());
                 return true;
             }
             if (node instanceof ConcordionEqualsNode) {
@@ -48,6 +50,14 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         public void setAction(String action) {
             this.action = action;
         }
+
+        public String getVarName() {
+            return varName;
+        }
+
+        public void setVarName(String varName) {
+            this.varName = varName;
+        }
     }
 
     public ConcordionHtmlSerializer(LinkRenderer linkRenderer) {
@@ -59,11 +69,12 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     protected void printTag(SuperNode node, String tag) {
         printer.print('<').print(tag);
         if (concordionSerializerPlugin.getText() != null) {
-            printAttribute("concordion:" + concordionSerializerPlugin.getAction(), concordionSerializerPlugin.getText());
-            concordionSerializerPlugin.setText(null);
+            printAttribute("concordion:" + concordionSerializerPlugin.getAction(), concordionSerializerPlugin.getVarName());
+//            concordionSerializerPlugin.setText(null);
         }
-        printer.print('>');
-        visitChildren(node);
+        printer.print(">");
+        printer.print(concordionSerializerPlugin.getText());
+//        visitChildren(node);
         printer.print('<').print('/').print(tag).print('>');
     }
     

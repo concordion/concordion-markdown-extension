@@ -5,8 +5,16 @@ import org.pegdown.ast.TextNode;
 import org.pegdown.ast.Visitor;
 
 public class ConcordionEqualsNode extends TextNode {
-    public ConcordionEqualsNode(String text) {
+
+    private String expression;
+
+    public ConcordionEqualsNode(String expression, String text) {
         super(text.trim());
+        this.expression = expression.trim();
+    }
+
+    public String getExpression() {
+        return expression;
     }
 
     @Override

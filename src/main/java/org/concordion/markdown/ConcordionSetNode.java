@@ -5,8 +5,16 @@ import org.pegdown.ast.TextNode;
 import org.pegdown.ast.Visitor;
 
 public class ConcordionSetNode extends TextNode {
-    public ConcordionSetNode(String text) {
+
+    private String varName;
+
+    public ConcordionSetNode(String varName, String text) {
         super(text.trim());
+        this.varName = varName.trim();
+    }
+
+    public String getVarName() {
+        return varName;
     }
 
     @Override
