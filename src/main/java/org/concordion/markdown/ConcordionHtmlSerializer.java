@@ -30,6 +30,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             if (node instanceof ConcordionEqualsNode) {
                 setAction("assertEquals");
                 setText(((ConcordionEqualsNode)node).getText());
+                setVarName(((ConcordionEqualsNode)node).getExpression());
                 return true;
             }
             return false;
@@ -68,24 +69,31 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     @Override
     protected void printTag(SuperNode node, String tag) {
         printer.print('<').print(tag);
-        if (concordionSerializerPlugin.getText() != null) {
+        if (concordionSerializerPlugin.getVarName() != null) {
             printAttribute("concordion:" + concordionSerializerPlugin.getAction(), concordionSerializerPlugin.getVarName());
-//            concordionSerializerPlugin.setText(null);
+            concordionSerializerPlugin.setVarName(null);
         }
         printer.print(">");
-        printer.print(concordionSerializerPlugin.getText());
-//        visitChildren(node);
+        if (concordionSerializerPlugin.getText() != null) {
+            printer.print(concordionSerializerPlugin.getText());
+            concordionSerializerPlugin.setText(null);
+        }
+        visitChildren(node);
         printer.print('<').print('/').print(tag).print('>');
     }
     
     @Override
     protected void printTag(TextNode node, String tag) {
         printer.print('<').print(tag);
-        if (concordionSerializerPlugin.getText() != null) {
-            printAttribute("concordion:" + concordionSerializerPlugin.getAction(), concordionSerializerPlugin.getText());
-            concordionSerializerPlugin.setText(null);
+        if (concordionSerializerPlugin.getVarName() != null) {
+            printAttribute("concordion:" + concordionSerializerPlugin.getAction(), concordionSerializerPlugin.getVarName());
+            concordionSerializerPlugin.setVarName(null);
         }
         printer.print('>');
+        if (concordionSerializerPlugin.getText() != null) {
+            printer.print(concordionSerializerPlugin.getText());
+            concordionSerializerPlugin.setText(null);
+        }
         printer.printEncoded(node.getText());
         printer.print('<').print('/').print(tag).print('>');
     }
