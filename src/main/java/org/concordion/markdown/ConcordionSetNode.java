@@ -1,16 +1,15 @@
 package org.concordion.markdown;
 
-import org.pegdown.ast.Node;
-import org.pegdown.ast.TextNode;
-import org.pegdown.ast.Visitor;
+public class ConcordionSetNode extends ConcordionNode {
 
-public class ConcordionSetNode extends TextNode {
-    public ConcordionSetNode(String text) {
-        super(text.trim());
+    private String varName;
+
+    public ConcordionSetNode(String varName, String text) {
+        super(Type.Set, text);
+        this.varName = varName;
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visit((Node) this);
+    public String getVarName() {
+        return varName;
     }
 }

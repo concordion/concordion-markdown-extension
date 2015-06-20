@@ -26,7 +26,7 @@ public class MarkdownClassPathSource implements Source {
     Source classPathSource = new ClassPathSource();
     PegDownProcessor processor = new PegDownProcessor(Extensions.TABLES);
     ConcordionPluginParser mpp = Parboiled.createParser(ConcordionPluginParser.class);
-    PegDownPlugins plugins = new PegDownPlugins.Builder().withInlinePluginRules(mpp.ConcordionEqualsPlugin(), mpp.ConcordionSetPlugin()).build(); //Plugin(MyPluginParser.class, null).build();
+    PegDownPlugins plugins = new PegDownPlugins.Builder().withInlinePluginRules(mpp.concordionEqualsRule(), mpp.concordionSetRule()).build(); //Plugin(MyPluginParser.class, null).build();
     Parser parser = Parboiled.createParser(Parser.class, Extensions.TABLES, 5000L, Parser.DefaultParseRunnerProvider, plugins);
     
     
