@@ -24,16 +24,6 @@ public class ConcordionPluginParser extends Parser {
                 );
     }
 
-//    public Rule ConcordionSetPlugin() {
-//        StringBuilderVar text = new StringBuilderVar();
-//        return NodeSequence(
-//                "{.set",
-//                OneOrMore(TestNot("}"), BaseParser.ANY, text.append(matchedChar())),
-//                push(new ConcordionSetNode(text.getString())),
-//                "}"
-//        );
-//    }
-
     public Rule concordionSetRule() {
         StringBuilderVar varName = new StringBuilderVar();
         StringBuilderVar text = new StringBuilderVar();
@@ -46,7 +36,6 @@ public class ConcordionPluginParser extends Parser {
                 "\"}"
         );
     }
-
 
     // c:set: {#x="1"}  {#x="1\"}"}
     // c:assertEquals: {add(#x,#y)=="3"}   {#result=="7"} {greeting=="Hello"}  {getGreeting()=="Hello"}
