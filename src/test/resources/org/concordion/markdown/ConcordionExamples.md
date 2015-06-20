@@ -1,0 +1,128 @@
+# Concordion Command Examples
+
+### Basic example
+
+Demonstrates the usage of `set` and `assertEquals` commands.
+
+<div class="example">
+<span concordion:set="#x">1</span> + <span concordion:set="#y">2</span> = <span concordion:assertEquals="add(#x, #y)">3</span>.
+</div>
+
+### Set and assert in same statement
+
+Occasionally it is useful to be able to set and assert a value in the same statement, for example selecting a user name and then checking that the user name is displayed.
+This can be achieved using the special variable `#TEXT`, which contains the text of the current element.
+
+<div class="example">
+Example: My name is <span concordion:assertEquals="setAndReturn(#TEXT)">Michael Caine</span>
+</div>
+
+### Example with execute
+
+The `execute` command can return void, a primitive, a POJO (plain old Java object) or a map.
+
+An `execute` with a `void` result often indicates a "bad smell".
+
+See [executeVoid](http://concordion.org/Tutorial.html#executeVoid).
+
+This example uses the `execute` commands for instructions with `void` results and primitive results.
+
+This example also shows the use of the special variable `#TEXT`, which contains the text of the current element.
+`#TEXT` can also be used with assert commands.
+
+<div class="example">
+<span concordion:execute="setMemory(#TEXT)">3</span> +
+<span concordion:execute="#result = addToMemory(#TEXT)">4</span> =
+<span concordion:assertEquals="#result">7</span>.
+</div>
+
+### Example with execute returning a POJO
+
+Subsequent commands can access public fields and methods of the object. When using a property (dot) notation,
+Concordion will first check for a public field with the property name, then for a corresponding getter.
+In the following example, `#detail.gst` resolves to a call to the `getGst()` method.
+
+<div class="example">
+<span concordion:execute="#detail = getInvoiceDetail()">The invoice </span> show a sub-total of
+$<span concordion:assertEquals="#detail.subTotal">100</span> + GST of
+$<span concordion:assertEquals="#detail.gst">15</span> giving a total of
+$<span concordion:assertEquals="#detail.calculateTotal()">115</span>.
+</div>
+
+### Example with execute returning a map
+
+<div class="example">
+<span concordion:execute="#detail = getInvoiceDetailAsMap()">The invoice </span> show a sub-total of
+$<span concordion:assertEquals="#detail.subTotal">100</span> + GST of
+$<span concordion:assertEquals="#detail.gst">15</span>.
+</div>
+
+### Unusual sentences
+
+Unusual sentences can be resolved by using an `execute` command as a parent element.
+(However it may be preferable to just rephrase the sentence!).
+
+The `set` commands of child elements are called first,
+followed by its own `execute` command,
+followed by the `execute` commands of child elements,
+then the `assertEquals` commands of child elements.
+See [executeUnusualSentences](http://concordion.org/Tutorial.html#executeUnusualSentences).
+
+<div class="example">
+<span concordion:execute="#z3=add(#x3,#y3)">
+<span concordion:assertEquals="#z3">11</span> = <span concordion:set="#x3">6</span> + <span concordion:set="#y3">5</span>.
+</span>
+</div>
+
+### Execute on a table
+
+When you place an execute command on a `<table>` element the commands on the header row
+(the row containing `<th>` elements) are copied to each detail row (rows containing `<td>` elements)
+and the execute  command is run on each detail row.
+
+<div class="example">
+<p>Example: Adding <i>Number 1</i> to <i>Number 2</i> equals the <i>Result</i>:</p>
+<table concordion:execute="#z=add(#x,#y)">
+<tr><th concordion:set="#x">Number 1</th><th concordion:set="#y">Number 2</th><th concordion:assertEquals="#z">Result</th></tr>
+<tr><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>-3</td><td>-2</td></tr>
+</table>
+</div>
+
+### Verify Rows
+
+Checks a collection of results returned from the fixture.
+The collection must be sorted and implement `java.lang.Iterable`.
+
+It may be necessary to sort the collection in the fixture if it is not already sorted.
+
+<div class="example">
+<p>Example: Invoice details are:</p>
+<table concordion:verifyRows="#detail : getInvoiceDetails()">
+<tr><th concordion:assertEquals="#detail.subTotal">Sub Total</th><th concordion:assertEquals="#detail.gst">GST</th></tr>
+<tr><td>100</td><td>15</td></tr>
+<tr><td>500</td><td>75</td></tr>
+<tr><td>20</td><td>3</td></tr>
+</table>
+</div>
+
+### Echo
+
+Normally used for adding information about a test run:
+
+<div class="example">
+Tests executed using <span concordion:echo="getBrowserDetails()"></span>.
+</div>
+
+### Run
+
+Runs another test from this test. See [Run command](http://concordion.org/dist/1.3.1/test-output/concordion/spec/concordion/command/run/Run.html).
+
+We are using this from our "index" pages, with a custom `RunOnceRunner` class
+to ensure each test is only run once, and the results cached.
+
+### Accessing contents of an HREF
+
+Allows you to put test data in a separate file and access it from a specification.
+This may indicate a "test smell".
+See [Access to a Link's HREF](http://concordion.org/dist/1.3.1/test-output/concordion/spec/concordion/command/execute/AccessToLinkHref.html).
