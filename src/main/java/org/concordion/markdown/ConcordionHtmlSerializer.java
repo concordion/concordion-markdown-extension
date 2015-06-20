@@ -78,8 +78,8 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             printer.print(concordionSerializerPlugin.getText());
             concordionSerializerPlugin.setText(null);
         }
-        visitChildren(node);
         printer.print('<').print('/').print(tag).print('>');
+        visitChildren(node);
     }
     
     @Override
@@ -94,8 +94,8 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             printer.print(concordionSerializerPlugin.getText());
             concordionSerializerPlugin.setText(null);
         }
-        printer.printEncoded(node.getText());
         printer.print('<').print('/').print(tag).print('>');
+        printer.printEncoded(node.getText());
     }
    
     @Override
