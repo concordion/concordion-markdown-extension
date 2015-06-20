@@ -8,6 +8,15 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 <span concordion:set="#x">1</span> + <span concordion:set="#y">2</span> = <span concordion:assertEquals="add(#x, #y)">3</span>.
 </div>
 
+<!--
+{#x=}1{} + {#y=}2{} = {add(#x,#y)==}3{}
+{.set #x}1{} + {.set #y}2{} = {.is add(#x,#y)}3{}
+{.set #x="1"} + {.set #y="2"} = {.is add(#x,#y)=="3"}
+-->
+
+{:example: "A name"}
+{#x="1"} + {#y="2"} = {add(#x,#y)=="3"}
+
 ### Set and assert in same statement
 
 Occasionally it is useful to be able to set and assert a value in the same statement, for example selecting a user name and then checking that the user name is displayed.
@@ -15,6 +24,8 @@ This can be achieved using the special variable `#TEXT`, which contains the text
 
 <div class="example">
 Example: My name is <span concordion:assertEquals="setAndReturn(#TEXT)">Michael Caine</span>
+
+{setAndReturn(#TEXT)=="Michael Caine"}
 </div>
 
 ### Example with execute
@@ -34,6 +45,10 @@ This example also shows the use of the special variable `#TEXT`, which contains 
 <span concordion:execute="setMemory(#TEXT)">3</span> +
 <span concordion:execute="#result = addToMemory(#TEXT)">4</span> =
 <span concordion:assertEquals="#result">7</span>.
+
+{setMemory(#TEXT) "3"}
+{#result=addToMemory(#TEXT) "4"}
+{#result=="7"}
 </div>
 
 ### Example with execute returning a POJO
@@ -43,18 +58,27 @@ Concordion will first check for a public field with the property name, then for 
 In the following example, `#detail.gst` resolves to a call to the `getGst()` method.
 
 <div class="example">
-<span concordion:execute="#detail = getInvoiceDetail()">The invoice </span> show a sub-total of
+<span concordion:execute="#detail = getInvoiceDetail()"/>The invoice shows a sub-total of
 $<span concordion:assertEquals="#detail.subTotal">100</span> + GST of
 $<span concordion:assertEquals="#detail.gst">15</span> giving a total of
 $<span concordion:assertEquals="#detail.calculateTotal()">115</span>.
+
+{#detail = getInvoiceDetail()}The invoice shows a sub-total of
+${#detail.subTotal=="100"} + GST of
+${#detail.gst=="15"} giving a total of
+${#detail.calculateTotal()=="115"}.
 </div>
 
 ### Example with execute returning a map
 
 <div class="example">
-<span concordion:execute="#detail = getInvoiceDetailAsMap()">The invoice </span> show a sub-total of
+<span concordion:execute="#detail = getInvoiceDetailAsMap()"/>The invoice shows a sub-total of
 $<span concordion:assertEquals="#detail.subTotal">100</span> + GST of
 $<span concordion:assertEquals="#detail.gst">15</span>.
+
+{#detail = getInvoiceDetailAsMap()}The invoice shows a sub-total of
+${#detail.subTotal=="100"} + GST of
+${#detail.gst=="15"}.
 </div>
 
 ### Unusual sentences
@@ -72,6 +96,11 @@ See [executeUnusualSentences](http://concordion.org/Tutorial.html#executeUnusual
 <span concordion:execute="#z3=add(#x3,#y3)">
 <span concordion:assertEquals="#z3">11</span> = <span concordion:set="#x3">6</span> + <span concordion:set="#y3">5</span>.
 </span>
+
+<span concordion:execute="#z3=add(#x3,#y3)">
+{#z3=="11"} = {#x3="6"} + {#y3="5"}.
+</span>
+
 </div>
 
 ### Execute on a table
@@ -88,6 +117,12 @@ and the execute  command is run on each detail row.
 <tr><td>1</td><td>-3</td><td>-2</td></tr>
 </table>
 </div>
+
+| {#x="Number 1"} | {#y="Number 2"} | {#z=="Result"} |
+| --------------: | --------------: | -------------: |
+|               1 |               0 |              1 |
+|               1 |              -3 |             -2 |
+[Example: Adding _Number 1_ to _Number 2_ equals the _Result_: {#z=add(#x, #y)}]
 
 ### Verify Rows
 
@@ -106,12 +141,21 @@ It may be necessary to sort the collection in the fixture if it is not already s
 </table>
 </div>
 
+| {#detail.subTotal=="Sub Total"} | {#detail.gst=="GST"} |
+| ------------------------------: | -------------------: |
+|                             100 |                   15 |
+|                             500 |                   75 |
+|                              20 |                    2 |
+[Example: Invoice details are: {#detail:getInvoiceDetails()}]
+
 ### Echo
 
 Normally used for adding information about a test run:
 
 <div class="example">
 Tests executed using <span concordion:echo="getBrowserDetails()"></span>.
+
+Tests executed using {:echo: getBrowserDetails()}.
 </div>
 
 ### Run
@@ -120,6 +164,12 @@ Runs another test from this test. See [Run command](http://concordion.org/dist/1
 
 We are using this from our "index" pages, with a custom `RunOnceRunner` class
 to ensure each test is only run once, and the results cached.
+
+<!-- <a concordion:run="concordion" href="whatever.html">Whatever</a> -->
+
+{:run: "whatever.html" ???}
+
+[Whatever {:run:}](whatever.html)
 
 ### Accessing contents of an HREF
 
