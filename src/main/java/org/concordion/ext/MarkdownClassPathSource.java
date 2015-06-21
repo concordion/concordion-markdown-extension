@@ -28,16 +28,16 @@ public class MarkdownClassPathSource implements Source {
     }
 
     private String read(Resource resource) throws IOException {
-        String markdown;
+        InputStream inputStream = classPathSource.createInputStream(resource);
         Scanner scanner = null;
         try {
-            InputStream inputStream = classPathSource.createInputStream(resource);
-            scanner = new Scanner(inputStream,"UTF-8");
-            markdown = scanner.useDelimiter("\\A").next();
+            scanner = new Scanner(inputStream, "UTF-8");
+            return scanner.useDelimiter("\\A").next();
         } finally {
-            scanner.close();
+            if (scanner != null) {
+                scanner.close();
+            }
         }
-        return markdown;
     }
 
     private String wrapBody(String body) {
