@@ -15,7 +15,7 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 -->
 
 {:example: "A name"}
-{#x="1"} + {#y="2"} = {add(#x,#y)=="3"}
+{1 `#x`} + {2 `#y`} = {3 `==add(#x,#y)`}
 
 ### Set and assert in same statement
 
@@ -25,7 +25,7 @@ This can be achieved using the special variable `#TEXT`, which contains the text
 <div class="example">
 Example: My name is <span concordion:assertEquals="setAndReturn(#TEXT)">Michael Caine</span>
 
-{setAndReturn(#TEXT)=="Michael Caine"}
+{Michael Caine `==setAndReturn(#TEXT)`}
 </div>
 
 ### Example with execute
@@ -46,9 +46,9 @@ This example also shows the use of the special variable `#TEXT`, which contains 
 <span concordion:execute="#result = addToMemory(#TEXT)">4</span> =
 <span concordion:assertEquals="#result">7</span>.
 
-{setMemory(#TEXT) "3"}
-{#result=addToMemory(#TEXT) "4"}
-{#result=="7"}
+{3 `setMemory(#TEXT)`}
+{4 `#result=addToMemory(#TEXT)`}
+{7 `#result`}
 </div>
 
 ### Example with execute returning a POJO
@@ -63,10 +63,10 @@ $<span concordion:assertEquals="#detail.subTotal">100</span> + GST of
 $<span concordion:assertEquals="#detail.gst">15</span> giving a total of
 $<span concordion:assertEquals="#detail.calculateTotal()">115</span>.
 
-{#detail = getInvoiceDetail()}The invoice shows a sub-total of
-${#detail.subTotal=="100"} + GST of
-${#detail.gst=="15"} giving a total of
-${#detail.calculateTotal()=="115"}.
+{`#detail = getInvoiceDetail()`}The invoice shows a sub-total of
+${100 `==#detail.subTotal`} + GST of
+${15 `==#detail.gst`} giving a total of
+${115 `==#detail.calculateTotal()`}.
 </div>
 
 ### Example with execute returning a map
@@ -76,9 +76,9 @@ ${#detail.calculateTotal()=="115"}.
 $<span concordion:assertEquals="#detail.subTotal">100</span> + GST of
 $<span concordion:assertEquals="#detail.gst">15</span>.
 
-{#detail = getInvoiceDetailAsMap()}The invoice shows a sub-total of
-${#detail.subTotal=="100"} + GST of
-${#detail.gst=="15"}.
+{`#detail = getInvoiceDetailAsMap()`}The invoice shows a sub-total of
+${100 `==#detail.subTotal`} + GST of
+${15 `==#detail.gst`}.
 </div>
 
 ### Unusual sentences
@@ -98,7 +98,7 @@ See [executeUnusualSentences](http://concordion.org/Tutorial.html#executeUnusual
 </span>
 
 <span concordion:execute="#z3=add(#x3,#y3)">
-{#z3=="11"} = {#x3="6"} + {#y3="5"}.
+{11 `#z3`"} = {6 `#x3`} + {5 `#y3`}.
 </span>
 
 </div>
@@ -118,11 +118,11 @@ and the execute  command is run on each detail row.
 </table>
 </div>
 
-| {#x="Number 1"} | {#y="Number 2"} | {#z=="Result"} |
+| {Number 1 `#x`} | {Number 2 `#y`} | {"Result" `==#z`} |
 | --------------: | --------------: | -------------: |
 |               1 |               0 |              1 |
 |               1 |              -3 |             -2 |
-[Example: Adding _Number 1_ to _Number 2_ equals the _Result_: {#z=add(#x, #y)}]
+[Example: Adding _Number 1_ to _Number 2_ equals the _Result_: {`#z=add(#x, #y)`}]
 
 ### Verify Rows
 
@@ -141,12 +141,12 @@ It may be necessary to sort the collection in the fixture if it is not already s
 </table>
 </div>
 
-| {#detail.subTotal=="Sub Total"} | {#detail.gst=="GST"} |
+| {Sub Total `#detail.subTotal`} | {GST `#detail.gst`} |
 | ------------------------------: | -------------------: |
 |                             100 |                   15 |
 |                             500 |                   75 |
 |                              20 |                    2 |
-[Example: Invoice details are: {#detail:getInvoiceDetails()}]
+[Example: Invoice details are: {`#detail:getInvoiceDetails()`}]
 
 ### Echo
 
@@ -155,7 +155,7 @@ Normally used for adding information about a test run:
 <div class="example">
 Tests executed using <span concordion:echo="getBrowserDetails()"></span>.
 
-Tests executed using {:echo: getBrowserDetails()}.
+Tests executed using {`echo getBrowserDetails()`}.
 </div>
 
 ### Run
@@ -167,9 +167,9 @@ to ensure each test is only run once, and the results cached.
 
 <!-- <a concordion:run="concordion" href="whatever.html">Whatever</a> -->
 
-{:run: "whatever.html" ???}
+{`run whatever.html`}
 
-[Whatever {:run:}](whatever.html)
+[Whatever `run`](whatever.html)
 
 ### Accessing contents of an HREF
 

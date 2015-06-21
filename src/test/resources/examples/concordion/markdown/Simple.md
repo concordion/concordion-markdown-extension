@@ -1,11 +1,11 @@
 # Simple
 
-We start with value {#x="one"}.
+We start with value {one `#x`}.
 
-We expect to receive value {#x=="one"}.
+We expect to receive value {one `==#x`}.
 
 ## Assertions on method calls
-{#x="1"} + {#y="2"} = {add(#x,#y)=="3"}
+{1 `#x`} + {2 `#y`} = {3 `==add(#x,#y)`}
 
 
 
