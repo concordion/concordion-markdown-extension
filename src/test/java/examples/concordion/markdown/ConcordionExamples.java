@@ -1,4 +1,4 @@
-package org.concordion.markdown;
+package examples.concordion.markdown;
 
 import java.util.ArrayList;
 import java.util.HashMap;

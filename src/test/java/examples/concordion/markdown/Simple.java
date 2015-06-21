@@ -1,4 +1,4 @@
-package org.concordion.markdown;
+package examples.concordion.markdown;
 
 import org.concordion.api.extension.Extensions;
 import org.concordion.ext.MarkdownExtension;
