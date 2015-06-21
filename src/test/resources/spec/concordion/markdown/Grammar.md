@@ -6,7 +6,7 @@ While Markdown allows you to embed HTML, this extension also provides a simplifi
 
 ## concordion:set
 
-The `concordion:set` command is expressed using the syntax: `#varname="value"`
+The `concordion:set` command is expressed using the syntax: `{#varname="value"}`
 
 which sets the variable named `varname` to the value `value`.
 
@@ -34,7 +34,7 @@ which sets the variable named `varname` to the value `value`.
 
 ## concordion:assertEquals
 
-The `concordion:assertEquals` command is expressed using the syntax: `#expression=="value"`
+The `concordion:assertEquals` command is expressed using the syntax: `{expression=="value"}`
 
 which asserts that the result of evaluating _expression_ equals the value _value_.
 
