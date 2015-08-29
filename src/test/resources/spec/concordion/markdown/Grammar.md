@@ -22,19 +22,19 @@ which sets the variable named `varname` to the value `value`.
       <td>&lt;span concordion:set='#x'&gt;1&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>{Bob `#name`}</td>
-      <td>&lt;span concordion:set='#name'&gt;Bob&lt;/span&gt;</td>
+      <td>{Bob Smith `#name`}</td>
+      <td>&lt;span concordion:set='#name'&gt;Bob Smith&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>{1\} `#z`}</td>
-      <td>&lt;span concordion:set='#z'&gt;1}&lt;/span&gt;</td>
+      <td>{`code snippet` `#snippet`}</td>
+      <td>&lt;span concordion:set='#snippet'&gt;`code snippet`&lt;/span&gt;</td>
     </tr>
   </table>
 </div>
 
 ## concordion:assertEquals
 
-The `concordion:assertEquals` command is expressed using the syntax: ``{value `==expression`}``
+The `concordion:assertEquals` command is expressed using the syntax: ``{value `?=expression`}``
 
 which asserts that the result of evaluating _expression_ equals the value _value_.
 
@@ -46,23 +46,23 @@ which asserts that the result of evaluating _expression_ equals the value _value
       <th concordion:assertEquals="#html">Resulting HTML</th>
     </tr>
     <tr>
-      <td>{1 `==#x`}</td>
+      <td>{1 `?=#x`}</td>
       <td>&lt;span concordion:assertEquals='#x'&gt;1&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>{Bob `==#name`}</td>
-      <td>&lt;span concordion:assertEquals='#name'&gt;Bob&lt;/span&gt;</td>
+      <td>{Bob Smith `?=#name`}</td>
+      <td>&lt;span concordion:assertEquals='#name'&gt;Bob Smith&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>{3 `==add(#x, #y)`}</td>
+      <td>{3 `?=add(#x, #y)`}</td>
       <td>&lt;span concordion:assertEquals='add(#x, #y)'&gt;3&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>{Hello `==getGreeting()`}</td>
+      <td>{Hello `?=getGreeting()`}</td>
       <td>&lt;span concordion:assertEquals='getGreeting()'&gt;Hello&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>{Hello `==greeting`}</td>
+      <td>{Hello `?=greeting`}</td>
       <td>&lt;span concordion:assertEquals='greeting'&gt;Hello&lt;/span&gt;</td>
     </tr>
   </table>
