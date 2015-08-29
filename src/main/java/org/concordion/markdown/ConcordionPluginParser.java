@@ -29,7 +29,7 @@ public class ConcordionPluginParser extends Parser {
         StringBuilderVar text = new StringBuilderVar();
         return NodeSequence(
                 "{#",
-                OneOrMore(TestNot("="), BaseParser.ANY, varName.append("#" + matchedChar())),
+                OneOrMore(TestNot("="), BaseParser.ANY, varName.append(matchedChar())),
                 "=\"",
                 OneOrMore(TestNot("\"}"), BaseParser.ANY, text.append(matchedChar())),
                 push(new ConcordionSetNode(varName.getString(), text.getString())),

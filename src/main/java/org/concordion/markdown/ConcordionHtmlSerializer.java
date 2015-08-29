@@ -32,7 +32,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     }
 
     private void visit(ConcordionSetNode node) {
-        printConcordionCommand("set", node.getVarName(), node.getText());
+        printConcordionCommand("set", "#" + node.getVarName(), node.getText());
     }
         
     private void printConcordionCommand(String command, String value, String text) {
