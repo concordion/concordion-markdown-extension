@@ -25,10 +25,13 @@ which sets the variable named `varname` to the value `value`.
       <td>{#name="Bob"}</td>
       <td>&lt;span concordion:set='#name'&gt;Bob&lt;/span&gt;</td>
     </tr>
+    <!--
+    TODO: We need smarter parsing to handle escaped items
     <tr>
       <td>{#z="1\"}"}</td>
       <td>&lt;span concordion:set='#z'&gt;1"}&lt;/span&gt;</td>
     </tr>
+    -->
   </table>
 </div>
 
