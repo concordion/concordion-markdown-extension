@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 
 @RunWith(ConcordionRunner.class)
 @Extensions(MarkdownExtension.class)
-@ExpectedToFail
 public class Grammar {
     MarkdownParser markdownParser = new MarkdownParser();
 
