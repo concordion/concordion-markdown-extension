@@ -5,8 +5,6 @@ import org.parboiled.Rule;
 import org.parboiled.support.StringBuilderVar;
 import org.pegdown.Parser;
 
-import java.util.regex.Pattern;
-
 public class ConcordionPluginParser extends Parser {
 
     public ConcordionPluginParser() {
