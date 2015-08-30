@@ -70,3 +70,46 @@ which asserts that the result of evaluating _expression_ equals the value _value
     </tr>
   </table>
 </div>
+
+## concordion:execute
+
+The `concordion:execute` command is expressed using the syntax: `{statement}`
+which executes the _statement_.
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>{foo()}</td>
+      <td>&lt;span concordion:execute='foo()'/&gt;</td>
+    </tr>
+    <tr>
+      <td>{foo(#TEXT)}</td>
+      <td>&lt;span concordion:execute='foo(#TEXT)'/&gt;</td>
+    </tr>
+    <tr>
+      <td>{#x=foo(#TEXT)}</td>
+      <td>&lt;span concordion:execute='#x=foo(#TEXT)'/&gt;</td>
+    </tr>
+    <tr>
+      <td>{foo(#x, #y)}</td>
+      <td>&lt;span concordion:execute='foo(#x, #y)'/&gt;</td>
+    </tr>
+    <tr>
+      <td>{#z=foo(#x, #y)}</td>
+      <td>&lt;span concordion:execute='#z=foo(#x, #y)'/&gt;</td>
+    </tr>
+    <tr>
+      <td>{#x=greeting}</td>
+      <td>&lt;span concordion:execute='#x=greeting'/&gt;</td>
+    </tr>
+    <tr>
+      <td>{foo(#x, "one")}</td>
+      <td>&lt;span concordion:execute='foo(#x, "one")'/&gt;</td>
+    </tr>
+  </table>
+</div>

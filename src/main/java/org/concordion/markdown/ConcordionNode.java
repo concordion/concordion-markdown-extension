@@ -6,7 +6,7 @@ import org.pegdown.ast.Visitor;
 
 public class ConcordionNode extends TextNode {
 
-    public enum Type { Set, AssertEquals }
+    public enum Type { Set, AssertEquals, Execute }
 
     private final Type type;
 

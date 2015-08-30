@@ -19,8 +19,11 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                 case AssertEquals:
                     visit((ConcordionEqualsNode)node);
                     break;
+                case Execute:
+                    visit((ConcordionExecuteNode)node);
+                    break;
                 default:
-                    throw new IllegalStateException();
+                    throw new IllegalStateException("Unrecognised node type [" + node.getClass() + "]");
             }
         } else {
             super.visit(node);
@@ -34,6 +37,10 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     private void visit(ConcordionSetNode node) {
         printConcordionCommand("set", "#" + node.getVarName(), node.getText());
     }
+
+    private void visit(ConcordionExecuteNode node) {
+        printConcordionCommand("execute", node.getText());
+    }
         
     private void printConcordionCommand(String command, String value, String text) {
         printer.print('<').print("span");
@@ -41,6 +48,12 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         printer.print('>');
         printer.printEncoded(text);
         printer.print('<').print('/').print("span").print('>');
+    }
+
+    private void printConcordionCommand(String command, String text) {
+        printer.print('<').print("span");
+        printAttribute("concordion:" + command, text);
+        printer.print("/>");
     }
     
     private void printAttribute(String name, String value) {
