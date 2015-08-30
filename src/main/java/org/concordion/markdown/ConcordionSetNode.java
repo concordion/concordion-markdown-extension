@@ -6,7 +6,7 @@ public class ConcordionSetNode extends ConcordionNode {
 
     public ConcordionSetNode(String varName, String text) {
         super(Type.Set, text);
-        this.varName = varName;
+        this.varName = "#" + varName;
     }
 
     public String getVarName() {
