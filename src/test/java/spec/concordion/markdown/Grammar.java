@@ -1,6 +1,5 @@
 package spec.concordion.markdown;
 
-import org.concordion.api.ExpectedToFail;
 import org.concordion.api.extension.Extensions;
 import org.concordion.ext.MarkdownExtension;
 import org.concordion.integration.junit4.ConcordionRunner;

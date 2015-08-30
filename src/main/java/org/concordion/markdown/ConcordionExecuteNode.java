@@ -1,11 +1,11 @@
 package org.concordion.markdown;
 
-public class ConcordionEqualsNode extends ConcordionNode {
+public class ConcordionExecuteNode extends ConcordionNode {
 
     private final String expression;
 
-    public ConcordionEqualsNode(String expression, String text) {
-        super(Type.AssertEquals, text);
+    public ConcordionExecuteNode(String expression, String text) {
+        super(Type.Execute, text);
         this.expression = expression;
     }
 

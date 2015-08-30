@@ -12,12 +12,28 @@ public class ConcordionPluginParser extends Parser {
     }
     
     public Rule concordionStatement() {
+        return FirstOf(
+            commandNoText(),
+            commandWithText()
+        );
+    }
+    
+    public Rule commandWithText() {
         StringBuilderVar text = new StringBuilderVar();
         return NodeSequence(
             "{",
             OneOrMore(TestNot(" `"), ANY, text.append(matchedChar())),
             " `",
-            FirstOf(setCommand(text), assertEqualsCommand(text)),
+            FirstOf(setCommand(text), assertEqualsCommand(text), executeCommand(text)),
+            "`}"
+        );
+    }
+    
+    public Rule commandNoText() {
+        StringBuilderVar text = new StringBuilderVar();
+        return NodeSequence(
+            "{`",
+            executeCommand(text),
             "`}"
         );
     }
@@ -37,6 +53,14 @@ public class ConcordionPluginParser extends Parser {
                 "?=",
                 OneOrMore(TestNot("`}"), BaseParser.ANY, expression.append(matchedChar())),
                 push(new ConcordionEqualsNode(expression.getString(), text.getString()))
+        );
+    }
+    
+    public Rule executeCommand(StringBuilderVar text) {
+        StringBuilderVar expression = new StringBuilderVar();
+        return NodeSequence(
+                OneOrMore(TestNot("`}"), BaseParser.ANY, expression.append(matchedChar())),
+                push(new ConcordionExecuteNode(expression.getString(), text.getString()))
         );
     }
     

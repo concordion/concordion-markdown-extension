@@ -2,7 +2,7 @@ package org.concordion.markdown;
 
 public class ConcordionSetNode extends ConcordionNode {
 
-    private String varName;
+    private final String varName;
 
     public ConcordionSetNode(String varName, String text) {
         super(Type.Set, text);

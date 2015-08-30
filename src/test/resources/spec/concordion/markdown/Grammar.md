@@ -25,10 +25,12 @@ which sets the variable named `varname` to the value `value`.
       <td>{Bob Smith `#name`}</td>
       <td>&lt;span concordion:set='#name'&gt;Bob Smith&lt;/span&gt;</td>
     </tr>
+<!-- TODO escape    
     <tr>
       <td>{`code snippet` `#snippet`}</td>
       <td>&lt;span concordion:set='#snippet'&gt;`code snippet`&lt;/span&gt;</td>
     </tr>
+-->    
   </table>
 </div>
 
@@ -68,6 +70,50 @@ which asserts that the result of evaluating _expression_ equals the value _value
   </table>
 </div>
 
+## concordion:execute
+
+The `concordion:execute` command is expressed using the syntax: ``{`expression`}``
+
+which executes the _expression_.
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>{`foo()`}</td>
+      <td>&lt;span concordion:execute='foo()'&gt;&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>{`#x=foo()`}</td>
+      <td>&lt;span concordion:execute='#x=foo()'&gt;&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>{sometext `foo(#TEXT)`}</td>
+      <td>&lt;span concordion:execute='foo(#TEXT)'&gt;sometext&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>{sometext `#x=foo(#TEXT)`}</td>
+      <td>&lt;span concordion:execute='#x=foo(#TEXT)'&gt;sometext&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>{`foo(#x, #y)`}</td>
+      <td>&lt;span concordion:execute='foo(#x, #y)'&gt;&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>{`#x=greeting`}</td>
+      <td>&lt;span concordion:execute='#x=greeting'&gt;&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>{`foo(#x, "one")`}</td>
+      <td>&lt;span concordion:execute='foo(#x, "one")'&gt;&lt;/span&gt;</td>
+    </tr>
+  </table>
+</div>
+
 ## Multiple commands on a single line
 
 <div class="example">
@@ -88,6 +134,16 @@ which asserts that the result of evaluating _expression_ equals the value _value
   </table>
 </div>
 
+<!--
+##Execute on a table
 
+| {Number 1 `#x`} | {Number 2 `#y`} | {"Result" `?=#z`} |
+-->
+| --------------: | --------------: | -------------: |
+<!--
+|               1 |               0 |              1 |
+|               1 |              -3 |             -2 |
+[Example: Adding _Number 1_ to _Number 2_ equals the _Result_: {`#z=add(#x, #y)`}]
+-->
 
     // c:execute: {foo()} {#x=foo()} {foo(#TEXT)} {#x=foo(#TEXT)} {foo(#x, #y)} {#z=foo(#x, #y)} {#x=greeting} {foo(#x, "one")}

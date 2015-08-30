@@ -15,7 +15,7 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 -->
 
 {:example: "A name"}
-{1 `#x`} + {2 `#y`} = {3 `==add(#x,#y)`}
+{1 `#x`} + {2 `#y`} = {3 `?=add(#x,#y)`}
 
 ### Set and assert in same statement
 
@@ -118,7 +118,7 @@ and the execute  command is run on each detail row.
 </table>
 </div>
 
-| {Number 1 `#x`} | {Number 2 `#y`} | {"Result" `==#z`} |
+| {Number 1 `#x`} | {Number 2 `#y`} | {"Result" `?=#z`} |
 | --------------: | --------------: | -------------: |
 |               1 |               0 |              1 |
 |               1 |              -3 |             -2 |
