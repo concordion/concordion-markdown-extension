@@ -8,13 +8,8 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 <span concordion:set="#x">1</span> + <span concordion:set="#y">2</span> = <span concordion:assertEquals="add(#x, #y)">3</span>.
 </div>
 
-<!--
-{#x=}1{} + {#y=}2{} = {add(#x,#y)==}3{}
-{.set #x}1{} + {.set #y}2{} = {.is add(#x,#y)}3{}
-{.set #x="1"} + {.set #y="2"} = {.is add(#x,#y)=="3"}
--->
-
 {:example: "A name"}
+
 {1 `#x`} + {2 `#y`} = {3 `?=add(#x,#y)`}
 
 ### Set and assert in same statement
@@ -25,7 +20,7 @@ This can be achieved using the special variable `#TEXT`, which contains the text
 <div class="example">
 Example: My name is <span concordion:assertEquals="setAndReturn(#TEXT)">Michael Caine</span>
 
-{Michael Caine `==setAndReturn(#TEXT)`}
+{Michael Caine `?=setAndReturn(#TEXT)`}
 </div>
 
 ### Example with execute

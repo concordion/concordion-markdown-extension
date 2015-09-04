@@ -11,4 +11,8 @@ public class Simple {
     public int add(int a, int b) {
         return a + b;
     }
+    
+    public String removeVowels(String s) {
+        return s.replaceAll("[aeiou]", "");
+    }
 }

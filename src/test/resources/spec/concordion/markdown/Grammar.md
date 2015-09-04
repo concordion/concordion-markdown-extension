@@ -96,10 +96,6 @@ which executes the _expression_.
       <td>&lt;span concordion:execute='foo(#TEXT)'&gt;sometext&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>{sometext `#x=foo(#TEXT)`}</td>
-      <td>&lt;span concordion:execute='#x=foo(#TEXT)'&gt;sometext&lt;/span&gt;</td>
-    </tr>
-    <tr>
       <td>{`foo(#x, #y)`}</td>
       <td>&lt;span concordion:execute='foo(#x, #y)'&gt;&lt;/span&gt;</td>
     </tr>
@@ -113,6 +109,44 @@ which executes the _expression_.
     </tr>
   </table>
 </div>
+
+
+## Edge cases
+The following command generates identical results with either `concordion:set` or `concordion:execute`.
+
+This grammer uses `concordion:set`.
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>{sometext `#x=foo(#TEXT)`}</td>
+      <td>&lt;span concordion:set='#x=foo(#TEXT)'&gt;sometext&lt;/span&gt;</td>
+    </tr>
+  </table>
+</div>  
+
+<!--
+## Brackets before the Concordion expression 
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>{Other stuff in brackets}{2 `#x`}</td>
+      <td>{Other stuff in brackets}&lt;span concordion:set='#x'&gt;2&lt;/span&gt;</td>
+    </tr>
+  </table>
+</div>  
+-->
 
 ## Multiple commands on a single line
 
