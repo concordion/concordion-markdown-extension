@@ -19,16 +19,16 @@ which sets the variable named `varname` to the value `value`.
     </tr>
     <tr>
       <td>{1 `#x`}</td>
-      <td>&lt;span concordion:set='#x'&gt;1&lt;/span&gt;</td>
+      <td>&lt;span concordion:set="#x"&gt;1&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{Bob Smith `#name`}</td>
-      <td>&lt;span concordion:set='#name'&gt;Bob Smith&lt;/span&gt;</td>
+      <td>&lt;span concordion:set="#name"&gt;Bob Smith&lt;/span&gt;</td>
     </tr>
 <!-- TODO escape    
     <tr>
       <td>{`code snippet` `#snippet`}</td>
-      <td>&lt;span concordion:set='#snippet'&gt;`code snippet`&lt;/span&gt;</td>
+      <td>&lt;span concordion:set="#snippet"&gt;`code snippet`&lt;/span&gt;</td>
     </tr>
 -->    
   </table>
@@ -49,23 +49,23 @@ which asserts that the result of evaluating _expression_ equals the value _value
     </tr>
     <tr>
       <td>{1 `?=#x`}</td>
-      <td>&lt;span concordion:assertEquals='#x'&gt;1&lt;/span&gt;</td>
+      <td>&lt;span concordion:assertEquals="#x"&gt;1&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{Bob Smith `?=#name`}</td>
-      <td>&lt;span concordion:assertEquals='#name'&gt;Bob Smith&lt;/span&gt;</td>
+      <td>&lt;span concordion:assertEquals="#name"&gt;Bob Smith&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{3 `?=add(#x, #y)`}</td>
-      <td>&lt;span concordion:assertEquals='add(#x, #y)'&gt;3&lt;/span&gt;</td>
+      <td>&lt;span concordion:assertEquals="add(#x, #y)"&gt;3&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{Hello `?=getGreeting()`}</td>
-      <td>&lt;span concordion:assertEquals='getGreeting()'&gt;Hello&lt;/span&gt;</td>
+      <td>&lt;span concordion:assertEquals="getGreeting()"&gt;Hello&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{Hello `?=greeting`}</td>
-      <td>&lt;span concordion:assertEquals='greeting'&gt;Hello&lt;/span&gt;</td>
+      <td>&lt;span concordion:assertEquals="greeting"&gt;Hello&lt;/span&gt;</td>
     </tr>
   </table>
 </div>
@@ -85,27 +85,27 @@ which executes the _expression_.
     </tr>
     <tr>
       <td>{`foo()`}</td>
-      <td>&lt;span concordion:execute='foo()'&gt;&lt;/span&gt;</td>
+      <td>&lt;span concordion:execute="foo()"&gt;&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{`#x=foo()`}</td>
-      <td>&lt;span concordion:execute='#x=foo()'&gt;&lt;/span&gt;</td>
+      <td>&lt;span concordion:execute="#x=foo()"&gt;&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{sometext `foo(#TEXT)`}</td>
-      <td>&lt;span concordion:execute='foo(#TEXT)'&gt;sometext&lt;/span&gt;</td>
+      <td>&lt;span concordion:execute="foo(#TEXT)"&gt;sometext&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{`foo(#x, #y)`}</td>
-      <td>&lt;span concordion:execute='foo(#x, #y)'&gt;&lt;/span&gt;</td>
+      <td>&lt;span concordion:execute="foo(#x, #y)"&gt;&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{`#x=greeting`}</td>
-      <td>&lt;span concordion:execute='#x=greeting'&gt;&lt;/span&gt;</td>
+      <td>&lt;span concordion:execute="#x=greeting"&gt;&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{`foo(#x, "one")`}</td>
-      <td>&lt;span concordion:execute='foo(#x, "one")'&gt;&lt;/span&gt;</td>
+      <td>&lt;span concordion:execute="foo(#x, "one")"&gt;&lt;/span&gt;</td>
     </tr>
   </table>
 </div>
@@ -125,7 +125,7 @@ This grammer uses `concordion:set`.
     </tr>
     <tr>
       <td>{sometext `#x=foo(#TEXT)`}</td>
-      <td>&lt;span concordion:set='#x=foo(#TEXT)'&gt;sometext&lt;/span&gt;</td>
+      <td>&lt;span concordion:set="#x=foo(#TEXT)"&gt;sometext&lt;/span&gt;</td>
     </tr>
   </table>
 </div>  
@@ -142,7 +142,7 @@ This grammer uses `concordion:set`.
     </tr>
     <tr>
       <td>{Other stuff in brackets}{2 `#x`}</td>
-      <td>{Other stuff in brackets}&lt;span concordion:set='#x'&gt;2&lt;/span&gt;</td>
+      <td>{Other stuff in brackets}&lt;span concordion:set="#x"&gt;2&lt;/span&gt;</td>
     </tr>
   </table>
 </div>  
@@ -159,11 +159,11 @@ This grammer uses `concordion:set`.
     </tr>
     <tr>
       <td>{1 `#x`} + {2 `#y`} = {3 `?=add(#x,#y)`}</td>
-      <td>&lt;span concordion:set='#x'&gt;1&lt;/span&gt; + &lt;span concordion:set='#y'&gt;2&lt;/span&gt; = &lt;span concordion:assertEquals='add(#x,#y)'&gt;3&lt;/span&gt;</td>
+      <td>&lt;span concordion:set="#x"&gt;1&lt;/span&gt; + &lt;span concordion:set="#y"&gt;2&lt;/span&gt; = &lt;span concordion:assertEquals="add(#x,#y)"&gt;3&lt;/span&gt;</td>
     </tr>
     <tr>
       <td>{3 `?=three()`}. {Fred `#name`}.</td>
-      <td>&lt;span concordion:assertEquals='three()'&gt;3&lt;/span&gt;. &lt;span concordion:set='#name'&gt;Fred&lt;/span&gt;.</td>
+      <td>&lt;span concordion:assertEquals="three()"&gt;3&lt;/span&gt;. &lt;span concordion:set="#name"&gt;Fred&lt;/span&gt;.</td>
     </tr>
   </table>
 </div>

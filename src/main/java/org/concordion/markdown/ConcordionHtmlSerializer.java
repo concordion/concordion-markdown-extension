@@ -47,8 +47,4 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         printer.printEncoded(text);
         printer.print('<').print('/').print("span").print('>');
     }
-    
-    private void printAttribute(String name, String value) {
-        printer.print(' ').print(name).print('=').print("'").print(value).print("'");
-    }
 }
