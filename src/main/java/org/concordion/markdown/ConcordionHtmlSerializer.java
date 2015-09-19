@@ -22,9 +22,11 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     }
     
     private Attribute pendingAttribute = null;
+    private String concordionNamespacePrefix;
     
-    public ConcordionHtmlSerializer(LinkRenderer linkRenderer) {
-        super(linkRenderer);
+    public ConcordionHtmlSerializer(String concordionNamespacePrefix) {
+        super(new ConcordionLinkRenderer(concordionNamespacePrefix));
+        this.concordionNamespacePrefix = concordionNamespacePrefix;
     }
    
     @Override
@@ -58,18 +60,18 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             if (child instanceof TableCaptionNode) {
                 for (Node captionChild : child.getChildren()) {
                     if (captionChild instanceof ConcordionExecuteNode) {
-                        pendingAttribute = new Attribute("concordion:" + "execute", ((ConcordionExecuteNode) captionChild).getExpression());
+                        pendingAttribute = new Attribute(namespaced("execute"), ((ConcordionExecuteNode) captionChild).getExpression());
                     }
                     if (captionChild instanceof ConcordionVerifyRowsNode) {
-                        pendingAttribute = new Attribute("concordion:" + "verifyRows", ((ConcordionVerifyRowsNode) captionChild).getExpression());
+                        pendingAttribute = new Attribute(namespaced("verifyRows"), ((ConcordionVerifyRowsNode) captionChild).getExpression());
                     }
                 } 
             }
         }
         // Call the super visit(TableNode) method and override printIndentedTag() below, so that the concordion:execute attribute is added to the tag
         super.visit(node);
-    };
-    
+    }
+
     @Override
     public void visit(TableCaptionNode node) {
         if (hasNonConcordionChildren(node)) {
@@ -98,10 +100,10 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         if (inTableHeader) {
             for (Node child : node.getChildren()) {
                 if (child instanceof ConcordionEqualsNode) {
-                    pendingAttribute = new Attribute("concordion:" + "assertEquals", ((ConcordionEqualsNode)child).getExpression());
+                    pendingAttribute = new Attribute(namespaced("assertEquals"), ((ConcordionEqualsNode)child).getExpression());
                 }
                 if (child instanceof ConcordionSetNode) {
-                    pendingAttribute = new Attribute("concordion:" + "set", ((ConcordionSetNode)child).getVarName());
+                    pendingAttribute = new Attribute(namespaced("set"), ((ConcordionSetNode)child).getVarName());
                 }
             }
         }
@@ -135,7 +137,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     private void printConcordionCommand(String command, String value, String text) {
         if (!inTableHeader) {
             printer.print('<').print("span");
-            printAttribute("concordion:" + command, value);
+            printAttribute(namespaced(command), value);
             printer.print('>');
         }
         printer.printEncoded(text);
@@ -163,7 +165,17 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         }
     }
     
+    private String namespaced(String command) {
+        return concordionNamespacePrefix + ":" + command;
+    };
+
     public static class ConcordionLinkRenderer extends LinkRenderer {
+        private String concordionNamespacePrefix;
+
+        public ConcordionLinkRenderer(String concordionNamespacePrefix) {
+            this.concordionNamespacePrefix = concordionNamespacePrefix;
+        }
+
         @Override
         public Rendering render(ExpLinkNode node, String text) {
             Rendering rendering = super.render(node, text);
@@ -175,11 +187,10 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         private void renderConcordionChildren(Node node, Rendering rendering) {
             for (Node child : node.getChildren()) {
                 if (child instanceof ConcordionRunNode) {
-                    rendering.withAttribute("concordion:" + "run", "concordion");
+                    rendering.withAttribute(concordionNamespacePrefix + ":" + "run", "concordion");
                 }
                 renderConcordionChildren(child, rendering);
             }
         }
     }
 }
-

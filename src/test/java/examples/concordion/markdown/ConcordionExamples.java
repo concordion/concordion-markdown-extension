@@ -1,28 +1,34 @@
 package examples.concordion.markdown;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.concordion.api.extension.Extensions;
+import org.concordion.api.extension.Extension;
 import org.concordion.ext.MarkdownExtension;
 import org.concordion.integration.junit4.ConcordionRunner;
+import org.concordion.internal.FileTarget;
 import org.junit.runner.RunWith;
 
 @RunWith(ConcordionRunner.class)
-@Extensions(MarkdownExtension.class)
 public class ConcordionExamples {
+    @Extension
+    public MarkdownExtension extension = new MarkdownExtension()
+                                            .withInterimHtmlSavedTo(new FileTarget(new File("/tmp/concordion")))
+                                            .withConcordionNamespacePrefix("c")
+                                            ;
 
     private int memory;
 
-	public int add(int a, int b) {
-		return a + b;
-	}
+    public int add(int a, int b) {
+        return a + b;
+    }
 
-	public void setMemory(int x) {
-	    memory = x;
-	}
+    public void setMemory(int x) {
+        memory = x;
+    }
 
     public int addToMemory(int x) {
         memory += x;
@@ -68,8 +74,8 @@ public class ConcordionExamples {
     }
 
     public String setAndReturn(String name) {
-    	// in a real case you'd do something with name and get the output
-    	return name;
+        // in a real case you'd do something with name and get the output
+        return name;
     }
 
     public String getBrowserDetails() {

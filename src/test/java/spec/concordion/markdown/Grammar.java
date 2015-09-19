@@ -12,7 +12,7 @@ public class Grammar {
     MarkdownParser markdownParser = new MarkdownParser();
 
     public String translate(String markdown) {
-        String html = markdownParser.markdownToHtml(markdown);
+        String html = markdownParser.markdownToHtml(markdown, "concordion");
         if (html.startsWith("<p>") && html.endsWith("</p>")) {
             html = html.substring(3, html.length()-4);
         }

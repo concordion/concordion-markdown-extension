@@ -16,9 +16,9 @@ public class MarkdownParser {
     private PegDownPlugins plugins = new PegDownPlugins.Builder().withInlinePluginRules(mpp.concordionStatement()).build(); //Plugin(MyPluginParser.class, null).build();
     private Parser parser = Parboiled.createParser(Parser.class, Extensions.TABLES, 5000L, Parser.DefaultParseRunnerProvider, plugins);
 
-    public String markdownToHtml(String markdown) {
+    public String markdownToHtml(String markdown, String concordionNamespacePrefix) {
         RootNode root = parser.parse(processor.prepareSource(markdown.toCharArray()));
-        ToHtmlSerializer serializer = new ConcordionHtmlSerializer(new ConcordionLinkRenderer());
+        ToHtmlSerializer serializer = new ConcordionHtmlSerializer(concordionNamespacePrefix);
         String html = serializer.toHtml(root);
         return html;
     }
