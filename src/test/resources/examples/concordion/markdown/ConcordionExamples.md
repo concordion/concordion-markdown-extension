@@ -113,11 +113,14 @@ and the execute  command is run on each detail row.
 </table>
 </div>
 
-| {Number 1 `#x`} | {Number 2 `#y`} | {"Result" `?=#z`} |
+Example: Adding _Number 1_ to _Number 2_ equals the _Result_
+
+| {Number 1 `#x`} | {Number 2 `#y`} | {Result `?=#z`} |
 | --------------: | --------------: | -------------: |
 |               1 |               0 |              1 |
 |               1 |              -3 |             -2 |
-[Example: Adding _Number 1_ to _Number 2_ equals the _Result_: {`#z=add(#x, #y)`}]
+[{`#z=add(#x, #y)`}]
+
 
 ### Verify Rows
 

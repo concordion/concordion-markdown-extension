@@ -168,16 +168,94 @@ This grammer uses `concordion:set`.
   </table>
 </div>
 
-<!--
 ##Execute on a table
 
-| {Number 1 `#x`} | {Number 2 `#y`} | {"Result" `?=#z`} |
--->
-| --------------: | --------------: | -------------: |
-<!--
-|               1 |               0 |              1 |
-|               1 |              -3 |             -2 |
-[Example: Adding _Number 1_ to _Number 2_ equals the _Result_: {`#z=add(#x, #y)`}]
--->
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>
+<pre>      
+| {Number 1 `#x`}| {Number 2 `#y`}| {Result `?=#z`}|<br/>
+| -------------: | -------------: | -------------: |<br/>
+|               1|               0|               1|<br/>
+|               1|              -3|              -2|<br/>
+[{`#z=add(#x, #y)`}]</pre>
+      </td>
+      <td>
+<![CDATA[<table concordion:execute="#z=add(#x, #y)">
+  <thead>
+    <tr>
+      <th align="right" concordion:set="#x">Number 1</th>
+      <th align="right" concordion:set="#y">Number 2</th>
+      <th align="right" concordion:assertEquals="#z">Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1</td>
+      <td align="right">0</td>
+      <td align="right">1</td>
+    </tr>
+    <tr>
+      <td align="right">1</td>
+      <td align="right">-3</td>
+      <td align="right">-2</td>
+    </tr>
+  </tbody>
+</table>]]>     
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="example">
+  <h3>Example on a table with a caption</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>
+<pre>      
+| {Number 1 `#x`}| {Number 2 `#y`}| {Result `?=#z`}|<br/>
+| ---------------| -------------- | -------------- |<br/>
+|               1|               0|               1|<br/>
+|               1|              -3|              -2|<br/>
+[This table has a caption too. {`#z=add(#x, #y)`}]</pre>
+      </td>
+      <td>
+<![CDATA[<table concordion:execute="#z=add(#x, #y)">
+  <thead>
+    <tr>
+      <th concordion:set="#x">Number 1</th>
+      <th concordion:set="#y">Number 2</th>
+      <th concordion:assertEquals="#z">Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>-3</td>
+      <td>-2</td>
+    </tr>
+  </tbody>
+  <caption>This table has a caption too. </caption>  
+</table>]]>     
+      </td>
+    </tr>
+  </table>
+</div>
+
 
     // c:execute: {foo()} {#x=foo()} {foo(#TEXT)} {#x=foo(#TEXT)} {foo(#x, #y)} {#z=foo(#x, #y)} {#x=greeting} {foo(#x, "one")}
