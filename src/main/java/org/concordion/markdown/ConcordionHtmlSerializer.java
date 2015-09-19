@@ -56,6 +56,9 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                     if (captionChild instanceof ConcordionExecuteNode) {
                         pendingAttribute = new Attribute("concordion:" + "execute", ((ConcordionExecuteNode) captionChild).getExpression());
                     }
+                    if (captionChild instanceof ConcordionVerifyRowsNode) {
+                        pendingAttribute = new Attribute("concordion:" + "verifyRows", ((ConcordionVerifyRowsNode) captionChild).getExpression());
+                    }
                 } 
             }
         }

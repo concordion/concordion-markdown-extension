@@ -144,7 +144,7 @@ It may be necessary to sort the collection in the fixture if it is not already s
 |                             100 |                   15 |
 |                             500 |                   75 |
 |                              20 |                    2 |
-[Example: Invoice details are: {`#detail:getInvoiceDetails()`}]
+[{`?=#detail:getInvoiceDetails()`}]
 
 ### Echo
 

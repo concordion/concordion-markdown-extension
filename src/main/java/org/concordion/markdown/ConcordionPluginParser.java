@@ -33,7 +33,7 @@ public class ConcordionPluginParser extends Parser {
         StringBuilderVar text = new StringBuilderVar();
         return NodeSequence(
             "{`",
-            executeCommand(text),
+            FirstOf(verifyRowsCommand(text), executeCommand(text)),
             "`}"
         );
     }
@@ -61,6 +61,15 @@ public class ConcordionPluginParser extends Parser {
         return NodeSequence(
                 OneOrMore(TestNot("`}"), BaseParser.ANY, expression.append(matchedChar())),
                 push(new ConcordionExecuteNode(expression.getString(), text.getString()))
+        );
+    }
+    
+    public Rule verifyRowsCommand(StringBuilderVar text) {
+        StringBuilderVar expression = new StringBuilderVar();
+        return NodeSequence(
+                "?=",
+                OneOrMore(TestNot("`}"), BaseParser.ANY, expression.append(matchedChar())),
+                push(new ConcordionVerifyRowsNode(expression.getString(), text.getString()))
         );
     }
     

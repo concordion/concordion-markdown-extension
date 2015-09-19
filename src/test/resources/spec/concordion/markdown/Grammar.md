@@ -258,4 +258,53 @@ This grammer uses `concordion:set`.
 </div>
 
 
+##Verify Rows
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+| {Sub Total `?=#detail.subTotal`}| {GST `?=#detail.gst`}|
+| ------------------------------- | -------------------: |
+|                              100|                    15|
+|                              500|                    75|
+|                               20|                     2|
+[{`?=#detail : getInvoiceDetails()`}]
+        </pre>
+      </td>
+      <td>
+<![CDATA[<table concordion:verifyRows="#detail : getInvoiceDetails()">
+<thead>
+    <tr>
+      <th concordion:assertEquals="#detail.subTotal">Sub Total</th>
+      <th align="right" concordion:assertEquals="#detail.gst">GST</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>100</td>
+      <td align="right">15</td>
+    </tr>
+    <tr>
+      <td>500</td>
+      <td align="right">75</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td align="right">2</td>
+    </tr>
+  </tbody>
+</table>]]>     
+      </td>
+    </tr>
+  </table>
+</div>
+
+
     // c:execute: {foo()} {#x=foo()} {foo(#TEXT)} {#x=foo(#TEXT)} {foo(#x, #y)} {#z=foo(#x, #y)} {#x=greeting} {foo(#x, "one")}
