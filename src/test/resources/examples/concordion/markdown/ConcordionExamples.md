@@ -8,8 +8,6 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 <span concordion:set="#x">1</span> + <span concordion:set="#y">2</span> = <span concordion:assertEquals="add(#x, #y)">3</span>.
 </div>
 
-{:example: "A name"}
-
 {1 `#x`} + {2 `#y`} = {3 `?=add(#x,#y)`}
 
 ### Set and assert in same statement
@@ -159,13 +157,6 @@ Tests executed using {`echo getBrowserDetails()`}.
 ### Run
 
 Runs another test from this test. See [Run command](http://concordion.org/dist/1.3.1/test-output/concordion/spec/concordion/command/run/Run.html).
-
-We are using this from our "index" pages, with a custom `RunOnceRunner` class
-to ensure each test is only run once, and the results cached.
-
-<!-- <a concordion:run="concordion" href="whatever.html">Whatever</a> -->
-
-{`run whatever.html`}
 
 [Whatever `run`](whatever.html)
 

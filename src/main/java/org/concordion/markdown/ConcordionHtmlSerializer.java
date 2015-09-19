@@ -2,6 +2,7 @@ package org.concordion.markdown;
 
 import org.pegdown.LinkRenderer;
 import org.pegdown.ToHtmlSerializer;
+import org.pegdown.ast.ExpLinkNode;
 import org.pegdown.ast.Node;
 import org.pegdown.ast.SuperNode;
 import org.pegdown.ast.TableCaptionNode;
@@ -39,14 +40,17 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                 case Execute:
                     visit((ConcordionExecuteNode)node);
                     break;
+                case Run:
+                    // handled by ConcordionLinkRenderer
+                    break;
                 default:
-                    throw new IllegalStateException();
+                    throw new IllegalStateException("Visiting unknown Concordion command");
             }
         }
     }
     
 //-----------------------------------------------------------------------------------------------------------------------
-// For execute on a table, the concordion:execute command is on the TableCaptionNode and has to be moved to the TableNode    
+// For execute on a table and verify rows, the command is on the TableCaptionNode and has to be moved to the TableNode    
     
     @Override
     public void visit(TableNode node) {
@@ -88,7 +92,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     }
     
 //-----------------------------------------------------------------------------------------------------------------------
-// For execute on a table, the concordion command attributes have to be directly on the <th> tags rather than on child <span> tags.     
+// For execute on a table and verify rows, the command attributes have to be directly on the <th> tags rather than on child <span> tags.     
     @Override
     public void visit(TableCellNode node) {
         if (inTableHeader) {
@@ -113,9 +117,9 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             pendingAttribute = null;
         }
     }
+
 //-----------------------------------------------------------------------------------------------------------------------
 
-    
     private void visit(ConcordionEqualsNode node) {
         printConcordionCommand("assertEquals", node.getExpression(), node.getText());
     }
@@ -158,4 +162,24 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             }
         }
     }
+    
+    public static class ConcordionLinkRenderer extends LinkRenderer {
+        @Override
+        public Rendering render(ExpLinkNode node, String text) {
+            Rendering rendering = super.render(node, text);
+            
+            renderConcordionChildren(node, rendering);
+            return rendering;
+        }
+        
+        private void renderConcordionChildren(Node node, Rendering rendering) {
+            for (Node child : node.getChildren()) {
+                if (child instanceof ConcordionRunNode) {
+                    rendering.withAttribute("concordion:" + "run", "concordion");
+                }
+                renderConcordionChildren(child, rendering);
+            }
+        }
+    }
 }
+

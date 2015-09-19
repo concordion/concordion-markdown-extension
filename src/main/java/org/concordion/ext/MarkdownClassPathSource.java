@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import jdk.nashorn.internal.ir.ThrowNode;
-
 import org.concordion.api.Resource;
 import org.concordion.api.Source;
 import org.concordion.internal.ClassPathSource;

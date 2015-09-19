@@ -2,7 +2,6 @@ package org.concordion.markdown;
 
 import org.parboiled.Parboiled;
 import org.pegdown.Extensions;
-import org.pegdown.LinkRenderer;
 import org.pegdown.Parser;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.ToHtmlSerializer;
@@ -19,7 +18,7 @@ public class MarkdownParser {
 
     public String markdownToHtml(String markdown) {
         RootNode root = parser.parse(processor.prepareSource(markdown.toCharArray()));
-        ToHtmlSerializer serializer = new ConcordionHtmlSerializer(new LinkRenderer());
+        ToHtmlSerializer serializer = new ConcordionHtmlSerializer(new ConcordionLinkRenderer());
         String html = serializer.toHtml(root);
         return html;
     }

@@ -250,7 +250,7 @@ This grammer uses `concordion:set`.
       <td>-2</td>
     </tr>
   </tbody>
-  <caption>This table has a caption too. </caption>  
+  <caption>This table has a caption too.</caption>  
 </table>]]>     
       </td>
     </tr>
@@ -306,5 +306,24 @@ This grammer uses `concordion:set`.
   </table>
 </div>
 
+## Run
 
-    // c:execute: {foo()} {#x=foo()} {foo(#TEXT)} {#x=foo(#TEXT)} {foo(#x, #y)} {#z=foo(#x, #y)} {#x=greeting} {foo(#x, "one")}
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+[Whatever {`run`}](whatever.html)
+        </pre>
+      </td>
+      <td>
+<![CDATA[<a href="whatever.html" concordion:run="concordion">Whatever</a>]]>     
+      </td>
+    </tr>
+  </table>
+</div>
