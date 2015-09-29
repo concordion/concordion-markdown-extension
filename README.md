@@ -2,4 +2,4 @@
 
 An extension to allow Concordion specs to be written using Markdown.
 
-This is still work in progress, and does not have all the command implemented currently.
+This is still experimental, and does not have all the commands implemented currently. The syntax is likely to change as we work on different options.
