@@ -12,6 +12,10 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 [y]: =#y
 [addxy]: ?=add(#x,#y)
 
+
+This is [an example] [id] reference-style link.
+[id]: http://example.com/  "Optional Title Here"
+
 ### Set and assert in same statement
 
 Occasionally it is useful to be able to set and assert a value in the same statement, for example selecting a user name and then checking that the user name is displayed.
