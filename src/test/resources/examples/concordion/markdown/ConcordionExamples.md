@@ -6,6 +6,9 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 
 {1 `#x`} + {2 `#y`} = {3 `?=add(#x,#y)`}
 
+[1][x] + [2][y] = [3][addxy]
+
+
 ### Set and assert in same statement
 
 Occasionally it is useful to be able to set and assert a value in the same statement, for example selecting a user name and then checking that the user name is displayed.
@@ -123,3 +126,7 @@ Runs another test from this test. See [Run command](http://concordion.org/dist/1
 Allows you to put test data in a separate file and access it from a specification.
 This may indicate a "test smell".
 See [Access to a Link's HREF](http://concordion.org/dist/1.3.1/test-output/concordion/spec/concordion/command/execute/AccessToLinkHref.html).
+
+[x]: =#x
+[y]: =#y
+[addxy]: ?=add(#x,#y)
