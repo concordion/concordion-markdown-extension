@@ -8,6 +8,9 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 
 [1][x] + [2][y] = [3][addxy]
 
+[x]: =#x
+[y]: =#y
+[addxy]: ?=add(#x,#y)
 
 ### Set and assert in same statement
 
@@ -127,6 +130,4 @@ Allows you to put test data in a separate file and access it from a specificatio
 This may indicate a "test smell".
 See [Access to a Link's HREF](http://concordion.org/dist/1.3.1/test-output/concordion/spec/concordion/command/execute/AccessToLinkHref.html).
 
-[x]: =#x
-[y]: =#y
-[addxy]: ?=add(#x,#y)
+
