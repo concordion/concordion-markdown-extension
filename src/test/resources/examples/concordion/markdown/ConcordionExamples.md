@@ -6,12 +6,9 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 
 {1 `#x`} + {2 `#y`} = {3 `?=add(#x,#y)`}
 
-[1][x] + [2][y] = [3][addxy]
+[1](/ "#x") + [2](=#y) = [3](?=add(#x,#y))
 
-[x]: =#x
-[y]: =#y
-[addxy]: ?=add(#x,#y)
-
+This is [an example](http://example.com/ "Title") inline link.
 
 This is [an example] [id] reference-style link.
 [id]: http://example.com/  "Optional Title Here"
