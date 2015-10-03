@@ -6,12 +6,7 @@ Demonstrates the usage of `set` and `assertEquals` commands.
 
 {1 `#x`} + {2 `#y`} = {3 `?=add(#x,#y)`}
 
-[1](/ "#x") + [2](=#y) = [3](?=add(#x,#y))
-
-This is [an example](http://example.com/ "Title") inline link.
-
-This is [an example] [id] reference-style link.
-[id]: http://example.com/  "Optional Title Here"
+[1](. "#x") + [2](. "#y") = [3](. "?=add(#x,#y)")
 
 ### Set and assert in same statement
 
@@ -33,9 +28,9 @@ This example uses the `execute` commands for instructions with `void` results an
 This example also shows the use of the special variable `#TEXT`, which contains the text of the current element.
 `#TEXT` can also be used with assert commands.
 
-{3 `setMemory(#TEXT)`}
-{4 `#result=addToMemory(#TEXT)`}
-{7 `#result`}
+[3](. "`setMemory(#TEXT)`")
+[4](. "`#result=addToMemory(#TEXT)`")
+[7](. "`#result`")
 
 ### Example with execute returning a POJO
 
@@ -43,10 +38,10 @@ Subsequent commands can access public fields and methods of the object. When usi
 Concordion will first check for a public field with the property name, then for a corresponding getter.
 In the following example, `#detail.gst` resolves to a call to the `getGst()` method.
 
-{`#detail = getInvoiceDetail()`}The invoice shows a sub-total of
-${100 `==#detail.subTotal`} + GST of
-${15 `==#detail.gst`} giving a total of
-${115 `==#detail.calculateTotal()`}.
+[](. "#detail = getInvoiceDetail()")The invoice shows a sub-total of
+$[100](. "?=#detail.subTotal") + GST of
+$[15](. "?=#detail.gst") giving a total of
+$[115](. "?=#detail.calculateTotal()").
 
 ### Example with execute returning a map
 
@@ -86,11 +81,11 @@ and the execute  command is run on each detail row.
 
 Example: Adding _Number 1_ to _Number 2_ equals the _Result_
 
-| {Number 1 `#x`} | {Number 2 `#y`} | {Result `?=#z`} |
+| [Number 1](. "#x") | [Number 2](. "#y") | [Result](. "?=#z") |
 | --------------: | --------------: | -------------: |
 |               1 |               0 |              1 |
 |               1 |              -3 |             -2 |
-[{`#z=add(#x, #y)`}]
+[[](. "#z=add(#x, #y)")]
 
 
 ### Verify Rows
@@ -123,7 +118,7 @@ Tests executed using {`echo getBrowserDetails()`}.
 
 Runs another test from this test. See [Run command](http://concordion.org/dist/1.3.1/test-output/concordion/spec/concordion/command/run/Run.html).
 
-[Calc {`run`}](Calc.html)
+[Calc](Calc.html "run")
 
 ### Accessing contents of an HREF
 
