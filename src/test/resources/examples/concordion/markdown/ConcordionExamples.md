@@ -85,7 +85,7 @@ Example: Adding _Number 1_ to _Number 2_ equals the _Result_
 | --------------: | --------------: | -------------: |
 |               1 |               0 |              1 |
 |               1 |              -3 |             -2 |
-[[](. "#z=add(#x, #y)")]
+[](. "#z=add(#x, #y)")
 
 
 ### Verify Rows
