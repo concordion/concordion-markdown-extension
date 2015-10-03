@@ -4,9 +4,13 @@
 
 Demonstrates the usage of `set` and `assertEquals` commands.
 
-{1 `#x`} + {2 `#y`} = {3 `?=add(#x,#y)`}
-
 [1](. "#x") + [2](. "#y") = [3](. "?=add(#x,#y)")
+
+[1](->#x) + [2](->#y) = [3](?=add(#x,#y))
+
+[1]("->#x") + [2](`->#y`) = [3]( "?=add(#x,#y)")
+
+[1](c:set(#x)) + [2](c:set(#y)) = [3](c:assertEquals(add(#x,#y)))
 
 ### Set and assert in same statement
 
@@ -28,9 +32,21 @@ This example uses the `execute` commands for instructions with `void` results an
 This example also shows the use of the special variable `#TEXT`, which contains the text of the current element.
 `#TEXT` can also be used with assert commands.
 
-[3](. "`setMemory(#TEXT)`")
-[4](. "`#result=addToMemory(#TEXT)`")
-[7](. "`#result`")
+[3](. "setMemory(#TEXT)") + 
+[4](. "#result=addToMemory(#TEXT)") = 
+[7](. "?=#result")
+
+[3](^setMemory(#TEXT)) + 
+[4](->#result=addToMemory(#TEXT)) = 
+[7](?=#result)
+
+[3](`setMemory(#TEXT)`) + 
+[4](`result=addToMemory(#TEXT)`) = 
+[7](`?=#result`)
+
+[3](c:execute(setMemory(#TEXT))) + 
+[4](c:execute(result=addToMemory(#TEXT))) = 
+[7](c:assertEquals=#result)
 
 ### Example with execute returning a POJO
 
@@ -42,6 +58,11 @@ In the following example, `#detail.gst` resolves to a call to the `getGst()` met
 $[100](. "?=#detail.subTotal") + GST of
 $[15](. "?=#detail.gst") giving a total of
 $[115](. "?=#detail.calculateTotal()").
+
+[](`#detail = getInvoiceDetail()`)The invoice shows a sub-total of
+$[100](`?=#detail.subTotal`) + GST of
+$[15](`?=#detail.gst`) giving a total of
+$[115](`?=#detail.calculateTotal()`).
 
 ### Example with execute returning a map
 
@@ -85,7 +106,13 @@ Example: Adding _Number 1_ to _Number 2_ equals the _Result_
 | --------------: | --------------: | -------------: |
 |               1 |               0 |              1 |
 |               1 |              -3 |             -2 |
-[[](. "#z=add(#x, #y)")]
+[execute](. "#z=add(#x, #y)")
+
+| [Number 1](`#x`) | [Number 2](`#y`) | [Result](`?=#z`) |
+| --------------: | --------------: | -------------: |
+|               1 |               0 |              1 |
+|               1 |              -3 |             -2 |
+[execute](`#z=add(#x, #y)`)
 
 
 ### Verify Rows
