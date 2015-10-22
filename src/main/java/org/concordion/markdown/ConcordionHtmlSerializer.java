@@ -120,6 +120,27 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         }
     }
 
+  //-----------------------------------------------------------------------------------------------------------------------
+    @Override
+    public void visit(ExpLinkNode node) {
+        if (".".equals(node.url)) {
+            String text = printChildrenToString(node);
+            if (node.title.startsWith("#") && !(node.title.contains("="))) {
+                printConcordionCommand("set", node.title, text);
+            } else if (node.title.startsWith("?=")) {
+                printConcordionCommand("assertEquals", node.title.substring(2), text);
+            } else {
+                //TODO escape "."
+                if (".".equals(text)) {
+                    text = "";
+                }
+                printConcordionCommand("execute", node.title, text);
+            }
+            System.out.println("Title: " + node.title);
+        } else {
+            super.visit(node);
+        }
+    }
 //-----------------------------------------------------------------------------------------------------------------------
 
     private void visit(ConcordionEqualsNode node) {
