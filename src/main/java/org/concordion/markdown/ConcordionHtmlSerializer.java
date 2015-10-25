@@ -53,9 +53,9 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                         if (cell.getChildren().get(0) instanceof ExpLinkNode) {
                             ExpLinkNode linkNode = (ExpLinkNode)cell.getChildren().get(0);
                             String text = printChildrenToString(linkNode);
-                            if (text.startsWith("<em>")) {
-                                text = "";
-                            };
+//                            if (text.startsWith("<em>")) {
+//                                text = "";
+//                            };
                             pendingCommand = getCommandFor(linkNode, text);
                             header.getChildren().remove(row);
                         }
