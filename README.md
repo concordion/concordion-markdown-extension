@@ -3,13 +3,11 @@
 ## Philosophy
 Markdown provides an easy-to-read and easy-to-write syntax for converting plain text to structured XHTML.
 
-This Concordion Markdown extension allows you to write your Concordion input in the Markdown format. It adds support for embedding Concordion commands within Markdown and running the resultant XHTML as a Concordion specification. 
-
-While Markdown allows you to embed HTML, this extension provides a simplified grammar for adding Concordion commands that fits better with the idioms of Markdown. 
+This Concordion Markdown extension allows you to write your Concordion specification in the Markdown format, converting the Markdown to XHTML at runtime and running the resultant XHTML as a Concordion specification. 
 
 ### Use of inline links 
 
-In order to keep the grammar readable, we have used Markdown's inline links to embed the Concordion commands. This maintains a clean separation of Concordion commands from the original text.  
+In order to keep the grammar readable, we have used Markdown's inline links to embed Concordion commands. This maintains a clean separation of Concordion commands from the original text.  
 
 As an example:
 
@@ -37,19 +35,49 @@ TODO
 
 ## Basic Grammar
 
-For the full Grammar see the [Grammar Specification](TODO).
+Concordion commands are differentiated from other Markdown links by using the value `-` for the URL:
 
-### Set Command
-    [value](- "#varname")
+    [value](- "command")
+or
 
-### AssertEquals Command
-    [value](- "?=expression")
+    [value](- 'command')
 
-### Execute Command
-    [value](- "expression")
+### Commands
+A shorthand syntax is provided for the set, assert equals and execute commands.
 
-### Example Command
-You can use either the Atx-style or Setext-style headers. :
+| Command        | Grammar                   | Example |
+| -------------- | ------------------------  | ------- |
+| Set            | `[value](- "#varname")`   | `[Jane](- "#name")` |
+| Assert Equals  | `[value](- "?#varname")`  | `[Hello Jane!](- "?=#greeting")` |
+| Execute        | `[value](- "expression")` | `[The greeting is](- "#greeting=greetingFor(#name)")` |
+| Other commands | `[value](- "c:command")`  | `[is notified](- "c:assertTrue=isNotified()")` |
+
+#### Table Commands
+The command to be run on the table is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
+
+The first table header row is not shown on the output HTML.
+
+##### Execute on a table
+
+    |[_add_](- "#z=add(#x, #y)")|
+    |[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|
+    | ---------------: | ---------------: | ---------------: |
+    |                 1|                 0|                 1|
+    |                 1|                -3|                -2|
+    [`c:execute #z=add(#x, #y)`]
+
+
+##### Verify Rows
+
+    |[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()") |
+    |[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|
+    | --------------------------------- | ---------------------: |
+    |                                100|                      15|
+    |                                 20|                       2|
+
+
+#### Example Command
+Adding an inline link to a header changes the header into an example command. You can use either the Atx-style or Setext-style headers. For example:
 
     ## [Example 1](- "exampleName")
 
@@ -60,7 +88,6 @@ or
 
 will create an example named `exampleName` with the H2 heading `Example 1`.
 
-
 #### Closing an example
 An example is implicitly closed when another example starts or the end of file is reached.
 
@@ -70,36 +97,15 @@ To explicitly close an example, create a header with the example heading struck-
     
 will close the example with the heading `Example 1`    
 
-Note that the example command requires Concordion 2.0.0 or later.
+__Note:__ the example command requires Concordion 2.0.0 or later.
 
-### Table Commands
-The command to be run on the table is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
+#### Run Command
+Adding a title of `c:run` to an inline link will add a run command to that link. For example:
 
-The first table header row is not shown on the output HTML.
+    [Address](Address.html "c:run")
 
-#### Execute on a table
+will run the `Address.html` specification.
 
-    |[_add_](- "#z=add(#x, #y)")|
-    |[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|
-    | ---------------: | ---------------: | ---------------: |
-    |                 1|                 0|                 1|
-    |                 1|                -3|                -2|
-    [`c:execute #z=add(#x, #y)`]
+---
 
-
-#### Verify Rows
-
-    |[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()") |
-    |[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|
-    | --------------------------------- | ---------------------: |
-    |                                100|                      15|
-    |                                 20|                       2|
-
-### Run Command
-    [Whatever](whatever.html "c:run")
-
-
-
-
-
-
+For the full Grammar see the [Grammar Specification](src/test/resources/spec/concordion/markdown/Grammar.md).
