@@ -52,8 +52,32 @@ A shorthand syntax is provided for the set, assert equals and execute commands.
 | Execute        | `[value](- "expression")` | `[The greeting is](- "#greeting=greetingFor(#name)")` |
 | Other commands | `[value](- "c:command")`  | `[is notified](- "c:assertTrue=isNotified()")` |
 
-### Example Command
-You can use either the Atx-style or Setext-style headers. :
+#### Table Commands
+The command to be run on the table is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
+
+The first table header row is not shown on the output HTML.
+
+##### Execute on a table
+
+    |[_add_](- "#z=add(#x, #y)")|
+    |[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|
+    | ---------------: | ---------------: | ---------------: |
+    |                 1|                 0|                 1|
+    |                 1|                -3|                -2|
+    [`c:execute #z=add(#x, #y)`]
+
+
+##### Verify Rows
+
+    |[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()") |
+    |[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|
+    | --------------------------------- | ---------------------: |
+    |                                100|                      15|
+    |                                 20|                       2|
+
+
+#### Example Command
+Adding an inline link to a header changes the header into an example command. You can use either the Atx-style or Setext-style headers. For example:
 
     ## [Example 1](- "exampleName")
 
@@ -73,32 +97,15 @@ To explicitly close an example, create a header with the example heading struck-
     
 will close the example with the heading `Example 1`    
 
-Note that the example command requires Concordion 2.0.0 or later.
+__Note:__ the example command requires Concordion 2.0.0 or later.
 
-### Table Commands
-The command to be run on the table is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
+#### Run Command
+Adding a title of `c:run` to an inline link will add a run command to that link. For example:
 
-The first table header row is not shown on the output HTML.
+    [Address](Address.html "c:run")
 
-#### Execute on a table
+will run the `Address.html` specification.
 
-    |[_add_](- "#z=add(#x, #y)")|
-    |[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|
-    | ---------------: | ---------------: | ---------------: |
-    |                 1|                 0|                 1|
-    |                 1|                -3|                -2|
-    [`c:execute #z=add(#x, #y)`]
-
-
-#### Verify Rows
-
-    |[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()") |
-    |[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|
-    | --------------------------------- | ---------------------: |
-    |                                100|                      15|
-    |                                 20|                       2|
-
-### Run Command
-    [Whatever](whatever.html "c:run")
+---
 
 For the full Grammar see the [Grammar Specification](src/test/resources/spec/concordion/markdown/Grammar.md).
