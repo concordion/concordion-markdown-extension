@@ -4,17 +4,17 @@ import java.util.List;
 
 import org.pegdown.LinkRenderer;
 import org.pegdown.ToHtmlSerializer;
-import org.pegdown.ast.CodeNode;
 import org.pegdown.ast.ExpLinkNode;
 import org.pegdown.ast.HeaderNode;
 import org.pegdown.ast.Node;
 import org.pegdown.ast.RootNode;
 import org.pegdown.ast.StrikeNode;
 import org.pegdown.ast.SuperNode;
-import org.pegdown.ast.TableCaptionNode;
 import org.pegdown.ast.TableCellNode;
 import org.pegdown.ast.TableColumnNode;
+import org.pegdown.ast.TableHeaderNode;
 import org.pegdown.ast.TableNode;
+import org.pegdown.ast.TableRowNode;
 
 public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     public static class Attribute {
@@ -44,44 +44,29 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     @Override
     public void visit(TableNode node) {
         for (Node child : node.getChildren()) {
-            if (child instanceof TableCaptionNode) {
-                for (Node captionChild : child.getChildren()) {
-                      if (isConcordionCodeNode(captionChild)) {
-                          pendingCommand = getConcordionCommand((CodeNode) captionChild);
-                      }
-                } 
+            if (child instanceof TableHeaderNode) {
+                TableHeaderNode header = (TableHeaderNode)child;
+                if (header.getChildren().get(0) instanceof TableRowNode) {
+                    TableRowNode row = (TableRowNode)header.getChildren().get(0);
+                    if (row.getChildren().size() == 1 && row.getChildren().get(0) instanceof TableCellNode) {
+                        TableCellNode cell = (TableCellNode)row.getChildren().get(0);
+                        if (cell.getChildren().get(0) instanceof ExpLinkNode) {
+                            ExpLinkNode linkNode = (ExpLinkNode)cell.getChildren().get(0);
+                            String text = printChildrenToString(linkNode);
+                            if (text.startsWith("<em>")) {
+                                text = "";
+                            };
+                            pendingCommand = getCommandFor(linkNode, text);
+                            header.getChildren().remove(row);
+                        }
+                    }
+                }
             }
         }
         // Call the super visit(TableNode) method and override printIndentedTag() below, so that the concordion:execute attribute is added to the tag
         super.visit(node);
     }
 
-    private ConcordionCommand getConcordionCommand(CodeNode node) {
-        String text = node.getText();
-        if (!text.startsWith("c:")) {
-            throw new IllegalStateException(String.format("Expected Concordion command '%s' to start with 'c:'", text));
-        }
-
-        int commandEnd = text.indexOf(' ', 2);
-        String command;
-        if (commandEnd > 0) {
-            command = text.substring(2, commandEnd);
-        } else {
-            throw new IllegalArgumentException(String.format("Expected a space character in Concordion command '%s'", text));
-        }
-        String value = text.substring(commandEnd+1);
-        return new ConcordionCommand(command, value);
-    }
-
-    @Override
-    public void visit(TableCaptionNode node) {
-        if (hasNonConcordionCodeChildren(node)) {
-            printer.println().print("<caption>");
-            visitNonConcordionCodeChildren(node);
-            printer.print("</caption>");
-        }
-    }
-    
     @Override
     protected void printIndentedTag(SuperNode node, String tag) {
         printer.println().print('<').print(tag);
@@ -133,7 +118,6 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             };
             if (inHeaderNode) {
                 printer.printEncoded(text);
-//                pendingExample = node.title;
             } else if (inTableHeader) {
                 printer.printEncoded(text);
             } else {
@@ -176,8 +160,8 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             expression = unquote(parts[0]);
             ConcordionCommand concordionCommand = new ConcordionCommand(command, expression, text);
             for (int i = 1; i < parts.length; i++) {
-                String[] attributes = parts[i].split("=");
-                concordionCommand.addAttribute(attributes[0], attributes[1] != null ? unquote(attributes[1]) : "");
+                String[] attributes = parts[i].split("=", 2);
+                concordionCommand.addAttribute(attributes[0], attributes.length > 1 ? unquote(attributes[1]) : "");
             }
             return concordionCommand;
         } else {
@@ -256,27 +240,6 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         List<Attribute> attributes = command.attributes;
         for (Attribute attribute : attributes) {
             printAttribute(attribute.name, attribute.value);
-        }
-    }
-    
-    private boolean hasNonConcordionCodeChildren(Node node) {
-        for (Node child : node.getChildren()) {
-            if (!isConcordionCodeNode(child)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isConcordionCodeNode(Node child) {
-        return child instanceof CodeNode && ((CodeNode)child).getText().startsWith("c:");
-    }
-    
-    private void visitNonConcordionCodeChildren(Node node) {
-        for (Node child : node.getChildren()) {
-            if (!(isConcordionCodeNode(child))) {
-                child.accept(this);
-            }
         }
     }
     

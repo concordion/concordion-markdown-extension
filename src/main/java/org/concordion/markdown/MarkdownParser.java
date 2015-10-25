@@ -19,6 +19,7 @@ public class MarkdownParser {
         RootNode root = parser.parse(processor.prepareSource(markdown.toCharArray()));
         ToHtmlSerializer serializer = new ConcordionHtmlSerializer(concordionNamespacePrefix);
         String html = serializer.toHtml(root);
+        System.out.println(html);
         return html;
     }
 }

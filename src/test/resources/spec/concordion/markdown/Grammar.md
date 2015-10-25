@@ -201,11 +201,12 @@ Any URL that is written in italics will be set to an empty text value.
     <tr>
       <td>
 <pre>      
+|[_add_](- "#z=add(#x, #y)")|
 |[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|<br/>
-| -------------: | -------------: | -------------: |<br/>
-|               1|               0|               1|<br/>
-|               1|              -3|              -2|<br/>
-[`c:execute #z=add(#x, #y)`]</pre>
+| ---------------: | ---------------: | ---------------: |<br/>
+|                 1|                 0|                 1|<br/>
+|                 1|                -3|                -2|<br/>
+</pre>
       </td>
       <td>
 <![CDATA[<table concordion:execute="#z=add(#x, #y)">
@@ -234,51 +235,6 @@ Any URL that is written in italics will be set to an empty text value.
   </table>
 </div>
 
-<div class="example">
-  <h3>Example on a table with a caption</h3>
-  <table concordion:execute="#html=translate(#md)">
-    <tr>
-      <th concordion:set="#md">Markdown</th>
-      <th concordion:assertEquals="#html">Resulting HTML</th>
-    </tr>
-    <tr>
-      <td>
-<pre>      
-|[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|<br/>
-| ---------------- | ---------------- | ---------------- |<br/>
-|                 1|                 0|                 1|<br/>
-|                 1|                -3|                -2|<br/>
-[This table has a caption too.`c:execute #z=add(#x, #y)`]</pre>
-      </td>
-      <td>
-<![CDATA[<table concordion:execute="#z=add(#x, #y)">
-  <thead>
-    <tr>
-      <th concordion:set="#x">Number 1</th>
-      <th concordion:set="#y">Number 2</th>
-      <th concordion:assertEquals="#z">Result</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>-3</td>
-      <td>-2</td>
-    </tr>
-  </tbody>
-  <caption>This table has a caption too.</caption>  
-</table>]]>     
-      </td>
-    </tr>
-  </table>
-</div>
-
-
 ##Verify Rows
 
 <div class="example">
@@ -291,16 +247,16 @@ Any URL that is written in italics will be set to an empty text value.
     <tr>
       <td>
         <pre>      
+|[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()") |<br/>
 |[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|<br/>
-| --------------------------------- | ---------------------: |
-|                                100|                      15|
-|                                500|                      75|
-|                                 20|                       2|
-[`c:verifyRows #detail : getInvoiceDetails()`]
+| --------------------------------- | ---------------------: |<br/>
+|                                100|                      15|<br/>
+|                                500|                      75|<br/>
+|                                 20|                       2|<br/>
         </pre>
       </td>
       <td>
-<![CDATA[<table concordion:verifyRows="#detail : getInvoiceDetails()">
+<![CDATA[<table concordion:verifyRows="#detail:getInvoiceDetails()">
 <thead>
     <tr>
       <th concordion:assertEquals="#detail.subTotal">Sub Total</th>
@@ -462,7 +418,6 @@ y
     </tr>
   </table>
 </div>
-
 
 ## Arbitrary Commands
 

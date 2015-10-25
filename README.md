@@ -35,65 +35,69 @@ When the specification is run with a fixture that implements the `greetingFor(St
 ## Installation
 TODO
 
-## Grammar
+## Basic Grammar
+
+For the full Grammar see the [Grammar Specification](TODO).
 
 ### Set Command
-`[value](- "#varname")` or `[value](- '#varname')`.
+    [value](- "#varname")
 
 ### AssertEquals Command
-`[value](- "?=expression")` or `[value](- '?=expression')`.
+    [value](- "?=expression")
 
 ### Execute Command
-`[value](- "expression")` or `[value](- 'expression')`
-
-### Run Command
-`[Whatever](whatever.html "c:run")`
-
-To specify a custom runner:
-`[Whatever](whatever.html "c:run=customRunner")` or `[Whatever](whatever.html "c:run='customRunner'")` or `[Whatever](whatever.html 'c:run="customRunner"')`
+    [value](- "expression")
 
 ### Example Command
-Examples are specified using a link on a header. 
+You can use either the Atx-style or Setext-style headers. :
 
-You can use either the Atx-style or Setext-style headers. For example:
-
-`#### [Example Heading](- "exampleName")`
-
-creates an example named `exampleName` with the H4 heading `Example Heading`.
-
-or
-
-
-    [Example 3](- "setextExample")
-    =====================================================
-
-
-creates an example named `setextExample` with the H1 heading `Example 3`.
-
-
-You can apply a status to the example by appending an attribute containing the status, for example
-
-`#### [Example 1](- "example1 status='ExpectedToFail'")`
+    ## [Example 1](- "exampleName")
 
 or 
 
-`## [Example 2](- "anotherExample status=Unimplemented")`
+    [Example 1](- "exampleName")
+    ----------------------------------
 
-or 
+will create an example named `exampleName` with the H2 heading `Example 1`.
 
-    [Example 3](- 'exampleSetext status="Unimplemented"')
-    =====================================================
 
-#### Ending an example
-An example is implicitly ended when another example is encountered or the end of file is reached.
+#### Closing an example
+An example is implicitly closed when another example starts or the end of file is reached.
 
 To explicitly close an example, create a header with the example heading struck-through. For example:  
 
-    #### ~~Example 1~~
+    ## ~~Example 1~~
     
 will close the example with the heading `Example 1`    
 
 Note that the example command requires Concordion 2.0.0 or later.
+
+### Table Commands
+The command to be run on the table is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
+
+The first table header row is not shown on the output HTML.
+
+#### Execute on a table
+
+    |[_add_](- "#z=add(#x, #y)")|
+    |[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|
+    | ---------------: | ---------------: | ---------------: |
+    |                 1|                 0|                 1|
+    |                 1|                -3|                -2|
+    [`c:execute #z=add(#x, #y)`]
+
+
+#### Verify Rows
+
+    |[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()") |
+    |[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|
+    | --------------------------------- | ---------------------: |
+    |                                100|                      15|
+    |                                 20|                       2|
+
+### Run Command
+    [Whatever](whatever.html "c:run")
+
 
 
 
