@@ -13,6 +13,7 @@ public class ConcordionPluginParser extends Parser {
     
     public Rule concordionStatement() {
         return FirstOf(
+//            exampleCommand(),
             commandNoText(),
             commandWithText()
         );
@@ -78,6 +79,26 @@ public class ConcordionPluginParser extends Parser {
         return NodeSequence(
                 "run",
                 push(new ConcordionRunNode(text.getString()))
+        );
+    }
+
+    public Rule exampleCommand() {
+        return NodeSequence(
+                FirstOf("######", "#####", "####", "###", "##", "#"),
+                (ext(ATXHEADERSPACE) ? Spacechar() : EMPTY), Sp(),
+                OneOrMore(AtxInline()),//, addAsChild()),
+//                 wrapInAnchor(),
+//                Optional(Sp(), ZeroOrMore('#'), Sp()),
+//                Newline()
+                push(new ConcordionRunNode("x"))
+//                Heading(),
+//                OneOrMore(TestNot("#"), BaseParser.ANY, expression.append(matchedChar())),
+//                push(new TextNode(expression.getString())),
+//                Sequence(
+                        //Optional(Sp()), // this should be just Sp() because it is already ZeroOrMore which means it is optional
+                        // ISSUE: #144, Add GFM style headers, space after # is required
+
+//                )
         );
     }
     

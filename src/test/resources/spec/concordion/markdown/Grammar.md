@@ -1,12 +1,8 @@
 # Concordion Markdown
 
-The Concordion Markdown extension allows you to write your Concordion input in the Markdown format.
-
-While Markdown allows you to embed HTML, this extension also provides a simplified grammar for adding Concordion commands that fits better with the idioms of Markdown.
-
 ## concordion:set
 
-The `concordion:set` command is expressed using the syntax: `[value](. "#varname")` or `[value](. '#varname')`
+The `concordion:set` command is expressed using the syntax: `[value](- "#varname")` or `[value](- '#varname')`
 
 which sets the variable named `varname` to the value `value`.
 
@@ -18,11 +14,11 @@ which sets the variable named `varname` to the value `value`.
       <th concordion:assertEquals="#html">Resulting HTML</th>
     </tr>
     <tr>
-      <td>[1](. "#x")</td>
+      <td>[1](- "#x")</td>
       <td>&lt;span concordion:set="#x"&gt;1&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[Bob Smith](. '#name')</td>
+      <td>[Bob Smith](- '#name')</td>
       <td>&lt;span concordion:set="#name"&gt;Bob Smith&lt;/span&gt;</td>
     </tr>
   </table>
@@ -30,7 +26,7 @@ which sets the variable named `varname` to the value `value`.
 
 ## concordion:assertEquals
 
-The `concordion:assertEquals` command is expressed using the syntax: `[value](. "?=expression")` or `[value](. '?=expression')`
+The `concordion:assertEquals` command is expressed using the syntax: `[value](- "?=expression")` or `[value](- '?=expression')`
 
 which asserts that the result of evaluating _expression_ equals the value _value_.
 
@@ -42,23 +38,23 @@ which asserts that the result of evaluating _expression_ equals the value _value
       <th concordion:assertEquals="#html">Resulting HTML</th>
     </tr>
     <tr>
-      <td>[1](. "?=#x")</td>
+      <td>[1](- "?=#x")</td>
       <td>&lt;span concordion:assertEquals="#x"&gt;1&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[Bob Smith](. '?=#name')</td>
+      <td>[Bob Smith](- '?=#name')</td>
       <td>&lt;span concordion:assertEquals="#name"&gt;Bob Smith&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[3](. "?=add(#x, #y)")</td>
+      <td>[3](- "?=add(#x, #y)")</td>
       <td>&lt;span concordion:assertEquals="add(#x, #y)"&gt;3&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[Hello](. "?=getGreeting()")</td>
+      <td>[Hello](- "?=getGreeting()")</td>
       <td>&lt;span concordion:assertEquals="getGreeting()"&gt;Hello&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[Hello](. "?=greeting")</td>
+      <td>[Hello](- "?=greeting")</td>
       <td>&lt;span concordion:assertEquals="greeting"&gt;Hello&lt;/span&gt;</td>
     </tr>
   </table>
@@ -66,9 +62,9 @@ which asserts that the result of evaluating _expression_ equals the value _value
 
 ## concordion:execute
 
-The `concordion:execute` command is expressed using the syntax: `[.](. "expression")` or `[.](. 'expression')`
+The `concordion:execute` command is expressed using the syntax: `[value](- "expression")` or `[value](- 'expression')`
 
-which executes the _expression_.
+which executes the _expression_. 
 
 <div class="example">
   <h3>Example</h3>
@@ -78,37 +74,25 @@ which executes the _expression_.
       <th concordion:assertEquals="#html">Resulting HTML</th>
     </tr>
     <tr>
-      <td>[.](. "foo()")</td>
-      <td>&lt;span concordion:execute="foo()"&gt;&lt;/span&gt;</td>
+      <td>[When I apply](- "apply()")</td>
+      <td>&lt;span concordion:execute="apply()"&gt;When I apply&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[.](. "#x=foo()")</td>
-      <td>&lt;span concordion:execute="#x=foo()"&gt;&lt;/span&gt;</td>
+      <td>[the time is](- "setTime(#date, #time)")</td>
+      <td>&lt;span concordion:execute="setTime(#date, #time)"&gt;the time is&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[sometext](. "foo(#TEXT)")</td>
-      <td>&lt;span concordion:execute="foo(#TEXT)"&gt;sometext&lt;/span&gt;</td>
+      <td>[The greeting for](- "#msg=getGreeting()")</td>
+      <td>&lt;span concordion:execute="#msg=getGreeting()"&gt;The greeting for&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[.](. "foo(#x, #y)")</td>
-      <td>&lt;span concordion:execute="foo(#x, #y)"&gt;&lt;/span&gt;</td>
-    </tr>
-    <tr>
-      <td>[.](. "#x=greeting")</td>
-      <td>&lt;span concordion:execute="#x=greeting"&gt;&lt;/span&gt;</td>
-    </tr>
-    <tr>
-      <td>[.](. 'foo(#x, "one")')</td>
-      <td>&lt;span concordion:execute="foo(#x, "one")"&gt;&lt;/span&gt;</td>
+      <td>[The greeting for](- "#msg=greeting")</td>
+      <td>&lt;span concordion:execute="#msg=greeting"&gt;The greeting for&lt;/span&gt;</td>
     </tr>
   </table>
 </div>
 
-
-## Edge cases
-The following command generates identical results with either `concordion:set` or `concordion:execute`.
-
-This grammer uses `concordion:execute`.
+If the special variable `#TEXT` is used as a parameter within the _expression_, it is replaced by the _value_.
 
 <div class="example">
   <h3>Example</h3>
@@ -118,29 +102,11 @@ This grammer uses `concordion:execute`.
       <th concordion:assertEquals="#html">Resulting HTML</th>
     </tr>
     <tr>
-      <td>[sometext](. "#x=foo(#TEXT)")</td>
-      <td>&lt;span concordion:execute="#x=foo(#TEXT)"&gt;sometext&lt;/span&gt;</td>
+      <td>[09:00AM](- "setCurrentTime(#TEXT)")</td>
+      <td>&lt;span concordion:execute="setCurrentTime(#TEXT)"&gt;09:00AM&lt;/span&gt;</td>
     </tr>
   </table>
-</div>  
-
-<!--
-## Brackets before the Concordion expression 
-
-<div class="example">
-  <h3>Example</h3>
-  <table concordion:execute="#html=translate(#md)">
-    <tr>
-      <th concordion:set="#md">Markdown</th>
-      <th concordion:assertEquals="#html">Resulting HTML</th>
-    </tr>
-    <tr>
-      <td>{Other stuff in brackets}{2 `#x`}</td>
-      <td>{Other stuff in brackets}&lt;span concordion:set="#x"&gt;2&lt;/span&gt;</td>
-    </tr>
-  </table>
-</div>  
--->
+</div>
 
 ## Multiple commands on a single line
 
@@ -152,23 +118,79 @@ This grammer uses `concordion:execute`.
       <th concordion:assertEquals="#html">Resulting HTML</th>
     </tr>
     <tr>
-      <td>[1](. "#x") + [2](. "#y") = [3](. "?=add(#x,#y)")</td>
+      <td>[1](- "#x") + [2](- "#y") = [3](- "?=add(#x,#y)")</td>
       <td>&lt;span concordion:set="#x"&gt;1&lt;/span&gt; + &lt;span concordion:set="#y"&gt;2&lt;/span&gt; = &lt;span concordion:assertEquals="add(#x,#y)"&gt;3&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[3](. "?=three()"). [Fred](. "#name").</td>
+      <td>[3](- "?=three()"). [Fred](- "#name").</td>
       <td>&lt;span concordion:assertEquals="three()"&gt;3&lt;/span&gt;. &lt;span concordion:set="#name"&gt;Fred&lt;/span&gt;.</td>
     </tr>
   </table>
 </div>
 
+
+## Non-Concordion links
+The set, assertEquals and execute commands require the link URL to be set to -. Links with other URLs are not modified. For example:
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>[John](- "#a")</td>
+      <td>&lt;span concordion:set="#a"&gt;John&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](john.html)</td>
+      <td>&lt;a href="john.html"&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](john.html "Details about John")</td>
+      <td>&lt;a href="john.html" title="Details about John"&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](john.html "#More about John")</td>
+      <td>&lt;a href="john.html" title="#More about John"&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](-.html "Weird URL")</td>
+      <td>&lt;a href="-.html" title="Weird URL"&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](.)</td>
+      <td>&lt;a href="."&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](#)</td>
+      <td>&lt;a href="#"&gt;John&lt;/a&gt;</td>
+    </tr>
+  </table>
+</div>
+
+## Expression-only commands 
+Some commands only require an expression and don't need a text value to be passed. However, Markdown links always require text for the URL.
+
+Any URL that is written in italics will be set to an empty text value. 
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>[_set time_](- "setCurrentTime(#time)")</td>
+      <td>&lt;span concordion:execute="setCurrentTime(#time)"&gt;&lt;/span&gt;</td>
+    </tr>
+  </table>
+</div>
+
+
 ##Execute on a table
-|[Number 1](. "#x")| [Number 2](. "#y") | [Result](. "?=#z") |
-| -------------: | -------------: | -------------: |
-|               1|               0|               1|
-|               1|              -3|              -2|
-
-
 <div class="example">
   <h3>Example</h3>
   <table concordion:execute="#html=translate(#md)">
@@ -179,11 +201,11 @@ This grammer uses `concordion:execute`.
     <tr>
       <td>
 <pre>      
-|[Number 1](. "#x")| [Number 2](. "#y") | [Result](. "?=#z")|<br/>
+|[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|<br/>
 | -------------: | -------------: | -------------: |<br/>
 |               1|               0|               1|<br/>
 |               1|              -3|              -2|<br/>
-[{`#z=add(#x, #y)`}]</pre>
+[`c:execute #z=add(#x, #y)`]</pre>
       </td>
       <td>
 <![CDATA[<table concordion:execute="#z=add(#x, #y)">
@@ -222,11 +244,11 @@ This grammer uses `concordion:execute`.
     <tr>
       <td>
 <pre>      
-| {Number 1 `#x`}| {Number 2 `#y`}| {Result `?=#z`}|<br/>
-| ---------------| -------------- | -------------- |<br/>
-|               1|               0|               1|<br/>
-|               1|              -3|              -2|<br/>
-[This table has a caption too. {`#z=add(#x, #y)`}]</pre>
+|[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|<br/>
+| ---------------- | ---------------- | ---------------- |<br/>
+|                 1|                 0|                 1|<br/>
+|                 1|                -3|                -2|<br/>
+[This table has a caption too.`c:execute #z=add(#x, #y)`]</pre>
       </td>
       <td>
 <![CDATA[<table concordion:execute="#z=add(#x, #y)">
@@ -269,12 +291,12 @@ This grammer uses `concordion:execute`.
     <tr>
       <td>
         <pre>      
-| {Sub Total `?=#detail.subTotal`}| {GST `?=#detail.gst`}|
-| ------------------------------- | -------------------: |
-|                              100|                    15|
-|                              500|                    75|
-|                               20|                     2|
-[{`?=#detail : getInvoiceDetails()`}]
+|[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|<br/>
+| --------------------------------- | ---------------------: |
+|                                100|                      15|
+|                                500|                      75|
+|                                 20|                       2|
+[`c:verifyRows #detail : getInvoiceDetails()`]
         </pre>
       </td>
       <td>
@@ -317,12 +339,209 @@ This grammer uses `concordion:execute`.
     <tr>
       <td>
         <pre>      
-[Whatever {`run`}](whatever.html)
+[Whatever](whatever.html "c:run")
         </pre>
       </td>
       <td>
 <![CDATA[<a href="whatever.html" concordion:run="concordion">Whatever</a>]]>     
       </td>
     </tr>
+    <tr>
+      <td>
+        <pre>      
+[Whatever](whatever.html "c:run=exampleRunner")
+        </pre>
+      </td>
+      <td>
+<![CDATA[<a href="whatever.html" concordion:run="exampleRunner">Whatever</a>]]>     
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+[Whatever](whatever.html "c:run='exampleRunner'")
+        </pre>
+      </td>
+      <td>
+<![CDATA[<a href="whatever.html" concordion:run="exampleRunner">Whatever</a>]]>     
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+[Whatever](whatever.html 'c:run="exampleRunner"')
+        </pre>
+      </td>
+      <td>
+<![CDATA[<a href="whatever.html" concordion:run="exampleRunner">Whatever</a>]]>     
+      </td>
+    </tr>
   </table>
 </div>
+
+## Examples
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+#### [Example 1](- "calculator")
+x
+        </pre>
+      </td>
+      <td>
+<![CDATA[<div concordion:example="calculator"> <h4>Example 1</h4> <p>x</p>]]>&lt;/div>   
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+[Example 3](- "setext")
+=====================================================
+x
+        </pre>
+      </td>
+      <td>
+<![CDATA[<div concordion:example="setext"> <h1>Example 3</h1> <p>x</p>]]>&lt;/div>   
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+#### [Example 1](- "calculator")
+x
+#### [Example 2](- "another")
+        </pre>
+      </td>
+      <td>
+<![CDATA[<div concordion:example="calculator"> <h4>Example 1</h4> <p>x</p>]]>&lt;/div>
+<![CDATA[<div concordion:example="another"> <h4>Example 2</h4>]]>&lt;/div>    
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+#### [Example 1](- "calculator")
+x
+##### Subheading
+        </pre>
+      </td>
+      <td>
+<![CDATA[<div concordion:example="calculator"> <h4>Example 1</h4> <p>x</p> <h5>Subheading</h5>]]>&lt;/div> 
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+# [Example 1](- "calculator")
+x
+# ~~Example 1~~
+y
+        </pre>
+      </td>
+      <td>
+<![CDATA[<div concordion:example="calculator"> <h1>Example 1</h1> <p>x</p>]]>&lt;/div>
+&lt;p>y&lt;/p>     
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+# [Example 1](- "calculator" status="ExpectedToFail")
+        </pre>
+      </td>
+      <td>
+<![CDATA[<div concordion:example="calculator" status="ExpectedToFail"> <h1>Example 1</h1>]]>&lt;/div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+## Arbitrary Commands
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>
+        <pre>
+[value](- "c:command=expression")              
+        </pre>
+      </td>
+      <td>
+<![CDATA[<span concordion:command="expression">value</span>]]>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>
+[value](- "c:command='expression'")              
+        </pre>
+      </td>
+      <td>
+<![CDATA[<span concordion:command="expression">value</span>]]>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>
+[value](- 'c:command="expression"')              
+        </pre>
+      </td>
+      <td>
+<![CDATA[<span concordion:command="expression">value</span>]]>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>
+[value](- "c:command=expression param=x")              
+        </pre>
+      </td>
+      <td>
+<![CDATA[<span concordion:command="expression" param="x">value</span>]]>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>
+[value](- "c:command='expression' param1=x param2='y'")              
+        </pre>
+      </td>
+      <td>
+<![CDATA[<span concordion:command="expression" param1="x" param2="y">value</span>]]>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>
+[value](- 'c:command="expression" param1=x param2="y"')              
+        </pre>
+      </td>
+      <td>
+<![CDATA[<span concordion:command="expression" param1="x" param2="y">value</span>]]>
+      </td>
+    </tr>
+  </table>
+</div>
+
+    
+## Complex examples
+
+
+## Encode HTML
+
+
+
+    
