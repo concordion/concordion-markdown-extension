@@ -3,13 +3,11 @@
 ## Philosophy
 Markdown provides an easy-to-read and easy-to-write syntax for converting plain text to structured XHTML.
 
-This Concordion Markdown extension allows you to write your Concordion input in the Markdown format. It adds support for embedding Concordion commands within Markdown and running the resultant XHTML as a Concordion specification. 
-
-While Markdown allows you to embed HTML, this extension provides a simplified grammar for adding Concordion commands that fits better with the idioms of Markdown. 
+This Concordion Markdown extension allows you to write your Concordion specification in the Markdown format, converting the Markdown to XHTML at runtime and running the resultant XHTML as a Concordion specification. 
 
 ### Use of inline links 
 
-In order to keep the grammar readable, we have used Markdown's inline links to embed the Concordion commands. This maintains a clean separation of Concordion commands from the original text.  
+In order to keep the grammar readable, we have used Markdown's inline links to embed Concordion commands. This maintains a clean separation of Concordion commands from the original text.  
 
 As an example:
 
@@ -37,16 +35,22 @@ TODO
 
 ## Basic Grammar
 
-For the full Grammar see the [Grammar Specification](TODO).
+Concordion commands are differentiated from other Markdown links by using the value `-` for the URL:
 
-### Set Command
-    [value](- "#varname")
+    [value](- "command")
+or
 
-### AssertEquals Command
-    [value](- "?=expression")
+    [value](- 'command')
 
-### Execute Command
-    [value](- "expression")
+### Commands
+A shorthand syntax is provided for the set, assert equals and execute commands.
+
+| Command        | Grammar                   | Example |
+| -------------- | ------------------------  | ------- |
+| Set            | `[value](- "#varname")`   | `[Jane](- "#name")` |
+| Assert Equals  | `[value](- "?#varname")`  | `[Hello Jane!](- "?=#greeting")` |
+| Execute        | `[value](- "expression")` | `[The greeting is](- "#greeting=greetingFor(#name)")` |
+| Other commands | `[value](- "c:command")`  | `[is notified](- "c:assertTrue=isNotified()")` |
 
 ### Example Command
 You can use either the Atx-style or Setext-style headers. :
@@ -59,7 +63,6 @@ or
     ----------------------------------
 
 will create an example named `exampleName` with the H2 heading `Example 1`.
-
 
 #### Closing an example
 An example is implicitly closed when another example starts or the end of file is reached.
@@ -98,8 +101,4 @@ The first table header row is not shown on the output HTML.
 ### Run Command
     [Whatever](whatever.html "c:run")
 
-
-
-
-
-
+For the full Grammar see the [Grammar Specification](src/test/resources/spec/concordion/markdown/Grammar.md).
