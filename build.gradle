@@ -1,18 +1,35 @@
-apply plugin: 'java'
+apply from: 'https://raw.githubusercontent.com/concordion/concordion-extension-build/master/extension-build.gradle'
 
-wrapper {
-    gradleVersion = "2.8"
+description = 'An extension to Concordion to embed screenshots in the output specification'
+
+ext {
+    developers = {
+        developer {
+            id 'nigel.charman.nz'
+            name 'Nigel Charman'
+            roles { role 'Project owner' }
+            url 'http://gplus.to/NigelCharman'
+        }
+    }
+    inceptionYear = '2015'
 }
 
-repositories {
-    mavenCentral()
+githubPages {
+    repoUri = 'git@github.com:concordion/concordion-markdown-extension.git'
+    pages {
+        from 'docs'
+        
+        from ('build/reports/spec') {
+            into 'spec'
+        }
+        
+        from ('build/docs/javadoc/') {
+            into 'api'
+        }
+    }
 }
 
 dependencies {
-    compile 'org.concordion:concordion:1.5.1'
     compile 'org.pegdown:pegdown:1.6.0'
 }
 
-test {
-    systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
-}
