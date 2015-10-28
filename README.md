@@ -5,7 +5,7 @@ This extension is in development, and the syntax is likely to change as we conti
 ## Philosophy
 [Markdown](https://daringfireball.net/projects/markdown/) provides an easy-to-read and easy-to-write syntax for converting plain text to structured XHTML.
 
-This Concordion Markdown extension allows you to write your Concordion specification in the Markdown format, converting the Markdown to XHTML at runtime and running the resultant XHTML as a Concordion specification. 
+This Concordion Markdown extension allows you to write your [Concordion](http://concordion.org/) specification in the Markdown format, converting the Markdown to XHTML at runtime and running the resultant XHTML as a Concordion specification. 
 
 ### Use of inline links 
 
@@ -66,8 +66,6 @@ The first table header row is not shown on the output HTML.
     | ---------------: | ---------------: | ---------------: |
     |                 1|                 0|                 1|
     |                 1|                -3|                -2|
-    [`c:execute #z=add(#x, #y)`]
-
 
 ##### Verify Rows
 
