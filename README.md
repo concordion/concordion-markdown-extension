@@ -1,7 +1,9 @@
 # Concordion Markdown
 
+This extension is in development, and the syntax is likely to change as we continue to evolve it.
+
 ## Philosophy
-Markdown provides an easy-to-read and easy-to-write syntax for converting plain text to structured XHTML.
+[Markdown](https://daringfireball.net/projects/markdown/) provides an easy-to-read and easy-to-write syntax for converting plain text to structured XHTML.
 
 This Concordion Markdown extension allows you to write your Concordion specification in the Markdown format, converting the Markdown to XHTML at runtime and running the resultant XHTML as a Concordion specification. 
 
