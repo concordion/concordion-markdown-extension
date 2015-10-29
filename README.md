@@ -50,9 +50,9 @@ A shorthand syntax is provided for the set, assert equals and execute commands.
 | Command        | Grammar                   | Example |
 | -------------- | ------------------------  | ------- |
 | Set            | `[value](- "#varname")`   | `[Jane](- "#name")` |
-| Assert Equals  | `[value](- "?#varname")`  | `[Hello Jane!](- "?=#greeting")` |
-| Execute        | `[value](- "expression")` | `[The greeting is](- "#greeting=greetingFor(#name)")` |
-| Other commands | `[value](- "c:command")`  | `[is notified](- "c:assertTrue=isNotified()")` |
+| Assert Equals  | `[value](- "?=#varname")` | `[Hello Jane!]`<br/>`(- "?=#greeting")` |
+| Execute        | `[value](- "expression")` | `[The greeting is]`<br/>`(- "#greeting=greetingFor(#name)")` |
+| Other commands | `[value](- "c:command")`  | `[is notified]`<br/>`(- "c:assertTrue=isNotified()")` |
 
 #### Table Commands
 The command to be run on the table is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
