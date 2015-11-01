@@ -36,7 +36,10 @@ public class MarkdownClassPathSource implements Source {
         Scanner scanner = null;
         try {
             scanner = new Scanner(inputStream, "UTF-8");
-            return scanner.useDelimiter("\\A").next();
+            if (scanner.hasNext()) {
+                return scanner.useDelimiter("\\A").next();
+            }
+            return "";
         } finally {
             if (scanner != null) {
                 scanner.close();

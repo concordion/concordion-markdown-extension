@@ -8,8 +8,4 @@ import org.junit.runner.RunWith;
 @RunWith(ConcordionRunner.class)
 @Extensions(MarkdownExtension.class)
 public class Calc {
-
-    public int add(int a, int b) {
-        return a+b;
-    }
 }
