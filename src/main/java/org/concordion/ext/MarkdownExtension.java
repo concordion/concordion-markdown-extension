@@ -4,14 +4,14 @@ import org.concordion.api.SpecificationLocator;
 import org.concordion.api.Target;
 import org.concordion.api.extension.ConcordionExtender;
 import org.concordion.api.extension.ConcordionExtension;
-import org.concordion.internal.FileTargetWithSuffix;
 
 public class MarkdownExtension implements ConcordionExtension {
 
     public static final String EXTENSION_NAMESPACE = "urn:concordion-extensions:2010";
+    public static final String MARKDOWN_FILE_EXTENSION = "md";
     private final SpecificationLocator locator = new MarkdownLocator();
     private final MarkdownClassPathSource source = new MarkdownClassPathSource();
-    private final Target target = new FileTargetWithSuffix("html");
+    private final Target target = new MarkdownSuffixRenamingTarget();
 
     @Override
     public void addTo(ConcordionExtender concordionExtender) {
