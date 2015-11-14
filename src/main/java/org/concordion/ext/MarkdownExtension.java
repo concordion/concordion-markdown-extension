@@ -27,4 +27,8 @@ public class MarkdownExtension implements ConcordionExtension {
         source.setConcordionNamespacePrefix(prefix);
         return this;
     }
+
+    public void withPegdownExtensions(int extensions) {
+        source.withPegdownExtensions(extensions);
+    }
 }

@@ -14,13 +14,14 @@ import org.concordion.markdown.MarkdownParser;
 public class MarkdownClassPathSource implements Source {
 
     private final Source classPathSource = new ClassPathSource();
-    private final MarkdownParser markdownParser = new MarkdownParser();
     private String concordionNamespacePrefix = "concordion";
     private Target interimHtmlTarget;
+    private int pegdownExtensions;
     
     @Override
     public InputStream createInputStream(Resource resource) throws IOException {
         String markdown = read(resource);
+        MarkdownParser markdownParser = new MarkdownParser(pegdownExtensions);
         String html = markdownParser.markdownToHtml(markdown, concordionNamespacePrefix);
         html = wrapBody(html);
 
@@ -62,5 +63,9 @@ public class MarkdownClassPathSource implements Source {
 
     public void setConcordionNamespacePrefix(String concordionNamespacePrefix) {
         this.concordionNamespacePrefix = concordionNamespacePrefix;
+    }
+
+    public void withPegdownExtensions(int extensions) {
+        this.pegdownExtensions = extensions;
     }
 }
