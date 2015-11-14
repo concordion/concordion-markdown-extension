@@ -341,10 +341,13 @@ Any URL that is written in italics will be set to an empty text value.
   <h3>Example</h3>
   <table concordion:execute="#html=translate(#md)">
     <tr>
+      <th>Description</th>
       <th concordion:set="#md">Markdown</th>
       <th concordion:assertEquals="#html">Resulting HTML</th>
     </tr>
+
     <tr>
+      <td>h4 example using atx-style syntax</td>
       <td>
         <pre>      
 #### [Example 1](- "calculator")
@@ -355,7 +358,9 @@ x
 <![CDATA[<div concordion:example="calculator"> <h4>Example 1</h4> <p>x</p>]]>&lt;/div>   
       </td>
     </tr>
+
     <tr>
+      <td>h1 example using setext-style syntax</td>
       <td>
         <pre>      
 [Example 3](- "setext")
@@ -367,7 +372,9 @@ x
 <![CDATA[<div concordion:example="setext"> <h1>Example 3</h1> <p>x</p>]]>&lt;/div>   
       </td>
     </tr>
+
     <tr>
+      <td>Example automatically ended by start of another example</td>
       <td>
         <pre>      
 #### [Example 1](- "calculator")
@@ -380,7 +387,9 @@ x
 <![CDATA[<div concordion:example="another"> <h4>Example 2</h4>]]>&lt;/div>    
       </td>
     </tr>
+
     <tr>
+      <td>Example is not automatically ended by a lower-level heading</td>
       <td>
         <pre>      
 #### [Example 1](- "calculator")
@@ -392,7 +401,25 @@ x
 <![CDATA[<div concordion:example="calculator"> <h4>Example 1</h4> <p>x</p> <h5>Subheading</h5>]]>&lt;/div> 
       </td>
     </tr>
+
     <tr>
+      <td>Example is automatically ended by a higher-level heading</td>
+      <td>
+        <pre>      
+### [Example on h3](- "ex3")
+My example
+## head2
+        </pre>
+      </td>
+      <td>
+<![CDATA[<div concordion:example="ex3"> <h3>Example on h3</h3>]]>
+&lt;p>My example&lt;/p>&lt;/div>
+&lt;h2>head2&lt;/h2>
+      </td>
+    </tr>
+
+    <tr>
+      <td>Example ended by a strikethrough heading with the same title as the example</td>
       <td>
         <pre>      
 # [Example 1](- "calculator")
@@ -406,7 +433,9 @@ y
 &lt;p>y&lt;/p>     
       </td>
     </tr>
+
     <tr>
+      <td>Example with `ExpectedToFail` status</td>
       <td>
         <pre>      
 # [Example 1](- "calculator" status="ExpectedToFail")
@@ -416,6 +445,7 @@ y
 <![CDATA[<div concordion:example="calculator" status="ExpectedToFail"> <h1>Example 1</h1>]]>&lt;/div>
       </td>
     </tr>
+
   </table>
 </div>
 

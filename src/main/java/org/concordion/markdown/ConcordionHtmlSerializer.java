@@ -32,6 +32,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     private boolean inHeaderNode;
     private boolean inExample;
     private String currentExampleHeading;
+    private int currentExampleLevel;
     
     public ConcordionHtmlSerializer(String concordionNamespacePrefix) {
         super(new ConcordionLinkRenderer(concordionNamespacePrefix));
@@ -116,9 +117,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             if (text.startsWith("<em>")) {
                 text = "";
             };
-            if (inHeaderNode) {
-                printer.printEncoded(text);
-            } else if (inTableHeader) {
+            if (inHeaderNode || inTableHeader) {
                 printer.printEncoded(text);
             } else {
                 ConcordionCommand command = getCommandFor(node, text);
@@ -179,34 +178,37 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     
     public void visit(HeaderNode node) {
         inHeaderNode = true;
-        boolean closingExample = false;
+        boolean printHeaderNode = true;
         for (Node child : node.getChildren()) {
             if (child instanceof StrikeNode) {
                 if (inExample) {
                     String exampleHeading = printChildrenToString(node).replace("<del>", "").replace("</del>", "");
                     if (currentExampleHeading != null && currentExampleHeading.equals(exampleHeading)) {
                         closeExample();
-                        closingExample = true;
+                        printHeaderNode = false;
                     }
                 }
-            }
-            if (child instanceof ExpLinkNode) {
+            } else if (child instanceof ExpLinkNode) {
                 if ("-".equals(((ExpLinkNode) child).url)) {
                     closeExampleIfNeedeed();
                     String exampleName = ((ExpLinkNode)child).title;
                     currentExampleHeading = printChildrenToString(node);
+                    currentExampleLevel = node.getLevel();
                     printer.println();
                     printer.print("<div");
                     printAttribute(namespaced("example"), exampleName);
                     printer.print(">");
                     inExample = true;
                 }
+            } else {
+                if (node.getLevel() < currentExampleLevel) {
+                    closeExample();
+                }
             }
         }
-        if (!closingExample) {
+        if (printHeaderNode) {
             super.visit(node);
         }
-        closingExample = false;
         inHeaderNode = false;
     }
 
@@ -224,6 +226,8 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     private void closeExample() {
         printer.print("</div>");
         inExample = false;
+        currentExampleHeading = "";
+        currentExampleLevel = 0;
     }
 
     private void printConcordionCommand(ConcordionCommand command) {
