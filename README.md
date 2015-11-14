@@ -92,7 +92,11 @@ or
 will create an example named `exampleName` with the H2 heading `Example 1`.
 
 #### Closing an example
-An example is implicitly closed when another example starts or the end of file is reached.
+An example is implicitly closed on any of these conditions:
+
+* another example starts, or
+* a header is encountered that is at a higher level than the example header (eg. the example is a `h3` and a `h2` header is encountered), or
+* the end of file is reached.
 
 To explicitly close an example, create a header with the example heading struck-through. For example:  
 
