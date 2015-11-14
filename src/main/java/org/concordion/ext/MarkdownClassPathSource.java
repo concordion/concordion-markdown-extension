@@ -20,16 +20,20 @@ public class MarkdownClassPathSource implements Source {
     
     @Override
     public InputStream createInputStream(Resource resource) throws IOException {
-        String markdown = read(resource);
-        MarkdownParser markdownParser = new MarkdownParser(pegdownExtensions);
-        String html = markdownParser.markdownToHtml(markdown, concordionNamespacePrefix);
-        html = wrapBody(html);
-
-        if (interimHtmlTarget != null) {
-            interimHtmlTarget.write(new Resource(resource.getPath() + ".html"), html);
+        if (resource.getName().endsWith(MarkdownExtension.MARKDOWN_FILE_EXTENSION)) {
+            String markdown = read(resource);
+            MarkdownParser markdownParser = new MarkdownParser(pegdownExtensions);
+            String html = markdownParser.markdownToHtml(markdown, concordionNamespacePrefix);
+            html = wrapBody(html);
+    
+            if (interimHtmlTarget != null) {
+                interimHtmlTarget.write(new Resource(resource.getPath() + ".html"), html);
+            }
+    
+            return new ByteArrayInputStream(html.getBytes());
+        } else {
+            return classPathSource.createInputStream(resource);
         }
-
-        return new ByteArrayInputStream(html.getBytes());
     }
 
     private String read(Resource resource) throws IOException {
