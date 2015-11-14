@@ -160,7 +160,11 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             ConcordionCommand concordionCommand = new ConcordionCommand(command, expression, text);
             for (int i = 1; i < parts.length; i++) {
                 String[] attributes = parts[i].split("=", 2);
-                concordionCommand.addAttribute(attributes[0], attributes.length > 1 ? unquote(attributes[1]) : "");
+                String attributeName = attributes[0];
+                if (attributeName.startsWith("c:")) {
+                    attributeName = namespaced(attributeName.substring(2));
+                }
+                concordionCommand.addAttribute(attributeName, attributes.length > 1 ? unquote(attributes[1]) : "");
             }
             return concordionCommand;
         } else {
