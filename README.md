@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/concordion/concordion-markdown-extension.svg?branch=master)](https://travis-ci.org/concordion/concordion-markdown-extension)
+[![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 # Concordion Markdown
 
 This extension is in development, and the syntax is likely to change as we continue to evolve it.
