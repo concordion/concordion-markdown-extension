@@ -3,8 +3,6 @@ package org.concordion.markdown;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.concordion.markdown.ConcordionHtmlSerializer.Attribute;
-
 public class ConcordionCommand {
     
     public Attribute command;

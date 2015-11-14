@@ -2,7 +2,6 @@ package org.concordion.markdown;
 
 import java.util.List;
 
-import org.pegdown.LinkRenderer;
 import org.pegdown.ToHtmlSerializer;
 import org.pegdown.ast.ExpLinkNode;
 import org.pegdown.ast.HeaderNode;
@@ -17,74 +16,88 @@ import org.pegdown.ast.TableNode;
 import org.pegdown.ast.TableRowNode;
 
 public class ConcordionHtmlSerializer extends ToHtmlSerializer {
-    public static class Attribute {
-        public final String name;
-        public final String value;
-        
-        public Attribute(String name, String value) {
-            this.name = name;
-            this.value = value;
-        }
-    }
+    private static final String URL_FOR_CONCORDION = "-";
+    private static final String SOURCE_CONCORDION_NAMESPACE_PREFIX = "c";
+    private final ConcordionCommandParser concordionCommandParser; 
+    private final String targetConcordionNamespacePrefix;
     
     private ConcordionCommand pendingCommand = null;
-    private String concordionNamespacePrefix;
     private boolean inHeaderNode;
     private boolean inExample;
     private String currentExampleHeading;
     private int currentExampleLevel;
     
-    public ConcordionHtmlSerializer(String concordionNamespacePrefix) {
-        super(new ConcordionLinkRenderer(concordionNamespacePrefix));
-        this.concordionNamespacePrefix = concordionNamespacePrefix;
+    public ConcordionHtmlSerializer(String targetConcordionNamespacePrefix) {
+        super(new RunCommandLinkRenderer(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix));
+        this.targetConcordionNamespacePrefix = targetConcordionNamespacePrefix;
+        concordionCommandParser = new ConcordionCommandParser(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix);
     }
    
-//-----------------------------------------------------------------------------------------------------------------------
-// For execute on a table and verify rows, the command is on the TableCaptionNode and has to be moved to the TableNode    
+//=======================================================================================================================
+// 
+    @Override
+    public void visit(ExpLinkNode node) {
+        if (URL_FOR_CONCORDION.equals(node.url)) {
+            String text = printChildrenToString(node);
+            // Some commands only require an expression and don't need a text value to be passed. However, Markdown links always require text for the URL.
+            // Any URL that is written in italics will be set to an empty text value.
+            if (text.startsWith("<em>")) {
+                text = "";
+            };
+            if (inHeaderNode || inTableHeader) {
+                printer.printEncoded(text);
+            } else {
+                ConcordionCommand command = concordionCommandParser.getCommandFor(node, text);
+                printConcordionCommandElement(command);
+            }
+        } else {
+            super.visit(node);
+        }
+    }
+    
+//=======================================================================================================================
+// concordion:execute on a table and concordion:verifyRows
+// The concordion:execute command is in the first (and only) cell of the first header row.
+// The header row containing the command has to be removed, and the command needs to be printed on the table row.    
     
     @Override
-    public void visit(TableNode node) {
-        for (Node child : node.getChildren()) {
-            if (child instanceof TableHeaderNode) {
-                TableHeaderNode header = (TableHeaderNode)child;
-                if (header.getChildren().get(0) instanceof TableRowNode) {
-                    TableRowNode row = (TableRowNode)header.getChildren().get(0);
-                    if (row.getChildren().size() == 1 && row.getChildren().get(0) instanceof TableCellNode) {
-                        TableCellNode cell = (TableCellNode)row.getChildren().get(0);
-                        if (cell.getChildren().get(0) instanceof ExpLinkNode) {
-                            ExpLinkNode linkNode = (ExpLinkNode)cell.getChildren().get(0);
-                            String text = printChildrenToString(linkNode);
-//                            if (text.startsWith("<em>")) {
-//                                text = "";
-//                            };
-                            pendingCommand = getCommandFor(linkNode, text);
-                            header.getChildren().remove(row);
-                        }
+    public void visit(TableNode tableNode) {
+        if (firstChildIsInstanceOf(tableNode, TableHeaderNode.class)) {
+            Node header = firstChildOf(tableNode);
+            if (firstChildIsInstanceOf(header, TableRowNode.class)) {
+                Node row = firstChildOf(header);
+                if (hasExactlyOneChild(row) && firstChildIsInstanceOf(row, TableCellNode.class)) {
+                    Node cell = firstChildOf(row);
+                    if (firstChildIsInstanceOf(cell, ExpLinkNode.class)) {
+                        ExpLinkNode linkNode = (ExpLinkNode) firstChildOf(cell);
+                        String text = printChildrenToString(linkNode);
+                        pendingCommand = concordionCommandParser.getCommandFor(linkNode, text);
+                        header.getChildren().remove(row);
                     }
                 }
             }
         }
-        // Call the super visit(TableNode) method and override printIndentedTag() below, so that the concordion:execute attribute is added to the tag
-        super.visit(node);
+        // Call the super visit(TableNode) method and override printIndentedTag() below, so that the concordion command is added to the tag.
+        super.visit(tableNode);
     }
 
     @Override
     protected void printIndentedTag(SuperNode node, String tag) {
         printer.println().print('<').print(tag);
-        printCommandIfPending();
+        printPendingConcordionCommand();
         printer.print('>').indent(+2);
         visitChildren(node);
         printer.indent(-2).println().print('<').print('/').print(tag).print('>');
     }
     
 //-----------------------------------------------------------------------------------------------------------------------
-// For execute on a table and verify rows, the command attributes have to be directly on the <th> tags rather than on child <span> tags.     
+// The concordion:set and concordion:assertEquals commands have to be on the TableColumnNode <th> tags, rather than child ExpLinkNodes.     
     @Override
     public void visit(TableCellNode node) {
         if (inTableHeader) {
             for (Node child : node.getChildren()) {
                 if (child instanceof ExpLinkNode) {
-                    pendingCommand = getCommandFor((ExpLinkNode) child, "");
+                    pendingCommand = concordionCommandParser.getCommandFor((ExpLinkNode) child, "");
                 }
             }
         }
@@ -95,105 +108,17 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
 
     public void visit(TableColumnNode node) {
         super.visit(node);
-        printCommandIfPending();
+        printPendingConcordionCommand();
     }
 
-    private void printCommandIfPending() {
-        if (pendingCommand != null) {
-            printCommand();
-            pendingCommand = null;
-        }
-    }
-
-    private void printCommand() {
-        printConcordionCommandAttributes(pendingCommand);
-    }
-
-  //-----------------------------------------------------------------------------------------------------------------------
-    @Override
-    public void visit(ExpLinkNode node) {
-        if ("-".equals(node.url)) {
-            String text = printChildrenToString(node);
-            if (text.startsWith("<em>")) {
-                text = "";
-            };
-            if (inHeaderNode || inTableHeader) {
-                printer.printEncoded(text);
-            } else {
-                ConcordionCommand command = getCommandFor(node, text);
-                printConcordionCommand(command);
-            }
-        } else {
-            super.visit(node);
-        }
-    }
-
-    private ConcordionCommand getCommandFor(ExpLinkNode node, String text) {
-        String title = node.title;
-        if (title.startsWith("#") && !(title.contains("="))) {
-            return new ConcordionCommand("set", title, text);
-        } else if (title.startsWith("?=")) {
-            return new ConcordionCommand("assertEquals", title.substring(2), text);
-        } else if (title.startsWith("c:")) {
-            return parseCommandString(title, text);
-        } else {
-            return new ConcordionCommand("execute", title, text);
-        }
-    }
-//-----------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * <code>c:command=expression param=x param2='y' param3="z"</code>
-     * @param commandString 
-     * @param text
-     * @return
-     */
-    private ConcordionCommand parseCommandString(String commandString, String text) {
-        String[] components = commandString.split("=", 2);
-        String command = components[0].substring(2);
-        
-        String expression = "";
-        if (components.length > 1) {
-            expression = components[1];
-            String[] parts = expression.split("\\s+");
-            expression = unquote(parts[0]);
-            ConcordionCommand concordionCommand = new ConcordionCommand(command, expression, text);
-            for (int i = 1; i < parts.length; i++) {
-                String[] attributes = parts[i].split("=", 2);
-                String attributeName = attributes[0];
-                if (attributeName.startsWith("c:")) {
-                    attributeName = namespaced(attributeName.substring(2));
-                }
-                concordionCommand.addAttribute(attributeName, attributes.length > 1 ? unquote(attributes[1]) : "");
-            }
-            return concordionCommand;
-        } else {
-            return new ConcordionCommand(command, "", text);
-        }
-    }
-
-    private String unquote(String expression) {
-        if ((expression.startsWith("'") && expression.endsWith("'")) || 
-            (expression.startsWith("\"") && expression.endsWith("\""))) {
-            expression = expression.substring(1, expression.length() - 1);
-        }
-        return expression;
-    }
-    
+//=======================================================================================================================
+// concordion:example support
     public void visit(HeaderNode node) {
         inHeaderNode = true;
         boolean printHeaderNode = true;
         for (Node child : node.getChildren()) {
-            if (child instanceof StrikeNode) {
-                if (inExample) {
-                    String exampleHeading = printChildrenToString(node).replace("<del>", "").replace("</del>", "");
-                    if (currentExampleHeading != null && currentExampleHeading.equals(exampleHeading)) {
-                        closeExample();
-                        printHeaderNode = false;
-                    }
-                }
-            } else if (child instanceof ExpLinkNode) {
-                if ("-".equals(((ExpLinkNode) child).url)) {
+            if (child instanceof ExpLinkNode) {
+                if (URL_FOR_CONCORDION.equals(((ExpLinkNode) child).url)) {
                     closeExampleIfNeedeed();
                     String exampleName = ((ExpLinkNode)child).title;
                     currentExampleHeading = printChildrenToString(node);
@@ -204,9 +129,17 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                     printer.print(">");
                     inExample = true;
                 }
-            } else {
-                if (node.getLevel() < currentExampleLevel) {
-                    closeExample();
+            } if (inExample) {
+                if (child instanceof StrikeNode) {
+                    String exampleHeading = printChildrenToString(node).replace("<del>", "").replace("</del>", "");
+                    if (currentExampleHeading != null && currentExampleHeading.equals(exampleHeading)) {
+                        closeExample();
+                        printHeaderNode = false;
+                    }
+                } else {
+                    if (node.getLevel() < currentExampleLevel) {
+                        closeExample();
+                    }
                 }
             }
         }
@@ -234,15 +167,24 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         currentExampleLevel = 0;
     }
 
-    private void printConcordionCommand(ConcordionCommand command) {
+//=======================================================================================================================
+// support methods    
+    private void printConcordionCommandElement(ConcordionCommand command) {
         printer.print('<').print("span");
-        printConcordionCommandAttributes(command);
+        printConcordionCommand(command);
         printer.print('>');
         printer.printEncoded(command.text);
         printer.print('<').print('/').print("span").print('>');
     }
 
-    private void printConcordionCommandAttributes(ConcordionCommand command) {
+    private void printPendingConcordionCommand() {
+        if (pendingCommand != null) {
+            printConcordionCommand(pendingCommand);
+            pendingCommand = null;
+        }
+    }
+
+    private void printConcordionCommand(ConcordionCommand command) {
         printAttribute(namespaced(command.command.name), command.command.value);
         
         List<Attribute> attributes = command.attributes;
@@ -252,34 +194,18 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     }
     
     private String namespaced(String command) {
-        return concordionNamespacePrefix + ":" + command;
-    };
+        return targetConcordionNamespacePrefix + ":" + command;
+    }
 
-    public static class ConcordionLinkRenderer extends LinkRenderer {
-        private String concordionNamespacePrefix;
+    private boolean hasExactlyOneChild(Node node) {
+        return node.getChildren().size() == 1;
+    }
 
-        public ConcordionLinkRenderer(String concordionNamespacePrefix) {
-            this.concordionNamespacePrefix = concordionNamespacePrefix;
-        }
+    private Node firstChildOf(Node node) {
+        return node.getChildren().get(0);
+    }
 
-        @Override
-        public Rendering render(ExpLinkNode node, String text) {
-            if (node.title.startsWith("c:run")) {
-                Rendering rendering = new Rendering(node.url, text);
-                String suffix = node.title.substring("c:run".length()).trim();
-                String runner;
-                if (suffix.startsWith("=")) {
-                    runner = suffix.substring(1).trim();
-                    if (runner.startsWith("'") || runner.startsWith("\"")) {
-                        runner = runner.substring(1, runner.length() - 1);
-                    }
-                } else {
-                    runner = "concordion";
-                }
-                
-                return rendering.withAttribute(concordionNamespacePrefix + ":" + "run", runner);
-            } 
-            return super.render(node, text);
-        }
+    private boolean firstChildIsInstanceOf(Node node, Class<?> clazz) {
+        return node.getChildren().size() > 0 && clazz.isAssignableFrom(firstChildOf(node).getClass());
     }
 }
