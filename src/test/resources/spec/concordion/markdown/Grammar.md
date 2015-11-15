@@ -6,6 +6,8 @@ The `concordion:set` command is expressed using the syntax: `[value](- "#varname
 
 which sets the variable named `varname` to the value `value`.
 
+You can also use the long-hand `[value](- 'c:set="#varname"')` variant if you wish. 
+
 <div class="example">
   <h3>Example</h3>
   <table concordion:execute="#html=translate(#md)">
@@ -21,6 +23,10 @@ which sets the variable named `varname` to the value `value`.
       <td>[Bob Smith](- '#name')</td>
       <td>&lt;span concordion:set="#name"&gt;Bob Smith&lt;/span&gt;</td>
     </tr>
+    <tr>
+      <td>[Jane Doe](- 'c:set="#name"')</td>
+      <td>&lt;span concordion:set="#name"&gt;Jane Doe&lt;/span&gt;</td>
+    </tr>
   </table>
 </div>
 
@@ -29,6 +35,8 @@ which sets the variable named `varname` to the value `value`.
 The `concordion:assertEquals` command is expressed using the syntax: `[value](- "?=expression")` or `[value](- '?=expression')`
 
 which asserts that the result of evaluating _expression_ equals the value _value_.
+
+You can also use the long-hand `[value](- 'c:assertEquals="expression"')` variant if you wish. 
 
 <div class="example">
   <h3>Example</h3>
@@ -57,6 +65,10 @@ which asserts that the result of evaluating _expression_ equals the value _value
       <td>[Hello](- "?=greeting")</td>
       <td>&lt;span concordion:assertEquals="greeting"&gt;Hello&lt;/span&gt;</td>
     </tr>
+    <tr>
+      <td>[Yo](- 'c:assertEquals="greet()"')</td>
+      <td>&lt;span concordion:assertEquals="greet()"&gt;Yo&lt;/span&gt;</td>
+    </tr>
   </table>
 </div>
 
@@ -65,6 +77,8 @@ which asserts that the result of evaluating _expression_ equals the value _value
 The `concordion:execute` command is expressed using the syntax: `[value](- "expression")` or `[value](- 'expression')`
 
 which executes the _expression_. 
+
+You can also use the long-hand `[value](- 'c:execute="expression"')` variant if you wish. 
 
 <div class="example">
   <h3>Example</h3>
@@ -88,6 +102,10 @@ which executes the _expression_.
     <tr>
       <td>[The greeting for](- "#msg=greeting")</td>
       <td>&lt;span concordion:execute="#msg=greeting"&gt;The greeting for&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>[Do something](- 'c:execute="doSomething()"')</td>
+      <td>&lt;span concordion:execute="doSomething()"&gt;Do something&lt;/span&gt;</td>
     </tr>
   </table>
 </div>
