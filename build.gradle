@@ -19,7 +19,7 @@ githubPages {
     pages {
         from 'docs'
         
-        from ('build/reports/spec') {
+        from ('build/reports/spec/spec') {
             into 'spec'
         }
         
