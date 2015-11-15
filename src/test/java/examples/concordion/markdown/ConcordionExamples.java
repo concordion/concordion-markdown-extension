@@ -16,8 +16,7 @@ import org.junit.runner.RunWith;
 public class ConcordionExamples {
     @Extension
     public MarkdownExtension extension = new MarkdownExtension()
-                                            .withInterimHtmlSavedTo(new FileTarget(new File("/tmp/concordion")))
-                                            .withConcordionNamespacePrefix("c")
+                                            .withSourceHtmlSavedTo(new FileTarget(new File("/tmp/concordion")))
                                             ;
 
     private int memory;

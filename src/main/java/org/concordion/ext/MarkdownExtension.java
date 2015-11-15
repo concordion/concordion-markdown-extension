@@ -18,17 +18,13 @@ public class MarkdownExtension implements ConcordionExtension {
         concordionExtender.withSpecificationLocator(locator).withSource(source).withTarget(target);
     }
 
-    public MarkdownExtension withInterimHtmlSavedTo(Target target) {
-        source.setInterimHtmlTarget(target);
+    public MarkdownExtension withSourceHtmlSavedTo(Target target) {
+        source.setSourceHtmlTarget(target);
         return this;
     }
 
-    public MarkdownExtension withConcordionNamespacePrefix(String prefix) {
-        source.setConcordionNamespacePrefix(prefix);
-        return this;
-    }
-
-    public void withPegdownExtensions(int extensions) {
+    public MarkdownExtension withPegdownExtensions(int extensions) {
         source.withPegdownExtensions(extensions);
+        return this;
     }
 }

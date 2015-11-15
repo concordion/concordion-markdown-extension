@@ -15,7 +15,7 @@ public class MarkdownClassPathSource implements Source {
 
     private final Source classPathSource = new ClassPathSource();
     private String concordionNamespacePrefix = "concordion";
-    private Target interimHtmlTarget;
+    private Target sourceHtmlTarget;
     private int pegdownExtensions;
     
     @Override
@@ -26,8 +26,10 @@ public class MarkdownClassPathSource implements Source {
             String html = markdownParser.markdownToHtml(markdown, concordionNamespacePrefix);
             html = wrapBody(html);
     
-            if (interimHtmlTarget != null) {
-                interimHtmlTarget.write(new Resource(resource.getPath() + ".html"), html);
+            if (sourceHtmlTarget != null) {
+                Resource sourceHtmlResource = new Resource(resource.getPath() + ".html");
+                sourceHtmlTarget.write(sourceHtmlResource, html);
+                System.out.println(String.format("[Source: %s]", sourceHtmlTarget.resolvedPathFor(sourceHtmlResource)));
             }
     
             return new ByteArrayInputStream(html.getBytes());
@@ -61,12 +63,8 @@ public class MarkdownClassPathSource implements Source {
         return classPathSource.canFind(resource);
     }
 
-    public void setInterimHtmlTarget(Target target) {
-        this.interimHtmlTarget = target;
-    }
-
-    public void setConcordionNamespacePrefix(String concordionNamespacePrefix) {
-        this.concordionNamespacePrefix = concordionNamespacePrefix;
+    public void setSourceHtmlTarget(Target target) {
+        this.sourceHtmlTarget = target;
     }
 
     public void withPegdownExtensions(int extensions) {
