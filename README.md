@@ -115,4 +115,6 @@ will run the `Address.html` specification.
 
 ---
 
-For the full Grammar see the [Grammar Specification](src/test/resources/spec/concordion/markdown/Grammar.md).
+For the full Grammar see the [Grammar Specification](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Grammar.html).
+
+The extension can also be [configured](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Configuration.html) to output the source HTML that is generated, and to extend the Markdown syntax.
