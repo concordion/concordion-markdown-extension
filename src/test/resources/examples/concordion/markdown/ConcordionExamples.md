@@ -46,7 +46,7 @@ See [Access to a Link's HREF](http://concordion.org/dist/1.3.1/test-output/conco
 
 ### Examples
 
-#### [Example 1](- "calculator status='ExpectedToFail'")
+#### [Example 1](- "calculator c:status=ExpectedToFail")
 
 #### ~~Example 1~~
 

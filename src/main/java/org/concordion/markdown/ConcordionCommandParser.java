@@ -40,21 +40,26 @@ public class ConcordionCommandParser {
         String expression = "";
         if (components.length > 1) {
             expression = components[1];
-            String[] parts = expression.split("\\s+");
-            expression = unquote(parts[0]);
-            ConcordionCommand concordionCommand = new ConcordionCommand(command, expression, text);
-            for (int i = 1; i < parts.length; i++) {
-                String[] attributes = parts[i].split("=", 2);
-                String attributeName = attributes[0];
-                if (attributeName.startsWith(sourceConcordionNamespacePrefix + ":")) {
-                    attributeName = targetConcordionNamespacePrefix + ":" + attributeName.substring(2);
-                }
-                concordionCommand.addAttribute(attributeName, attributes.length > 1 ? unquote(attributes[1]) : "");
-            }
+            ConcordionCommand concordionCommand = splitAttributes(expression, command, text);
             return concordionCommand;
         } else {
             return new ConcordionCommand(command, "", text);
         }
+    }
+
+    public ConcordionCommand splitAttributes(String expression, String command, String text) {
+        String[] parts = expression.split("\\s+");
+        expression = unquote(parts[0]);
+        ConcordionCommand concordionCommand = new ConcordionCommand(command, expression, text);
+        for (int i = 1; i < parts.length; i++) {
+            String[] attributes = parts[i].split("=", 2);
+            String attributeName = attributes[0];
+            if (attributeName.startsWith(sourceConcordionNamespacePrefix + ":")) {
+                attributeName = targetConcordionNamespacePrefix + ":" + attributeName.substring(2);
+            }
+            concordionCommand.addAttribute(attributeName, attributes.length > 1 ? unquote(attributes[1]) : "");
+        }
+        return concordionCommand;
     }
 
     private String unquote(String expression) {

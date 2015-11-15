@@ -476,11 +476,11 @@ y
       <td>Example with `ExpectedToFail` status</td>
       <td>
         <pre>      
-# [Example 1](- "calculator" status="ExpectedToFail")
+# [Example 1](- "incomplete c:status=ExpectedToFail")
         </pre>
       </td>
       <td>
-<![CDATA[<div concordion:example="calculator" status="ExpectedToFail"> <h1>Example 1</h1>]]>&lt;/div>
+<![CDATA[<div concordion:example="incomplete" concordion:status="ExpectedToFail"> <h1>Example 1</h1>]]>&lt;/div>
       </td>
     </tr>
 

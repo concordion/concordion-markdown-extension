@@ -120,12 +120,13 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             if (child instanceof ExpLinkNode) {
                 if (URL_FOR_CONCORDION.equals(((ExpLinkNode) child).url)) {
                     closeExampleIfNeedeed();
-                    String exampleName = ((ExpLinkNode)child).title;
+                    String expression = ((ExpLinkNode)child).title;
                     currentExampleHeading = printChildrenToString(node);
                     currentExampleLevel = node.getLevel();
+                    ConcordionCommand command = concordionCommandParser.splitAttributes(expression, "example", currentExampleHeading);
                     printer.println();
                     printer.print("<div");
-                    printAttribute(namespaced("example"), exampleName);
+                    printConcordionCommand(command);
                     printer.print(">");
                     inExample = true;
                 }
