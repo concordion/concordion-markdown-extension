@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:concordion="http://www.concordion.org/2007/concordion"><head><style>* {
+  font-family: Arial;
+}
+body {
+  padding: 32px;  
+}
+pre {
+  padding: 6px 28px 6px 28px;
+  background-color: #E8EEF7;
+}
+pre, pre *, code, code *, kbd {
+  font-family: Courier New, Courier;
+  font-size: 10pt;
+}
+h1, h1 * {
+  font-size: 24pt;	
+}
+p, td, th, li, .breadcrumbs {
+  font-size: 10pt;
+}
+p, li {
+  line-height: 140%;
+  max-width: 720px;
+}
+table {
+  border-collapse: collapse;
+  empty-cells: show;
+  margin: 8px 0px 8px 0px;
+}
+th, td {
+  border: 1px solid black;
+  padding: 3px;
+}
+td {
+  background-color: white;
+  vertical-align: top;
+}
+th {
+  background-color: #C3D9FF;
+}
+li {
+  margin-top: 6px;
+  margin-bottom: 6px; 
+}
+
+.example {
+  padding: 6px 16px 6px 16px;
+  border: 1px solid #C3D9FF;
+  margin: 6px 0px 28px 0px;
+  background-color: #F5F9FD;
+}
+.example h3 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 12pt;
+}
+
+p.success {
+  padding: 2px;
+}
+.success, .success * {
+  background-color: #afa !important;
+}
+.success pre {
+  background-color: #bbffbb;
+}
+.failure, .failure * {
+  background-color: #ffb0b0;
+  padding: 1px;
+}
+.failure .expected {
+  text-decoration: line-through;
+  color: #bb5050;
+}
+.ignored, .ignored * {
+  background-color: #f0f0f0 !important;	
+}
+
+ins {
+  text-decoration: none;	
+}
+
+.exceptionMessage {
+  background-color: #fdd;
+  font-family: Courier New, Courier, Monospace;
+  font-size: 10pt;
+  display: block;
+  font-weight: normal;
+  padding: 4px;
+  text-decoration: none !important;
+}
+.stackTrace, .stackTrace * {
+  font-weight: normal;
+}
+.stackTrace {
+  display: none;
+  padding: 1px 4px 4px 4px;
+  background-color: #fdd;
+  border-top: 1px dotted black;
+}
+.stackTraceExceptionMessage {
+  display: block;
+  font-family: Courier New, Courier, Monospace;
+  font-size: 8pt;
+  white-space: wrap;
+  padding: 1px 0px 1px 0px;
+}
+.stackTraceEntry {
+  white-space: nowrap;
+  font-family: Courier New, Courier, Monospace;
+  display: block;
+  font-size: 8pt;
+  padding: 1px 0px 1px 32px;
+}
+.stackTraceButton {
+  font-size: 8pt;
+  margin: 2px 8px 2px 0px;
+  font-weight: normal;
+  font-family: Arial;
+}
+
+.special {
+  font-style: italic;
+}
+.missing, .missing * {
+  background-color: #ff9999;
+  color:#bb5050;
+  text-decoration: line-through;
+}
+.surplus, .surplus * {
+  background-color: #ff9999;
+}
+.footer {
+  text-align: right;
+  margin-top: 40px;
+  font-size: 8pt;
+  width: 100%;
+  color: #999;
+}
+.footer .testTime {
+  padding: 2px 10px 0px 0px;
+}
+
+.idea {
+  font-size: 9pt;
+  color: #888;
+  font-style: italic;	
+}
+.tight li {
+  margin-top: 1px;
+  margin-bottom: 1px; 
+}
+.commentary {
+  float: right;
+  width: 200px;
+  background-color: #ffffd0;
+  padding:8px;
+  border: 3px solid #eeeeb0;	 
+  margin: 10px 0px 10px 10px;	 
+}
+.commentary, .commentary * {
+  font-size: 8pt;
+}
+</style><meta http-equiv="content-type" content="text/html; charset=UTF-8" /></head><body><h1>Concordion Command Examples</h1><h3>Basic example</h3><p>Demonstrates the usage of <code>set</code> and <code>assertEquals</code> commands.</p>
+<div class="example">
+<span concordion:set="#x">1</span> + <span concordion:set="#y">2</span> = <span concordion:assertEquals="add(#x, #y)" class="success">3</span>.
+</div>
+<!--
+{#x=}1{} + {#y=}2{} = {add(#x,#y)==}3{}
+{.set #x}1{} + {.set #y}2{} = {.is add(#x,#y)}3{}
+{.set #x="1"} + {.set #y="2"} = {.is add(#x,#y)=="3"}
+--><p>{:example: "A name"} <span concordion:set="#x">1</span> + <span concordion:set="#y">2</span> = <span concordion:assertEquals="add(#x,#y)" class="success">3</span></p><h3>Set and assert in same statement</h3><p>Occasionally it is useful to be able to set and assert a value in the same statement, for example selecting a user name and then checking that the user name is displayed. This can be achieved using the special variable <code>#TEXT</code>, which contains the text of the current element.</p>
+<div class="example">
+Example: My name is <span concordion:assertEquals="setAndReturn(#TEXT)" class="success">Michael Caine</span>
+
+{setAndReturn(#TEXT)=="Michael Caine"}
+</div><h3>Example with execute</h3><p>The <code>execute</code> command can return void, a primitive, a POJO (plain old Java object) or a map.</p><p>An <code>execute</code> with a <code>void</code> result often indicates a "bad smell".</p><p>See <a href="http://concordion.org/Tutorial.html#executeVoid">executeVoid</a>.</p><p>This example uses the <code>execute</code> commands for instructions with <code>void</code> results and primitive results.</p><p>This example also shows the use of the special variable <code>#TEXT</code>, which contains the text of the current element. <code>#TEXT</code> can also be used with assert commands.</p>
+<div class="example">
+<span concordion:execute="setMemory(#TEXT)">3</span> +
+<span concordion:execute="#result = addToMemory(#TEXT)">4</span> =
+<span concordion:assertEquals="#result" class="success">7</span>.
+
+{setMemory(#TEXT) "3"}
+{#result=addToMemory(#TEXT) "4"}
+{#result=="7"}
+</div><h3>Example with execute returning a POJO</h3><p>Subsequent commands can access public fields and methods of the object. When using a property (dot) notation, Concordion will first check for a public field with the property name, then for a corresponding getter. In the following example, <code>#detail.gst</code> resolves to a call to the <code>getGst()</code> method.</p>
+<div class="example">
+<span concordion:execute="#detail = getInvoiceDetail()" />The invoice shows a sub-total of
+$<span concordion:assertEquals="#detail.subTotal" class="success">100</span> + GST of
+$<span concordion:assertEquals="#detail.gst" class="success">15</span> giving a total of
+$<span concordion:assertEquals="#detail.calculateTotal()" class="success">115</span>.
+
+{#detail = getInvoiceDetail()}The invoice shows a sub-total of
+${#detail.subTotal=="100"} + GST of
+${#detail.gst=="15"} giving a total of
+${#detail.calculateTotal()=="115"}.
+</div><h3>Example with execute returning a map</h3>
+<div class="example">
+<span concordion:execute="#detail = getInvoiceDetailAsMap()" />The invoice shows a sub-total of
+$<span concordion:assertEquals="#detail.subTotal" class="success">100</span> + GST of
+$<span concordion:assertEquals="#detail.gst" class="success">15</span>.
+
+{#detail = getInvoiceDetailAsMap()}The invoice shows a sub-total of
+${#detail.subTotal=="100"} + GST of
+${#detail.gst=="15"}.
+</div><h3>Unusual sentences</h3><p>Unusual sentences can be resolved by using an <code>execute</code> command as a parent element. (However it may be preferable to just rephrase the sentence!).</p><p>The <code>set</code> commands of child elements are called first, followed by its own <code>execute</code> command, followed by the <code>execute</code> commands of child elements, then the <code>assertEquals</code> commands of child elements. See <a href="http://concordion.org/Tutorial.html#executeUnusualSentences">executeUnusualSentences</a>.</p>
+<div class="example">
+<span concordion:execute="#z3=add(#x3,#y3)">
+<span concordion:assertEquals="#z3" class="success">11</span> = <span concordion:set="#x3">6</span> + <span concordion:set="#y3">5</span>.
+</span>
+
+<span concordion:execute="#z3=add(#x3,#y3)">
+{#z3=="11"} = {#x3="6"} + {#y3="5"}.
+</span>
+
+</div><h3>Execute on a table</h3><p>When you place an execute command on a <code>&lt;table&gt;</code> element the commands on the header row (the row containing <code>&lt;th&gt;</code> elements) are copied to each detail row (rows containing <code>&lt;td&gt;</code> elements) and the execute command is run on each detail row.</p>
+<div class="example">
+<p>Example: Adding <i>Number 1</i> to <i>Number 2</i> equals the <i>Result</i>:</p>
+<table concordion:execute="#z=add(#x,#y)">
+<tr><th concordion:set="#x">Number 1</th><th concordion:set="#y">Number 2</th><th concordion:assertEquals="#z">Result</th></tr>
+<tr><td>1</td><td>0</td><td class="success">1</td></tr>
+<tr><td>1</td><td>-3</td><td class="success">-2</td></tr>
+</table>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th align="right"><span concordion:set="#x">Number 1</span> </th>
+      <th align="right"><span concordion:set="#y">Number 2</span> </th>
+      <th align="right"><span concordion:assertEquals="#z" class="failure"><del class="expected">Result</del>
+<ins class="actual">-2</ins></span> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">0 </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">-3 </td>
+      <td align="right">-2 </td>
+    </tr>
+  </tbody>
+  <caption>Example: Adding <em>Number 1</em> to <em>Number 2</em> equals the <em>Result</em>: {#z=add(#x, #y)}</caption>
+</table><h3>Verify Rows</h3><p>Checks a collection of results returned from the fixture. The collection must be sorted and implement <code>java.lang.Iterable</code>.</p><p>It may be necessary to sort the collection in the fixture if it is not already sorted.</p>
+<div class="example">
+<p>Example: Invoice details are:</p>
+<table concordion:verifyRows="#detail : getInvoiceDetails()">
+<tr><th concordion:assertEquals="#detail.subTotal">Sub Total</th><th concordion:assertEquals="#detail.gst">GST</th></tr>
+<tr><td class="success">100</td><td class="success">15</td></tr>
+<tr><td class="success">500</td><td class="success">75</td></tr>
+<tr><td class="success">20</td><td class="success">3</td></tr>
+</table>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th align="right"><span concordion:assertEquals="#detail.subTotal" class="failure"><del class="expected">Sub Total</del>
+<ins class="actual">20</ins></span> </th>
+      <th align="right"><span concordion:assertEquals="#detail.gst" class="failure"><del class="expected">GST</del>
+<ins class="actual">3</ins></span> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">100 </td>
+      <td align="right">15 </td>
+    </tr>
+    <tr>
+      <td align="right">500 </td>
+      <td align="right">75 </td>
+    </tr>
+    <tr>
+      <td align="right">20 </td>
+      <td align="right">2 </td>
+    </tr>
+  </tbody>
+  <caption>Example: Invoice details are: {#detail:getInvoiceDetails()}</caption>
+</table><h3>Echo</h3><p>Normally used for adding information about a test run:</p>
+<div class="example">
+Tests executed using <span concordion:echo="getBrowserDetails()">Firefox 3.6</span>.
+
+Tests executed using {:echo: getBrowserDetails()}.
+</div><h3>Run</h3><p>Runs another test from this test. See <a href="http://concordion.org/dist/1.3.1/test-output/concordion/spec/concordion/command/run/Run.html">Run command</a>.</p><p>We are using this from our "index" pages, with a custom <code>RunOnceRunner</code> class to ensure each test is only run once, and the results cached.</p>
+<!-- <a concordion:run="concordion" href="whatever.html">Whatever</a> --><p>{:run: "whatever.html" ???}</p><p><a href="whatever.html">Whatever {:run:}</a></p><h3>Accessing contents of an HREF</h3><p>Allows you to put test data in a separate file and access it from a specification. This may indicate a "test smell". See <a href="http://concordion.org/dist/1.3.1/test-output/concordion/spec/concordion/command/execute/AccessToLinkHref.html">Access to a Link's HREF</a>.</p><div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 163 ms on 20-Jun-2015 at 19:08:59 NZST</div></div></body></html>
