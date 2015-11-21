@@ -3,12 +3,14 @@
 
 # Concordion Markdown
 
-This extension is in development, and the syntax is likely to change as we continue to evolve it.
+__Note:__ This extension is in development, and the syntax may change as we continue to evolve it.
 
 ## Philosophy
 [Markdown](https://daringfireball.net/projects/markdown/) provides an easy-to-read and easy-to-write syntax for converting plain text to structured XHTML.
 
-This Concordion Markdown extension allows you to write your [Concordion](http://concordion.org/) specification in the Markdown format, converting the Markdown to XHTML at runtime and running the resultant XHTML as a Concordion specification. 
+This Concordion Markdown extension allows you to write your [Concordion](http://concordion.org/) specification in the Markdown format, converting the Markdown to XHTML at runtime and running the resultant XHTML as a Concordion specification.
+
+The following assumes that you already understand Concordion. If not, please visit the [Concordion tutorial](http://concordion.org/Tutorial.html). 
 
 ### Use of inline links 
 
@@ -18,7 +20,7 @@ As an example:
 
 > `When Jane logs on, she is greeted with Hello Jane!`
 
-could be marked up as:
+is marked up as:
 
 > `When [Jane](- "#name") logs on, she is greeted with [Hello Jane!](- "?=greetingFor(#name)")`
  
@@ -117,4 +119,20 @@ will run the `Address.html` specification.
 
 For the full Grammar see the [Grammar Specification](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Grammar.html).
 
-The extension can also be [configured](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Configuration.html) to output the source HTML that is generated, and to extend the Markdown syntax.
+## Configuration
+The extension can also be [configured](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Configuration.html) to output the source HTML that is generated, and to add extensions to the Markdown language.
+
+## Editor Support
+### IDEA
+For IntelliJ IDEA, the official Markdown editor does not support tables. We recommend the [Markdown](https://plugins.jetbrains.com/plugin?id=5970) plugin, which uses the same underlying Pegdown library as this extension. After installing the plugin, you will need to configure the [settings](https://plugins.jetbrains.com/files/5970/screenshot_14568.png) to enable Tables and Strikethrough, plus any additional Markdown language extensions that you [configure](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Configuration.html).
+
+### Eclipse
+Plugins include:
+
+| Plugin | Has editor? | Has viewer? | Viewer supports tables and strikethrough |
+|--------|:-----------:|:-----------:|:----------------------------------------:|
+|Mylyn Wikitext Editor| Y | Y | N |
+|[Markdown Text Editor](https://marketplace.eclipse.org/content/markdown-text-editor)| Y | N | - |
+|[Github Flavored Markdown Viewer](https://marketplace.eclipse.org/content/github-flavored-markdown-viewer-plugin)| N | Y | Y |
+
+In order to get editing features and the ability to view with tables and strikethrough, you may want to install either of the first 2 editor plugins listed along with the viewer plugin.

@@ -1,15 +1,25 @@
-# Concordion Markdown
+# Concordion Markdown Grammar
 
-## concordion:set
+With the Markdown extension, Concordion commands are expressed using the format:
 
-The `concordion:set` command is expressed using the syntax: `[value](- "#varname")` or `[value](- '#varname')`
+`[value](- "command")`
+
+This format separates the instrumentation (`command`) from the specification (`value`). When viewed with a Markdown editor only the specification is shown, with the instrumentation displayed as a title when you hover over the `value`. The URL has to be set to `-`, otherwise it will be treated as a normal Markdown link.
+
+The Markdown extension converts the Markdown to HTML, with the instrumentation as attributes, prior to running Concordion with the HTML format specification as input.
+
+This specification describes the grammar for the Markdown instrumentation and checks that it generates correctly formatted instrumentation in HTML.   
+
+## Set Command
+
+The [concordion:set](http://concordion.org/Tutorial.html#set) command is expressed using the syntax: `[value](- "#varname")` or `[value](- '#varname')`
 
 which sets the variable named `varname` to the value `value`.
 
 You can also use the long-hand `[value](- 'c:set="#varname"')` variant if you wish. 
 
 <div class="example">
-  <h3>Example</h3>
+  <h3>Examples</h3>
   <table concordion:execute="#html=translate(#md)">
     <tr>
       <th concordion:set="#md">Markdown</th>
@@ -30,16 +40,16 @@ You can also use the long-hand `[value](- 'c:set="#varname"')` variant if you wi
   </table>
 </div>
 
-## concordion:assertEquals
+## AssertEquals command
 
-The `concordion:assertEquals` command is expressed using the syntax: `[value](- "?=expression")` or `[value](- '?=expression')`
+The [concordion:assertEquals](http://concordion.org/Tutorial.html#assertEquals) command is expressed using the syntax: `[value](- "?=expression")` or `[value](- '?=expression')`
 
-which asserts that the result of evaluating _expression_ equals the value _value_.
+which asserts that the result of evaluating `expression` equals the `value`.
 
 You can also use the long-hand `[value](- 'c:assertEquals="expression"')` variant if you wish. 
 
 <div class="example">
-  <h3>Example</h3>
+  <h3>Examples</h3>
   <table concordion:execute="#html=translate(#md)">
     <tr>
       <th concordion:set="#md">Markdown</th>
@@ -72,16 +82,16 @@ You can also use the long-hand `[value](- 'c:assertEquals="expression"')` varian
   </table>
 </div>
 
-## concordion:execute
+## Execute command
 
-The `concordion:execute` command is expressed using the syntax: `[value](- "expression")` or `[value](- 'expression')`
+The [concordion:execute](http://concordion.org/Tutorial.html#execute) command is expressed using the syntax: `[value](- "expression")` or `[value](- 'expression')`
 
-which executes the _expression_. 
+which executes the `expression` (as long as `expression` doesn't start with `c:` as described below). 
 
 You can also use the long-hand `[value](- 'c:execute="expression"')` variant if you wish. 
 
 <div class="example">
-  <h3>Example</h3>
+  <h3>Examples</h3>
   <table concordion:execute="#html=translate(#md)">
     <tr>
       <th concordion:set="#md">Markdown</th>
@@ -110,7 +120,7 @@ You can also use the long-hand `[value](- 'c:execute="expression"')` variant if 
   </table>
 </div>
 
-If the special variable `#TEXT` is used as a parameter within the _expression_, it is replaced by the _value_.
+If the special variable `#TEXT` is used as a parameter within the _expression_, Concordion will pass the _value_ as the parameter.
 
 <div class="example">
   <h3>Example</h3>
@@ -122,68 +132,6 @@ If the special variable `#TEXT` is used as a parameter within the _expression_, 
     <tr>
       <td>[09:00AM](- "setCurrentTime(#TEXT)")</td>
       <td>&lt;span concordion:execute="setCurrentTime(#TEXT)"&gt;09:00AM&lt;/span&gt;</td>
-    </tr>
-  </table>
-</div>
-
-## Multiple commands on a single line
-
-<div class="example">
-  <h3>Example</h3>
-  <table concordion:execute="#html=translate(#md)">
-    <tr>
-      <th concordion:set="#md">Markdown</th>
-      <th concordion:assertEquals="#html">Resulting HTML</th>
-    </tr>
-    <tr>
-      <td>[1](- "#x") + [2](- "#y") = [3](- "?=add(#x,#y)")</td>
-      <td>&lt;span concordion:set="#x"&gt;1&lt;/span&gt; + &lt;span concordion:set="#y"&gt;2&lt;/span&gt; = &lt;span concordion:assertEquals="add(#x,#y)"&gt;3&lt;/span&gt;</td>
-    </tr>
-    <tr>
-      <td>[3](- "?=three()"). [Fred](- "#name").</td>
-      <td>&lt;span concordion:assertEquals="three()"&gt;3&lt;/span&gt;. &lt;span concordion:set="#name"&gt;Fred&lt;/span&gt;.</td>
-    </tr>
-  </table>
-</div>
-
-
-## Non-Concordion links
-The set, assertEquals and execute commands require the link URL to be set to -. Links with other URLs are not modified. For example:
-
-<div class="example">
-  <h3>Example</h3>
-  <table concordion:execute="#html=translate(#md)">
-    <tr>
-      <th concordion:set="#md">Markdown</th>
-      <th concordion:assertEquals="#html">Resulting HTML</th>
-    </tr>
-    <tr>
-      <td>[John](- "#a")</td>
-      <td>&lt;span concordion:set="#a"&gt;John&lt;/span&gt;</td>
-    </tr>
-    <tr>
-      <td>[John](john.html)</td>
-      <td>&lt;a href="john.html"&gt;John&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <td>[John](john.html "Details about John")</td>
-      <td>&lt;a href="john.html" title="Details about John"&gt;John&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <td>[John](john.html "#More about John")</td>
-      <td>&lt;a href="john.html" title="#More about John"&gt;John&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <td>[John](-.html "Weird URL")</td>
-      <td>&lt;a href="-.html" title="Weird URL"&gt;John&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <td>[John](.)</td>
-      <td>&lt;a href="."&gt;John&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <td>[John](#)</td>
-      <td>&lt;a href="#"&gt;John&lt;/a&gt;</td>
     </tr>
   </table>
 </div>
@@ -207,8 +155,11 @@ Any URL that is written in italics will be set to an empty text value.
   </table>
 </div>
 
+## Execute on a table
+To run the [execute command on a table](http://concordion.org/Tutorial.html#executeTable), the execute command is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
 
-##Execute on a table
+The first table header row (with the execute command) is not shown on the output HTML.
+
 <div class="example">
   <h3>Example</h3>
   <table concordion:execute="#html=translate(#md)">
@@ -254,6 +205,10 @@ Any URL that is written in italics will be set to an empty text value.
 </div>
 
 ##Verify Rows
+To run the [concordion:verifyRows](http://concordion.org/Tutorial.html#verifyRows) command, the verifyRows command is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
+
+The first table header row (with the verifyRows command) is not shown on the output HTML.
+
 
 <div class="example">
   <h3>Example</h3>
@@ -340,6 +295,17 @@ The verifyRows command also allows a [strategy](http://concordion.github.io/conc
 </div>
 
 ## Run
+The [Run command](http://concordion.org/Tutorial.html#concordion:run) is expressed using the form:
+
+`[Display text](spec.html "c:run")`
+
+where `spec.html` is the name of the specification. Note that currently it has to be suffixed with `.html` rather than `.md`. 
+
+To specify a custom runner, use:
+
+`[Display text](spec.html "c:run=runnerName")`
+
+where `runnerName` is the fully qualified class name of the runner.
 
 <div class="example">
   <h3>Example</h3>
@@ -391,10 +357,28 @@ The verifyRows command also allows a [strategy](http://concordion.github.io/conc
   </table>
 </div>
 
-## Examples
+## Example Command
+_Since_: Concordion 2.0.0
+
+The [concordion:example](http://concordion.github.io/concordion/latest/spec/command/example/Examples.html) command is expressed using the form:
+
+`### [Header text](- "example name")`
+
+which creates:
+
+```
+<div concordion:example="example name">
+    <h3>Header text</h3>
+```    
+
+where `###` can be any level of [header](https://daringfireball.net/projects/markdown/syntax#header), using either atx or setext syntax.
+
+You can also apply an status of [ExpectedToFail](http://concordion.github.io/concordion/latest/spec/command/example/Examples.html#expectedToFail) or [Unimplemented](http://concordion.github.io/concordion/latest/spec/command/example/Examples.html#unimplemented) to the example, for example:
+
+`### [Header text](- "example name c:status=ExpectedToFail")`
 
 <div class="example">
-  <h3>Example</h3>
+  <h3>Examples</h3>
   <table concordion:execute="#html=translate(#md)">
     <tr>
       <th>Description</th>
@@ -427,6 +411,43 @@ x
       <td>
 <![CDATA[<div concordion:example="setext"> <h1>Example 3</h1> <p>x</p>]]>&lt;/div>   
       </td>
+    </tr>
+    <tr>
+      <td>Example with `ExpectedToFail` status</td>
+      <td>
+        <pre>      
+# [Example 1](- "incomplete c:status=ExpectedToFail")
+        </pre>
+      </td>
+      <td>
+<![CDATA[<div concordion:example="incomplete" concordion:status="ExpectedToFail"> <h1>Example 1</h1>]]>&lt;/div>
+      </td>
+    </tr>
+    
+  </table>
+</div>  
+
+### Closing an example
+An example is implicitly closed on any of these conditions:
+
+* another example starts, or
+* a header is encountered that is at a higher level than the example header (eg. the example is a `h3` and a `h2` header is encountered), or
+* the end of file is reached.
+
+To explicitly close an example, create a header with the example heading struck-through. For example:  
+
+    ## ~~My Example~~
+    
+will close the example with the heading `My Example`.
+
+
+<div class="example">
+  <h3>Examples</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th>Description</th>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
     </tr>
 
     <tr>
@@ -489,26 +510,14 @@ y
 &lt;p>y&lt;/p>     
       </td>
     </tr>
-
-    <tr>
-      <td>Example with `ExpectedToFail` status</td>
-      <td>
-        <pre>      
-# [Example 1](- "incomplete c:status=ExpectedToFail")
-        </pre>
-      </td>
-      <td>
-<![CDATA[<div concordion:example="incomplete" concordion:status="ExpectedToFail"> <h1>Example 1</h1>]]>&lt;/div>
-      </td>
-    </tr>
-
   </table>
 </div>
 
 ## Arbitrary Commands
+Any Concordion command can be included in the title of the Markdown link by using the prefix `c:`.
 
 <div class="example">
-  <h3>Example</h3>
+  <h3>Examples</h3>
   <table concordion:execute="#html=translate(#md)">
     <tr>
       <th concordion:set="#md">Markdown</th>
@@ -577,12 +586,74 @@ y
   </table>
 </div>
 
-    
-## Complex examples
+## Non-Concordion links
+The set, assertEquals and execute commands require the link URL to be set to `-`. Links with other URLs are not modified. For example:
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>[John](- "#a")</td>
+      <td>&lt;span concordion:set="#a"&gt;John&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](john.html)</td>
+      <td>&lt;a href="john.html"&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](john.html "Details about John")</td>
+      <td>&lt;a href="john.html" title="Details about John"&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](john.html "#More about John")</td>
+      <td>&lt;a href="john.html" title="#More about John"&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](-.html "Weird URL")</td>
+      <td>&lt;a href="-.html" title="Weird URL"&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](.)</td>
+      <td>&lt;a href="."&gt;John&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <td>[John](#)</td>
+      <td>&lt;a href="#"&gt;John&lt;/a&gt;</td>
+    </tr>
+  </table>
+</div>
+
+## Multiple commands on a single line
+Multiple commands on the same line are supported.
+
+<div class="example">
+  <h3>Examples</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>[1](- "#x") + [2](- "#y") = [3](- "?=add(#x,#y)")</td>
+      <td>&lt;span concordion:set="#x"&gt;1&lt;/span&gt; + &lt;span concordion:set="#y"&gt;2&lt;/span&gt; = &lt;span concordion:assertEquals="add(#x,#y)"&gt;3&lt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>[3](- "?=three()"). [Fred](- "#name").</td>
+      <td>&lt;span concordion:assertEquals="three()"&gt;3&lt;/span&gt;. &lt;span concordion:set="#name"&gt;Fred&lt;/span&gt;.</td>
+    </tr>
+  </table>
+</div>
 
 
-## Encode HTML
+## TODO  
 
+### Encode HTML
 
+### Support for Concordion commands in other namespaces, eg extensions
 
-    
+### Document embedded HTML for execute on a list and complex sentence structures 
+
