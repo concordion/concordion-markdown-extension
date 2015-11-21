@@ -60,22 +60,22 @@ A shorthand syntax is provided for the set, assert equals and execute commands.
 | Other commands | `[value](- "c:command")`  | `[is notified]`<br/>`(- "c:assertTrue=isNotified()")` |
 
 #### Table Commands
-The command to be run on the table is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
+The Github Flavored Markdown [tables](https://help.github.com/articles/github-flavored-markdown/#tables) syntax is used.
 
-The first table header row is not shown on the output HTML.
+The command to be run on the table is specified in the first table header column, followed by the command for that column (if any), with the commands for each column of the table specified in the table header.
 
 ##### Execute on a table
+The execute command is specified in the first table header column, followed by the command for that column (if any), with the commands for each column of the table specified in the relevant table header column.
 
-    |[_add_](- "#z=add(#x, #y)")|
-    |[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|
+    |[_add_](- "#z=add(#x, #y)")[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|
     | ---------------: | ---------------: | ---------------: |
     |                 1|                 0|                 1|
     |                 1|                -3|                -2|
 
 ##### Verify Rows
+The verifyRows command is specified in the first table header column, followed by the command for that column (if any), with the commands for each column of the table specified in the relevant table header column.
 
-    |[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()") |
-    |[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|
+    |[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()")[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|
     | --------------------------------- | ---------------------: |
     |                                100|                      15|
     |                                 20|                       2|

@@ -156,9 +156,7 @@ Any URL that is written in italics will be set to an empty text value.
 </div>
 
 ## Execute on a table
-To run the [execute command on a table](http://concordion.org/Tutorial.html#executeTable), the execute command is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
-
-The first table header row (with the execute command) is not shown on the output HTML.
+To run the [execute command on a table](http://concordion.org/Tutorial.html#executeTable), the execute command is specified in the first table header column, followed by the command for that column (if any), with the commands for each column of the table specified in the table header.
 
 <div class="example">
   <h3>Example</h3>
@@ -170,8 +168,7 @@ The first table header row (with the execute command) is not shown on the output
     <tr>
       <td>
 <pre>      
-|[_add_](- "#z=add(#x, #y)")|
-|[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|<br/>
+|[_add_](- "#z=add(#x, #y)")[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|<br/>
 | ---------------: | ---------------: | ---------------: |<br/>
 |                 1|                 0|                 1|<br/>
 |                 1|                -3|                -2|<br/>
@@ -204,11 +201,8 @@ The first table header row (with the execute command) is not shown on the output
   </table>
 </div>
 
-##Verify Rows
-To run the [concordion:verifyRows](http://concordion.org/Tutorial.html#verifyRows) command, the verifyRows command is specified in the first table header row, with the commands for each column of the table specified in the second table header row.
-
-The first table header row (with the verifyRows command) is not shown on the output HTML.
-
+## Verify Rows
+To run the [concordion:verifyRows](http://concordion.org/Tutorial.html#verifyRows) command, the verifyRows command is specified in the first table header column, followed by the command for that column (if any), with the commands for each column of the table specified in the table header.
 
 <div class="example">
   <h3>Example</h3>
@@ -220,8 +214,7 @@ The first table header row (with the verifyRows command) is not shown on the out
     <tr>
       <td>
         <pre>      
-|[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()") |<br/>
-|[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|<br/>
+|[_check GST_ ](- "c:verifyRows=#detail:getInvoiceDetails()")[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|<br/>
 | --------------------------------- | ---------------------: |<br/>
 |                                100|                      15|<br/>
 |                                500|                      75|<br/>
@@ -268,8 +261,7 @@ The verifyRows command also allows a [strategy](http://concordion.github.io/conc
     <tr>
       <td>
         <pre>      
-|[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails() c:matchStrategy=BestMatch") |<br/>
-|[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|<br/>
+|[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails() c:matchStrategy=BestMatch")[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|<br/>
 | --------------------------------- | ---------------------: |<br/>
 |                                100|                      15|<br/>
         </pre>

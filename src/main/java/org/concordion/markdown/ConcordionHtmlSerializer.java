@@ -66,18 +66,17 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             Node header = firstChildOf(tableNode);
             if (firstChildIsInstanceOf(header, TableRowNode.class)) {
                 Node row = firstChildOf(header);
-                if (hasExactlyOneChild(row) && firstChildIsInstanceOf(row, TableCellNode.class)) {
+                if (firstChildIsInstanceOf(row, TableCellNode.class)) {
                     Node cell = firstChildOf(row);
                     if (firstChildIsInstanceOf(cell, ExpLinkNode.class)) {
                         ExpLinkNode linkNode = (ExpLinkNode) firstChildOf(cell);
                         String text = printChildrenToString(linkNode);
                         pendingCommand = concordionCommandParser.getCommandFor(linkNode, text);
-                        header.getChildren().remove(row);
                     }
                 }
             }
         }
-        // Call the super visit(TableNode) method and override printIndentedTag() below, so that the concordion command is added to the tag.
+        // Call the super visit(TableNode) method and override printIndentedTag() below, so that the concordion command is added to the <table> tag.
         super.visit(tableNode);
     }
 
@@ -196,10 +195,6 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     
     private String namespaced(String command) {
         return targetConcordionNamespacePrefix + ":" + command;
-    }
-
-    private boolean hasExactlyOneChild(Node node) {
-        return node.getChildren().size() == 1;
     }
 
     private Node firstChildOf(Node node) {
