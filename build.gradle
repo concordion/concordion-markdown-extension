@@ -33,3 +33,7 @@ dependencies {
     compile 'org.pegdown:pegdown:1.6.0'
 }
 
+test {
+    systemProperties['concordion.output.dir'] = "${reporting.baseDir}"
+    include '**/*Markdown.*'
+}
