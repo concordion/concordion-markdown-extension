@@ -35,5 +35,5 @@ dependencies {
 
 test {
     systemProperties['concordion.output.dir'] = "${reporting.baseDir}"
-    include '**/*Markdown.*'
+//    include '**/*Markdown.*'
 }

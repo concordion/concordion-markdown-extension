@@ -1,9 +1,6 @@
 # Concordion Command Examples
 
-
-
-| [_add_](- "#z=add(#x,#y)") |
-| [Number 1](- "#x") | [Number 2](- "#y") | [Result](- "?=#z") |
+| [_add_](- "#z=add(#x,#y)")[Number 1](- "#x") | [Number 2](- "#y") | [Result](- "?=#z") |
 | --------------: | --------------: | -------------: |
 |               1 |               0 |              1 |
 |               1 |              -3 |             -2 |
@@ -16,8 +13,7 @@ The collection must be sorted and implement `java.lang.Iterable`.
 It may be necessary to sort the collection in the fixture if it is not already sorted.
 
 #### [Verify Rows Example](- "verifyRows")
-|[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()")
-| [Sub Total](- "?=#detail.subTotal") | [GST](- "?=#detail.gst") |
+| [_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()")[Sub Total](- "?=#detail.subTotal") | [GST](- "?=#detail.gst") |
 | ----------------------------------: | -----------------------: |
 |                                 100 |                       15 |
 |                                 500 |                       75 |

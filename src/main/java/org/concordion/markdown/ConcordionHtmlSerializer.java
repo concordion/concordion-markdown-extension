@@ -18,10 +18,10 @@ import org.pegdown.ast.TableRowNode;
 public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     private static final String URL_FOR_CONCORDION = "-";
     private static final String SOURCE_CONCORDION_NAMESPACE_PREFIX = "c";
-    private final ConcordionCommandParser concordionCommandParser; 
+    private final ConcordionStatementParser statementParser; 
     private final String targetConcordionNamespacePrefix;
     
-    private ConcordionCommand pendingCommand = null;
+    private ConcordionStatement pendingCommand = null;
     private boolean inHeaderNode;
     private boolean inExample;
     private String currentExampleHeading;
@@ -30,7 +30,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     public ConcordionHtmlSerializer(String targetConcordionNamespacePrefix) {
         super(new RunCommandLinkRenderer(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix));
         this.targetConcordionNamespacePrefix = targetConcordionNamespacePrefix;
-        concordionCommandParser = new ConcordionCommandParser(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix);
+        statementParser = new ConcordionStatementParser(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix);
     }
    
 //=======================================================================================================================
@@ -47,7 +47,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
             if (inHeaderNode || inTableHeader) {
                 printer.printEncoded(text);
             } else {
-                ConcordionCommand command = concordionCommandParser.getCommandFor(node, text);
+                ConcordionStatement command = statementParser.parse(node.title, text);
                 printConcordionCommandElement(command);
             }
         } else {
@@ -71,7 +71,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                     if (firstChildIsInstanceOf(cell, ExpLinkNode.class)) {
                         ExpLinkNode linkNode = (ExpLinkNode) firstChildOf(cell);
                         String text = printChildrenToString(linkNode);
-                        pendingCommand = concordionCommandParser.getCommandFor(linkNode, text);
+                        pendingCommand = statementParser.parse(linkNode.title, text);
                     }
                 }
             }
@@ -96,7 +96,8 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         if (inTableHeader) {
             for (Node child : node.getChildren()) {
                 if (child instanceof ExpLinkNode) {
-                    pendingCommand = concordionCommandParser.getCommandFor((ExpLinkNode) child, "");
+                    ExpLinkNode linkNode = (ExpLinkNode) child;
+                    pendingCommand = statementParser.parse(linkNode.title, "");
                 }
             }
         }
@@ -122,7 +123,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                     String expression = ((ExpLinkNode)child).title;
                     currentExampleHeading = printChildrenToString(node);
                     currentExampleLevel = node.getLevel();
-                    ConcordionCommand command = concordionCommandParser.splitAttributes(expression, "example", currentExampleHeading);
+                    ConcordionStatement command = statementParser.parseCommandValueAndAttributes("example", expression);
                     printer.println();
                     printer.print("<div");
                     printConcordionCommand(command);
@@ -169,7 +170,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
 
 //=======================================================================================================================
 // support methods    
-    private void printConcordionCommandElement(ConcordionCommand command) {
+    private void printConcordionCommandElement(ConcordionStatement command) {
         printer.print('<').print("span");
         printConcordionCommand(command);
         printer.print('>');
@@ -184,8 +185,8 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         }
     }
 
-    private void printConcordionCommand(ConcordionCommand command) {
-        printAttribute(namespaced(command.command.name), command.command.value);
+    private void printConcordionCommand(ConcordionStatement command) {
+        printAttribute(command.command.name, command.command.value);
         
         List<Attribute> attributes = command.attributes;
         for (Attribute attribute : attributes) {
@@ -193,10 +194,6 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
         }
     }
     
-    private String namespaced(String command) {
-        return targetConcordionNamespacePrefix + ":" + command;
-    }
-
     private Node firstChildOf(Node node) {
         return node.getChildren().get(0);
     }
