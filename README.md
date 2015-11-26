@@ -68,9 +68,9 @@ The command to be run on the table is specified in the first table header column
 The execute command is specified in the first table header column, followed by the command for that column (if any), with the commands for each column of the table specified in the relevant table header column.
 
     |[_add_](- "#z=add(#x, #y)")[Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|
-    | ---------------: | ---------------: | ---------------: |
-    |                 1|                 0|                 1|
-    |                 1|                -3|                -2|
+    | ------------------------------------------: | ---------------: | ---------------: |
+    |                                            1|                 0|                 1|
+    |                                            1|                -3|                -2|
 
 ##### Verify Rows
 The verifyRows command is specified in the first table header column, followed by the command for that column (if any), with the commands for each column of the table specified in the relevant table header column.
@@ -82,6 +82,8 @@ The verifyRows command is specified in the first table header column, followed b
 
 
 #### Example Command
+Concordion 2.0 introduces a new [example command](http://concordion.github.io/concordion/latest/spec/command/example/Examples.html).
+
 Adding an inline link to a header changes the header into an example command. You can use either the Atx-style or Setext-style headers. For example:
 
     ## [Example 1](- "exampleName")
@@ -136,3 +138,8 @@ Plugins include:
 |[Github Flavored Markdown Viewer](https://marketplace.eclipse.org/content/github-flavored-markdown-viewer-plugin)| N | Y | Y |
 
 In order to get editing features and the ability to view with tables and strikethrough, you may want to install either of the first 2 editor plugins listed along with the viewer plugin.
+
+### Github 
+The syntax used for this extension is compatible with Github Flavored Markdown, allowing specifications to be edited and previewed in the Github editor.
+
+_Please let us know what editor you are using, and what support you get from it. Either edit this page and raise a pull request or create an issue on this project to let us know. Thanks :)_
