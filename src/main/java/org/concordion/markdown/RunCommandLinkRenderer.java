@@ -27,7 +27,7 @@ public class RunCommandLinkRenderer extends LinkRenderer {
                 runner = "concordion";
             }
             
-            return rendering.withAttribute(concordionNamespacePrefix + ":" + "run", runner);
+            return rendering.withAttribute(concordionNamespacePrefix + ":run", runner);
         } 
         return super.render(node, text);
     }

@@ -13,8 +13,8 @@ import org.concordion.markdown.MarkdownParser;
 
 public class MarkdownClassPathSource implements Source {
 
+    private static final String CONCORDION_NAMESPACE_PREFIX = "concordion";
     private final Source classPathSource = new ClassPathSource();
-    private String concordionNamespacePrefix = "concordion";
     private Target sourceHtmlTarget;
     private int pegdownExtensions;
     
@@ -23,7 +23,7 @@ public class MarkdownClassPathSource implements Source {
         if (resource.getName().endsWith(MarkdownExtension.MARKDOWN_FILE_EXTENSION)) {
             String markdown = read(resource);
             MarkdownParser markdownParser = new MarkdownParser(pegdownExtensions);
-            String html = markdownParser.markdownToHtml(markdown, concordionNamespacePrefix);
+            String html = markdownParser.markdownToHtml(markdown, CONCORDION_NAMESPACE_PREFIX);
             html = wrapBody(html);
     
             if (sourceHtmlTarget != null) {
@@ -55,7 +55,7 @@ public class MarkdownClassPathSource implements Source {
     }
 
     private String wrapBody(String body) {
-        return "<html xmlns:" + concordionNamespacePrefix + "='http://www.concordion.org/2007/concordion'><body>" + body + "</body></html>";
+        return "<html xmlns:" + CONCORDION_NAMESPACE_PREFIX + "='http://www.concordion.org/2007/concordion'><body>" + body + "</body></html>";
     }
 
     @Override

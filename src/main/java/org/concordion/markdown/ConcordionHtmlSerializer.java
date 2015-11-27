@@ -19,7 +19,6 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     private static final String URL_FOR_CONCORDION = "-";
     private static final String SOURCE_CONCORDION_NAMESPACE_PREFIX = "c";
     private final ConcordionStatementParser statementParser; 
-    private final String targetConcordionNamespacePrefix;
     
     private ConcordionStatement pendingCommand = null;
     private boolean inHeaderNode;
@@ -29,7 +28,6 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     
     public ConcordionHtmlSerializer(String targetConcordionNamespacePrefix) {
         super(new RunCommandLinkRenderer(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix));
-        this.targetConcordionNamespacePrefix = targetConcordionNamespacePrefix;
         statementParser = new ConcordionStatementParser(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix);
     }
    

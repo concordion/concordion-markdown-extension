@@ -19,11 +19,10 @@ public class MarkdownParser {
     }
 
     public String markdownToHtml(String markdown, String concordionNamespacePrefix) {
-        Parser parser = Parboiled.createParser(Parser.class, Extensions.TABLES | Extensions.STRIKETHROUGH | pegdownExtensions, 5000L, Parser.DefaultParseRunnerProvider); //, plugins);
+        Parser parser = Parboiled.createParser(Parser.class, Extensions.TABLES | Extensions.STRIKETHROUGH | pegdownExtensions, 5000L, Parser.DefaultParseRunnerProvider);
         PegDownProcessor processor = new PegDownProcessor();
         RootNode root = parser.parse(processor.prepareSource(markdown.toCharArray()));
         ToHtmlSerializer serializer = new ConcordionHtmlSerializer(concordionNamespacePrefix);
-        String html = serializer.toHtml(root);
-        return html;
+        return serializer.toHtml(root);
     }
 }

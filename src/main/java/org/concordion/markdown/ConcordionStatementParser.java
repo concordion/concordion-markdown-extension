@@ -5,8 +5,9 @@ import java.util.regex.Pattern;
 
 public class ConcordionStatementParser {
 
-    private String targetPrefix;
+    private static final Pattern COMMAND_VALUE_PATTERN = Pattern.compile("(.*?)(?:\\s+\\S+\\=\\S+\\s*)*");
     private final String sourcePrefix;
+    private final String targetPrefix;
 
     public ConcordionStatementParser(String sourceConcordionNamespacePrefix, String targetConcordionNamespacePrefix) {
         this.sourcePrefix = sourceConcordionNamespacePrefix + ":";
@@ -40,13 +41,12 @@ public class ConcordionStatementParser {
     }
 
     public ConcordionStatement parseCommandValueAndAttributes(String commandName, String commandValueAndAttributes) {
-        Pattern pattern = Pattern.compile("(.*?)(?:\\s+\\S+\\=\\S+\\s*)*");
-        Matcher matcher = pattern.matcher(commandValueAndAttributes);
-        if (!matcher.matches()) {
+        Matcher commandValueMatcher = COMMAND_VALUE_PATTERN.matcher(commandValueAndAttributes);
+        if (!commandValueMatcher.matches()) {
             throw new IllegalStateException(String.format("Unexpected match failure for ''", commandValueAndAttributes));
         }
         
-        String match = matcher.group(1);
+        String match = commandValueMatcher.group(1);
         String commandValue = unquote(match);
         ConcordionStatement statement = new ConcordionStatement(targetPrefix + commandName, commandValue);
         
