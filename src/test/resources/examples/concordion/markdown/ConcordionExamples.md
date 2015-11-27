@@ -1,3 +1,6 @@
+Concatenating [a](- "#c1"), [&](- "#c2") and [b](- "#c3") results in [a&b](- "?=concat(#c1, #c2, #c3)")
+
+
 # Concordion Command Examples
 
 | [_add_](- "#z=add(#x,#y)")[Number 1](- "#x") | [Number 2](- "#y") | [Result](- "?=#z") |

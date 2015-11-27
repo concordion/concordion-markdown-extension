@@ -76,8 +76,8 @@ You can also use the long-hand `[value](- 'c:assertEquals="expression"')` varian
       <td>&lt;span concordion:assertEquals="greeting"&gt;Hello&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[Yo](- 'c:assertEquals="greet()"')</td>
-      <td>&lt;span concordion:assertEquals="greet()"&gt;Yo&lt;/span&gt;</td>
+      <td>[Yo](- 'c:assertEquals="greet(#firstName, #lastName)"')</td>
+      <td>&lt;span concordion:assertEquals="greet(#firstName, #lastName)"&gt;Yo&lt;/span&gt;</td>
     </tr>
   </table>
 </div>
@@ -408,11 +408,11 @@ x
       <td>Example with `ExpectedToFail` status</td>
       <td>
         <pre>      
-# [Example 1](- "incomplete c:status=ExpectedToFail")
+# [Example 1](- "incomplete example c:status=ExpectedToFail")
         </pre>
       </td>
       <td>
-<![CDATA[<div concordion:example="incomplete" concordion:status="ExpectedToFail"> <h1>Example 1</h1>]]>&lt;/div>
+<![CDATA[<div concordion:example="incomplete example" concordion:status="ExpectedToFail"> <h1>Example 1</h1>]]>&lt;/div>
       </td>
     </tr>
     
@@ -619,7 +619,8 @@ The set, assertEquals and execute commands require the link URL to be set to `-`
   </table>
 </div>
 
-## Multiple commands on a single line
+## Additional checks
+### Multiple commands on a single line
 Multiple commands on the same line are supported.
 
 <div class="example">
@@ -641,9 +642,22 @@ Multiple commands on the same line are supported.
 </div>
 
 
-## TODO  
+### HTML entities
+HTML entities in the text value are encoded correctly.
 
-### Encode HTML
+<div class="example">
+  <h3>Examples</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>[&amp; &lt; 3](- "#x")</td>
+      <td>&lt;span concordion:set="#x"&gt;&amp;amp; &amp;lt; 3&lt;/span&gt;</td>
+    </tr>
+  </table>
+</div>
 
 ### Support for Concordion commands in other namespaces, eg extensions
 

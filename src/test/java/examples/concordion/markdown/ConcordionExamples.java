@@ -80,4 +80,8 @@ public class ConcordionExamples {
     public String getBrowserDetails() {
         return "Firefox 3.6";
     }
+    
+    public String concat(String s1, String s2, String s3) {
+        return s1 + s2 + s3;
+    }
 }
