@@ -1,12 +1,23 @@
 Concatenating [a](- "#c1"), [&](- "#c2") and [b](- "#c3") results in [a&b](- "?=concat(#c1, #c2, #c3)")
 
 
+My browser is [Firefox 3.6][browser]
+
+[browser]: - "?=getBrowserDetails()"
+
 # Concordion Command Examples
 
 | [_add_](- "#z=add(#x,#y)")[Number 1](- "#x") | [Number 2](- "#y") | [Result](- "?=#z") |
 | --------------: | --------------: | -------------: |
 |               1 |               0 |              1 |
 |               1 |              -3 |             -2 |
+
+| [add][] [Number 1](- "#x") | [Number 2](- "#y") | [Result](- "?=#z") |
+| ---------------------------: | --------------: | -------------: |
+|                            1 |               0 |              1 |
+|                            1 |              -3 |             -2 |
+
+[add]: - "#z=add(#x,#y)"
 
 ### Verify Rows
 
@@ -16,7 +27,7 @@ The collection must be sorted and implement `java.lang.Iterable`.
 It may be necessary to sort the collection in the fixture if it is not already sorted.
 
 #### [Verify Rows Example](- "verifyRows")
-| [_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()")[Sub Total](- "?=#detail.subTotal") | [GST](- "?=#detail.gst") |
+| [check GST](- "c:verifyRows=#detail:getInvoiceDetails()") [Sub Total](- "?=#detail.subTotal") | [GST](- "?=#detail.gst") |
 | ----------------------------------: | -----------------------: |
 |                                 100 |                       15 |
 |                                 500 |                       75 |

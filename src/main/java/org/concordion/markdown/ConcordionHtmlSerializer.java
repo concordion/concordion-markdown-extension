@@ -6,6 +6,8 @@ import org.pegdown.ToHtmlSerializer;
 import org.pegdown.ast.ExpLinkNode;
 import org.pegdown.ast.HeaderNode;
 import org.pegdown.ast.Node;
+import org.pegdown.ast.RefLinkNode;
+import org.pegdown.ast.ReferenceNode;
 import org.pegdown.ast.RootNode;
 import org.pegdown.ast.StrikeNode;
 import org.pegdown.ast.SuperNode;
@@ -36,23 +38,55 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     @Override
     public void visit(ExpLinkNode node) {
         if (URL_FOR_CONCORDION.equals(node.url)) {
-            String text = printChildrenToString(node);
-            // Some commands only require an expression and don't need a text value to be passed. However, Markdown links always require text for the URL.
-            // Any URL that is written in italics will be set to an empty text value.
-            if (text.startsWith("<em>")) {
-                text = "";
-            };
-            if (inHeaderNode || inTableHeader) {
-                printer.printEncoded(text);
-            } else {
-                ConcordionStatement command = statementParser.parse(node.title, text);
-                printConcordionCommandElement(command);
-            }
+            LinkNode linkNode = toLinkNode(node);
+            visit(linkNode);
         } else {
             super.visit(node);
         }
     }
+
+    @Override
+    public void visit(RefLinkNode node) {
+        LinkNode linkNode = toLinkNode(node);
+        if (URL_FOR_CONCORDION.equals(linkNode.getUrl())) {
+            visit(linkNode);
+        } else {
+            super.visit(node);
+        }
+    }
+
+    private LinkNode toLinkNode(RefLinkNode node) {
+        String text = printChildrenToString(node);
+        String key = node.referenceKey != null ? printChildrenToString(node.referenceKey) : text;
+        ReferenceNode refNode = references.get(normalize(key));
+        String title = null;
+        String url = null;
+        if (refNode != null) {
+            title = refNode.getTitle();
+            url = refNode.getUrl();
+        }
+        LinkNode linkNode = new LinkNode(url, title, text);
+        return linkNode;
+    }
+
+    private LinkNode toLinkNode(ExpLinkNode node) {
+        return new LinkNode(node.url, node.title, printChildrenToString(node));
+    }
     
+    private void visit(LinkNode linkNode) {
+        // Some commands only require an expression and don't need a text value to be passed. However, Markdown links always require link text.
+        // Any text value that starts with italics will be set to an empty text value.
+        String text = linkNode.getText();
+        if (text.startsWith("<em>")) {
+            text = "";
+        };
+        if (inHeaderNode || inTableHeader) {
+            printer.printEncoded(text);
+        } else {
+            ConcordionStatement command = statementParser.parse(linkNode.getTitle(), text);
+            printConcordionCommandElement(command);
+        }
+    }
 //=======================================================================================================================
 // concordion:execute on a table and concordion:verifyRows
 // The concordion:execute command is in the first (and only) cell of the first header row.
@@ -66,14 +100,23 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                 Node row = firstChildOf(header);
                 if (firstChildIsInstanceOf(row, TableCellNode.class)) {
                     Node cell = firstChildOf(row);
+                    LinkNode linkNode = null;
                     if (firstChildIsInstanceOf(cell, ExpLinkNode.class)) {
-                        ExpLinkNode linkNode = (ExpLinkNode) firstChildOf(cell);
-                        String text = printChildrenToString(linkNode);
-                        pendingCommand = statementParser.parse(linkNode.title, text);
+                        linkNode = toLinkNode((ExpLinkNode) firstChildOf(cell));
+                    } else if (firstChildIsInstanceOf(cell, RefLinkNode.class)) {
+                        linkNode = toLinkNode((RefLinkNode) firstChildOf(cell));
+                    }
+                    if (linkNode != null) {
+                        if (linkNode.getTitle() == null) {
+                            throw new IllegalStateException(String.format("No title found for link node '%s'", linkNode.getText()));
+                        }
+                        pendingCommand = statementParser.parse(linkNode.getTitle(), linkNode.getText());
+                        cell.getChildren().remove(0);
                     }
                 }
             }
         }
+
         // Call the super visit(TableNode) method and override printIndentedTag() below, so that the concordion command is added to the <table> tag.
         super.visit(tableNode);
     }
@@ -96,6 +139,9 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                 if (child instanceof ExpLinkNode) {
                     ExpLinkNode linkNode = (ExpLinkNode) child;
                     pendingCommand = statementParser.parse(linkNode.title, "");
+                } else if (child instanceof RefLinkNode) {
+                    LinkNode linkNode = toLinkNode((RefLinkNode) child);
+                    pendingCommand = statementParser.parse(linkNode.getTitle(), "");
                 }
             }
         }
