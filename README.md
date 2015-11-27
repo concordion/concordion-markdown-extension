@@ -38,7 +38,12 @@ When the specification is run with a fixture that implements the `greetingFor(St
 > ![Markdown Example Output](img/IntroOutput.png)
 
 ## Installation
-TODO
+The extension will be available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-markdown-extension%7C1.1.2%7Cjar).
+
+It is easiest to install if you are using a dependency management system such as [Gradle](http://gradle.org/) or [Maven](https://maven.apache.org/). 
+
+If you are downloading the jar and adding it to the class path yourself, make sure you also [install Pegdown](https://github.com/sirthias/pegdown#installation) version 1.6.0, and its dependencies.
+
 
 ## Basic Grammar
 
@@ -48,6 +53,14 @@ Concordion commands are differentiated from other Markdown links by using the va
 or
 
     [value](- 'command')
+
+Alternatively, reference style links are supported, for example:
+
+    [value][]
+    
+    [value]: - command
+
+Reference style links can help improve readability of the Markdown source, especially for table headers or lengthy commands. 
 
 ### Commands
 A shorthand syntax is provided for the set, assert equals and execute commands.
@@ -72,14 +85,28 @@ The execute command is specified in the first table header column, followed by t
     |                                            1|                 0|                 1|
     |                                            1|                -3|                -2|
 
+We could use reference-style links for one or more of the links to improve readability of the Markdown source: 
+
+    |[_add_][][Number 1](- "#x")|[Number 2](- "#y")|[Result](- "?=#z")|
+    | ------------------------: | ---------------: | ---------------: |
+    |                          1|                 0|                 1|
+    |                          1|                -3|                -2|
+
+[_add_]: - "#z=add(#x, #y)"
+
 ##### Verify Rows
 The verifyRows command is specified in the first table header column, followed by the command for that column (if any), with the commands for each column of the table specified in the relevant table header column.
 
-    |[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails()")[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|
-    | --------------------------------- | ---------------------: |
-    |                                100|                      15|
-    |                                 20|                       2|
+    |[_check GST_][][Sub Total][]|[GST][]|
+    | -------------------------- | ----: |
+    |                         100|     15|
+    |                          20|      2|
 
+[_check GST_]: - "c:verifyRows=#detail:getInvoiceDetails()"
+[Sub Total]:   - "?=#detail.subTotal"
+[GST]:         - "?=#detail.gst"
+
+Note that reference-style links have been used to improve the readability of this scenario. Inline links are equally valid. 
 
 #### Example Command
 Concordion 2.0 introduces a new [example command](http://concordion.github.io/concordion/latest/spec/command/example/Examples.html).

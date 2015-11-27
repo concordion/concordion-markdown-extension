@@ -27,11 +27,15 @@ The collection must be sorted and implement `java.lang.Iterable`.
 It may be necessary to sort the collection in the fixture if it is not already sorted.
 
 #### [Verify Rows Example](- "verifyRows")
-| [check GST](- "c:verifyRows=#detail:getInvoiceDetails()") [Sub Total](- "?=#detail.subTotal") | [GST](- "?=#detail.gst") |
-| ----------------------------------: | -----------------------: |
-|                                 100 |                       15 |
-|                                 500 |                       75 |
-|                                  20 |                        3 |
+|[_check GST_][][Sub Total][]|[GST][]|
+| -------------------------: | ----: |
+|                        100 |    15 |
+|                        500 |    75 |
+|                         20 |     3 |
+
+[_check GST_]: - "c:verifyRows=#detail:getInvoiceDetails()"
+[Sub Total]:   - "?=#detail.subTotal"
+[GST]:         - "?=#detail.gst"
 
 #### ~~Verify Rows Example~~
 
