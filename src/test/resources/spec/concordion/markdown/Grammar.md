@@ -1,22 +1,22 @@
 # Concordion Markdown Grammar
 
-With the Markdown extension, Concordion commands are expressed using as Markdown links, for example:
+With the Markdown extension, Concordion commands are expressed using Markdown links, for example:
 
 `[value](- "command")`
 
 This format separates the instrumentation (`command`) from the specification (`value`). When viewed with a Markdown editor only the specification is shown, with the instrumentation displayed as a title when you hover over the `value`. The URL has to be set to `-`, otherwise it will be treated as a normal Markdown link.
 
-The Markdown extension converts the Markdown to HTML, with the instrumentation as attributes, prior to running Concordion with the HTML format specification as input.
+The Markdown extension converts the Markdown to XHTML, with the instrumentation as attributes, prior to running Concordion with the XHTML format specification as input.
 
-This specification describes the grammar for the Markdown instrumentation and checks that it generates correctly formatted instrumentation in HTML.   
+This specification describes the grammar for the Markdown instrumentation and checks that it generates correctly formatted instrumentation in XHTML.   
 
 ## Link Styles
 The extension supports both inline links and reference links.
 
-In both styles, the text `value` is delimited by [square brackets].
+In both styles, the text `value` is delimited by square brackets.
 
 ### Inline Links
-Inline links have a set of regular parentheses immediately after the link text’s closing square bracket. Inside the parentheses, are a `-` for the URL followed by a space followed by the command, surrounded in quotes. For example:
+Inline links have a set of regular parentheses immediately after the link text’s closing square bracket. Inside the parentheses are a `-` for the URL followed by a space followed by the command, surrounded in quotes (either single or double quotes are allowed). For example:
 
 <div class="example">
   <h3>Examples</h3>
@@ -35,7 +35,7 @@ Inline links have a set of regular parentheses immediately after the link text�
 ### Reference Links
 As an alternative to inline links, reference links can be used. This can help make the Markdown source more readable, especially for table headers or lengthy commands.
 
-Reference links have a set of square brackets immediately after the link text’s closing square bracket. Then, anywhere in the document, you define the link text. See the [Markdown syntax page](https://daringfireball.net/projects/markdown/syntax#link) for more details. 
+Reference links have a set of square brackets immediately after the link text’s closing square bracket. The link definition can then be placed anywhere in the document. See the [Markdown syntax page](https://daringfireball.net/projects/markdown/syntax#link) for more details. 
 
 <div class="example">
   <h3>Examples</h3>
@@ -81,7 +81,7 @@ The [concordion:set](http://concordion.org/Tutorial.html#set) command is express
 
 which sets the variable named `varname` to the value `value`.
 
-You can also use the long-hand `[value](- "c:set=#varname")` variant if you wish. 
+You can also use the long-hand `[value](- "c:set=#varname")` variant if you wish. (Note that, unlike HTML, the `#varname` value is not enclosed in additional quotes.)
 
 <div class="example">
   <h3>Examples</h3>
@@ -204,7 +204,7 @@ If the special variable `#TEXT` is used as a parameter within the _expression_, 
 ### Expression-only commands 
 Some commands only require an expression and don't need a text value to be passed. However, Markdown links always require link text.
 
-Any text value that starts with italics will be set to an empty text value.
+Any text value that starts with italics will be set to an empty text value in the output specification.
 
 <div class="example">
   <h3>Example</h3>
@@ -596,11 +596,11 @@ x
       <td>Example with `ExpectedToFail` status</td>
       <td>
         <pre>      
-# [Example 1](- "incomplete example c:status=ExpectedToFail")
+## [Cancel Transaction](- "cancel tx c:status=ExpectedToFail")
         </pre>
       </td>
       <td>
-<![CDATA[<div concordion:example="incomplete example" concordion:status="ExpectedToFail"> <h1>Example 1</h1>]]>&lt;/div>
+<![CDATA[<div concordion:example="cancel tx" concordion:status="ExpectedToFail"> <h1>Cancel Transaction</h1>]]>&lt;/div>
       </td>
     </tr>
     
@@ -608,6 +608,8 @@ x
 </div>  
 
 #### Closing an example
+The example block continues until it is closed either implicitly or explicitly.
+
 An example is implicitly closed on any of these conditions:
 
 * another example starts, or
@@ -695,6 +697,8 @@ y
 
 ### Arbitrary Commands
 Any Concordion command can be included in the title of the Markdown link by using the prefix `c:`.
+
+Note that, unlike HTML format specifications, the expression is not enclosed in additional quotes. Neither are the value of any additional parameters passed to the command.
 
 <div class="example">
   <h3>Examples</h3>
