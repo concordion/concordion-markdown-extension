@@ -154,6 +154,9 @@ will run the `Address.html` specification.
 ### Further details
 See the [Grammar Specification](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Grammar.html) for the full Grammar.
 
+## Examples
+See the `examples.concordion.markdownExamples` [specifications](src/test/resources/examples/concordion/markdownExamples) and [fixtures](src/test/java/examples/concordion/markdownExamples). These are based on the examples from the Concordion [tutorial](http://concordion.org/Tutorial.html).
+
 ## Configuration
 The extension can also be [configured](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Configuration.html) to output the source HTML that is generated, and to add extensions to the Markdown language.
 
