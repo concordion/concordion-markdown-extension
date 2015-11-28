@@ -8,7 +8,11 @@ ext {
             id 'nigel.charman.nz'
             name 'Nigel Charman'
             roles { role 'Project owner' }
-            url 'http://gplus.to/NigelCharman'
+        }
+        developer {
+            id 'johnbhurst'
+            name 'John Hurst'
+            roles { role 'Developer' }
         }
     }
     inceptionYear = '2015'
