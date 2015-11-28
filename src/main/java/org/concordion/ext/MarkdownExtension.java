@@ -1,9 +1,12 @@
 package org.concordion.ext;
 
+import java.io.File;
+
 import org.concordion.api.SpecificationLocator;
 import org.concordion.api.Target;
 import org.concordion.api.extension.ConcordionExtender;
 import org.concordion.api.extension.ConcordionExtension;
+import org.concordion.internal.FileTarget;
 
 public class MarkdownExtension implements ConcordionExtension {
 
@@ -21,6 +24,10 @@ public class MarkdownExtension implements ConcordionExtension {
     public MarkdownExtension withSourceHtmlSavedTo(Target target) {
         source.setSourceHtmlTarget(target);
         return this;
+    }
+
+    public MarkdownExtension withSourceHtmlSavedTo(String dirname) {
+        return withSourceHtmlSavedTo(new FileTarget(new File(dirname)));
     }
 
     public MarkdownExtension withPegdownExtensions(int extensions) {
