@@ -3,7 +3,7 @@
 
 # Concordion Markdown
 
-__Note:__ This extension is in development, and the syntax may change as we continue to evolve it.
+__Note:__ This extension is in active development, and the syntax may change as we continue to evolve it.
 
 ## Philosophy
 [Markdown](https://daringfireball.net/projects/markdown/) provides an easy-to-read and easy-to-write syntax for converting plain text to structured XHTML.
@@ -47,7 +47,7 @@ If you are downloading the jar and adding it to the class path yourself, make su
 
 ## Basic Grammar
 
-Concordion commands are differentiated from other Markdown [https://daringfireball.net/projects/markdown/syntax#link](links). by using the value `-` for the URL:
+Concordion commands are differentiated from other Markdown [links](https://daringfireball.net/projects/markdown/syntax#link) by using the value `-` for the URL:
 
     [value](- "command")
 
@@ -57,13 +57,13 @@ As an alternative to inline links, reference style links are supported, for exam
     
     [id]: - "command"
 
-, or:
+or
 
     [value][]
     
     [value]: - "command"
 
-Reference style links can help improve readability of the Markdown source, especially for table headers or lengthy commands. 
+Reference style links can help improve readability of the Markdown document, especially for table headers or lengthy commands. 
 
 ### Commands
 A shorthand syntax is provided for the set, assert equals and execute commands.
@@ -95,7 +95,7 @@ Reference-style links can be used for one or more of the links to improve readab
     |                          1|                 0|                 1|
     |                          1|                -3|                -2|
 
-[_add_]: - "#z=add(#x, #y)"
+    [_add_]: - "#z=add(#x, #y)"
 
 ##### Verify Rows
 The verifyRows command is specified in the first table header column, followed by the command for that column (if any), with the commands for each column of the table specified in the relevant table header column.
@@ -105,9 +105,9 @@ The verifyRows command is specified in the first table header column, followed b
     |                         100|     15|
     |                          20|      2|
 
-[_check GST_]: - "c:verifyRows=#detail:getInvoiceDetails()"
-[Sub Total]:   - "?=#detail.subTotal"
-[GST]:         - "?=#detail.gst"
+    [_check GST_]: - "c:verifyRows=#detail:getInvoiceDetails()"
+    [Sub Total]:   - "?=#detail.subTotal"
+    [GST]:         - "?=#detail.gst"
 
 Note that reference-style links have been used to improve the readability of this example. Inline links are equally valid. 
 
@@ -159,7 +159,7 @@ The extension can also be [configured](http://concordion.github.io/concordion-ma
 
 ## Editor Support
 ### IDEA
-For IntelliJ IDEA, the official Markdown editor does not support tables. The [Markdown](https://plugins.jetbrains.com/plugin?id=5970) plugin uses the same underlying Pegdown library as this extension and is recommended. After installing the plugin, you will need to configure the [settings](https://plugins.jetbrains.com/files/5970/screenshot_14568.png) to enable Tables and Strikethrough, plus any additional Markdown language extensions that you [configure](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Configuration.html).
+The official IntelliJ IDEA Markdown editor is not recommended since it does not support tables. Instead, the [Markdown](https://plugins.jetbrains.com/plugin?id=5970) plugin is recommended. This plugin uses the same underlying Pegdown library as the Concordion Markdown extension. After installing the plugin, you will need to configure the [settings](https://plugins.jetbrains.com/files/5970/screenshot_14568.png) to enable Tables and Strikethrough, plus any additional Markdown language extensions that you [configure](http://concordion.github.io/concordion-markdown-extension/spec/concordion/markdown/Configuration.html).
 
 ### Eclipse
 Available Eclipse plugins include:
