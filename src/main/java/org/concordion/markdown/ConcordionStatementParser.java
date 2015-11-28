@@ -47,7 +47,7 @@ public class ConcordionStatementParser {
         }
         
         String match = commandValueMatcher.group(1);
-        String commandValue = unquote(match);
+        String commandValue = match;
         ConcordionStatement statement = new ConcordionStatement(targetPrefix + commandName, commandValue);
         
         if (match.length() < commandValueAndAttributes.length()) {
@@ -60,17 +60,9 @@ public class ConcordionStatementParser {
                 if (attributeName.startsWith(sourcePrefix)) {
                     attributeName = targetPrefix + attributeName.substring(sourcePrefix.length());
                 }
-                statement.withAttribute(attributeName, parts.length > 1 ? unquote(parts[1]) : "");
+                statement.withAttribute(attributeName, parts.length > 1 ? parts[1] : "");
             }
         }
         return statement;
-    }
-
-    private String unquote(String expression) {
-        if ((expression.startsWith("'") && expression.endsWith("'")) || 
-            (expression.startsWith("\"") && expression.endsWith("\""))) {
-            expression = expression.substring(1, expression.length() - 1);
-        }
-        return expression;
     }
 }

@@ -81,7 +81,7 @@ The [concordion:set](http://concordion.org/Tutorial.html#set) command is express
 
 which sets the variable named `varname` to the value `value`.
 
-You can also use the long-hand `[value](- 'c:set="#varname"')` variant if you wish. 
+You can also use the long-hand `[value](- "c:set=#varname")` variant if you wish. 
 
 <div class="example">
   <h3>Examples</h3>
@@ -99,7 +99,7 @@ You can also use the long-hand `[value](- 'c:set="#varname"')` variant if you wi
       <td>&lt;span concordion:set="#name"&gt;Bob Smith&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[Jane Doe](- 'c:set="#name"')</td>
+      <td>[Jane Doe](- "c:set=#name")</td>
       <td>&lt;span concordion:set="#name"&gt;Jane Doe&lt;/span&gt;</td>
     </tr>
   </table>
@@ -111,7 +111,7 @@ The [concordion:assertEquals](http://concordion.org/Tutorial.html#assertEquals) 
 
 which asserts that the result of evaluating `expression` equals the `value`.
 
-You can also use the long-hand `[value](- 'c:assertEquals="expression"')` variant if you wish. 
+You can also use the long-hand `[value](- "c:assertEquals=expression")` variant if you wish. 
 
 <div class="example">
   <h3>Examples</h3>
@@ -141,7 +141,7 @@ You can also use the long-hand `[value](- 'c:assertEquals="expression"')` varian
       <td>&lt;span concordion:assertEquals="greeting"&gt;Hello&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[Yo](- 'c:assertEquals="greet(#firstName, #lastName)"')</td>
+      <td>[Yo](- 'c:assertEquals=greet(#firstName, #lastName)')</td>
       <td>&lt;span concordion:assertEquals="greet(#firstName, #lastName)"&gt;Yo&lt;/span&gt;</td>
     </tr>
   </table>
@@ -153,7 +153,7 @@ The [concordion:execute](http://concordion.org/Tutorial.html#execute) command is
 
 which executes the `expression` (as long as `expression` doesn't start with `c:` as described below). 
 
-You can also use the long-hand `[value](- 'c:execute="expression"')` variant if you wish. 
+You can also use the long-hand `[value](- 'c:execute=expression')` variant if you wish. 
 
 <div class="example">
   <h3>Examples</h3>
@@ -179,7 +179,7 @@ You can also use the long-hand `[value](- 'c:execute="expression"')` variant if 
       <td>&lt;span concordion:execute="#msg=greeting"&gt;The greeting for&lt;/span&gt;</td>
     </tr>
     <tr>
-      <td>[Do something](- 'c:execute="doSomething()"')</td>
+      <td>[Do something](- 'c:execute=doSomething()')</td>
       <td>&lt;span concordion:execute="doSomething()"&gt;Do something&lt;/span&gt;</td>
     </tr>
   </table>
@@ -365,11 +365,11 @@ To run the [concordion:verifyRows](http://concordion.org/Tutorial.html#verifyRow
     <tr>
       <td>
         <pre>      
-|[_check GST_ ](- "c:verifyRows=#detail:getInvoiceDetails()")[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|<br/>
-| --------------------------------- | ---------------------: |<br/>
-|                                100|                      15|<br/>
-|                                500|                      75|<br/>
-|                                 20|                       2|<br/>
+|[_check GST_ ](- "c:verifyRows=#detail:getInvoiceDetails()")[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|
+| --------------------------------- | ---------------------: |
+|                                100|                      15|
+|                                500|                      75|
+|                                 20|                       2|
         </pre>
       </td>
       <td>
@@ -400,6 +400,58 @@ To run the [concordion:verifyRows](http://concordion.org/Tutorial.html#verifyRow
   </table>
 </div>
 
+Using reference style links can make the Markdown source for the table more readable:
+
+<div class="example">
+  <h3>Example</h3>
+  <table concordion:execute="#html=translate(#md)">
+    <tr>
+      <th concordion:set="#md">Markdown</th>
+      <th concordion:assertEquals="#html">Resulting HTML</th>
+    </tr>
+    <tr>
+      <td>
+        <pre>      
+|[_check GST_][][Sub Total][]|[GST][]|
+| -------------------------- | ----: |
+|                         100|     15|
+|                         500|     75|
+|                          20|      2|
+
+[_check GST_]: - "c:verifyRows=#detail:getInvoiceDetails()"
+[Sub Total]:    - "?=#detail.subTotal"
+[GST]:          - "?=#detail.gst"
+        </pre>
+      </td>
+      <td>
+<![CDATA[<table concordion:verifyRows="#detail:getInvoiceDetails()">
+<thead>
+    <tr>
+      <th concordion:assertEquals="#detail.subTotal">Sub Total</th>
+      <th align="right" concordion:assertEquals="#detail.gst">GST</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>100</td>
+      <td align="right">15</td>
+    </tr>
+    <tr>
+      <td>500</td>
+      <td align="right">75</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td align="right">2</td>
+    </tr>
+  </tbody>
+</table>]]>     
+      </td>
+    </tr>
+  </table>
+</div>
+
+
 The verifyRows command also allows a [strategy](http://concordion.github.io/concordion/latest/spec/command/verifyRows/strategies/Strategies.html) to be specified.
 
 <div class="example">
@@ -412,9 +464,14 @@ The verifyRows command also allows a [strategy](http://concordion.github.io/conc
     <tr>
       <td>
         <pre>      
-|[_check GST_](- "c:verifyRows=#detail:getInvoiceDetails() c:matchStrategy=BestMatch")[Sub Total](- "?=#detail.subTotal")|[GST](- "?=#detail.gst")|<br/>
-| --------------------------------- | ---------------------: |<br/>
-|                                100|                      15|<br/>
+|[_check GST_][][Sub Total][]|[GST][]|
+| -------------------------- | ----: |
+|                         100|     15|
+
+[_check GST_]: - "c:verifyRows=#detail:getInvoiceDetails() c:matchStrategy=BestMatch"
+[Sub Total]:    - "?=#detail.subTotal"
+[GST]:          - "?=#detail.gst"
+
         </pre>
       </td>
       <td>
@@ -471,26 +528,6 @@ where `runnerName` is the fully qualified class name of the runner.
       <td>
         <pre>      
 [Whatever](whatever.html "c:run=exampleRunner")
-        </pre>
-      </td>
-      <td>
-<![CDATA[<a href="whatever.html" concordion:run="exampleRunner">Whatever</a>]]>     
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre>      
-[Whatever](whatever.html "c:run='exampleRunner'")
-        </pre>
-      </td>
-      <td>
-<![CDATA[<a href="whatever.html" concordion:run="exampleRunner">Whatever</a>]]>     
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre>      
-[Whatever](whatever.html 'c:run="exampleRunner"')
         </pre>
       </td>
       <td>
@@ -679,26 +716,6 @@ Any Concordion command can be included in the title of the Markdown link by usin
     <tr>
       <td>
         <pre>
-[value](- "c:command='expression'")              
-        </pre>
-      </td>
-      <td>
-<![CDATA[<span concordion:command="expression">value</span>]]>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre>
-[value](- 'c:command="expression"')              
-        </pre>
-      </td>
-      <td>
-<![CDATA[<span concordion:command="expression">value</span>]]>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre>
 [value](- "c:command=expression param=x")              
         </pre>
       </td>
@@ -709,17 +726,7 @@ Any Concordion command can be included in the title of the Markdown link by usin
     <tr>
       <td>
         <pre>
-[value](- "c:command='expression' param1=x param2='y'")              
-        </pre>
-      </td>
-      <td>
-<![CDATA[<span concordion:command="expression" param1="x" param2="y">value</span>]]>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre>
-[value](- 'c:command="expression" param1=x param2="y"')              
+[value](- "c:command=expression param1=x param2=y")              
         </pre>
       </td>
       <td>
