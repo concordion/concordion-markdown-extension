@@ -600,7 +600,7 @@ x
         </pre>
       </td>
       <td>
-<![CDATA[<div concordion:example="cancel tx" concordion:status="ExpectedToFail"> <h1>Cancel Transaction</h1>]]>&lt;/div>
+<![CDATA[<div concordion:example="cancel tx" concordion:status="ExpectedToFail"> <h2>Cancel Transaction</h2>]]>&lt;/div>
       </td>
     </tr>
     
