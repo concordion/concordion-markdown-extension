@@ -39,7 +39,7 @@ When the specification is run with a fixture that implements the `greetingFor(St
 > ![Markdown Example Output](img/IntroOutput.png)
 
 ## Installation
-The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-markdown-extension%7C1.1.2%7Cjar).
+The extension is available from [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22concordion-markdown-extension%22).
 
 It is easiest to install if you are using a dependency management system such as [Gradle](http://gradle.org/) or [Maven](https://maven.apache.org/). 
 
