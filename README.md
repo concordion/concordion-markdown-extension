@@ -4,7 +4,9 @@
 
 # Concordion Markdown
 
-__Note:__ This extension is in active development, and the syntax may change as we continue to evolve it.
+__Note:__ The 0.1.0 version is a beta release. The syntax may change as we head towards a 1.0.0 version in a few weeks. 
+
+We'd really like some feedback to move it towards a 1.0.0. Please post any feedback on our [Google Group](https://groups.google.com/forum/#!forum/concordion) and raise issues on the Github [issues](https://github.com/concordion/concordion-markdown-extension/issues) list.
 
 ## Philosophy
 [Markdown](https://daringfireball.net/projects/markdown/) provides an easy-to-read and easy-to-write syntax for converting plain text to structured XHTML.
