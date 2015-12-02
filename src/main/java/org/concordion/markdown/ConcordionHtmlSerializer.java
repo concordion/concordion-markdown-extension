@@ -28,9 +28,13 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     private String currentExampleHeading;
     private int currentExampleLevel;
     
-    public ConcordionHtmlSerializer(String targetConcordionNamespacePrefix) {
+    private boolean useLegacyExamples;
+    
+    public ConcordionHtmlSerializer(String targetConcordionNamespacePrefix, boolean useLegacyExamples) {
         super(new RunCommandLinkRenderer(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix));
         statementParser = new ConcordionStatementParser(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix);
+        
+        this.useLegacyExamples = useLegacyExamples;
     }
    
 //=======================================================================================================================
@@ -167,11 +171,17 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
                     String expression = ((ExpLinkNode)child).title;
                     currentExampleHeading = printChildrenToString(node);
                     currentExampleLevel = node.getLevel();
-                    ConcordionStatement command = statementParser.parseCommandValueAndAttributes("example", expression);
-                    printer.println();
-                    printer.print("<div");
-                    printConcordionCommand(command);
-                    printer.print(">");
+                    
+                    if(useLegacyExamples){
+                        printer.println();
+                        printer.print("<div class=\"example\">");
+                    }else{
+                        ConcordionStatement command = statementParser.parseCommandValueAndAttributes("example", expression);
+                        printer.println();
+                        printer.print("<div");
+                        printConcordionCommand(command);
+                        printer.print(">");
+                    }
                     inExample = true;
                 }
             } if (inExample) {

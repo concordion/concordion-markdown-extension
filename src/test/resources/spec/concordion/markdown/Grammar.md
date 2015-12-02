@@ -822,6 +822,10 @@ HTML entities in the text value are encoded correctly.
   </table>
 </div>
 
+
+##Caveats
+* [What if My Version of Concordion Doesn't Support the Example Command] (LegacyExample.html "c:run")
+
 ##TODO
 
 ### Support for Concordion commands in other namespaces, eg extensions
