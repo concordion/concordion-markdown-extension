@@ -10,7 +10,7 @@ This Concordion Markdown extension allows you to write your [Concordion](http://
 
 See the [README](https://github.com/concordion/concordion-markdown-extension/blob/master/README.md) for an overview.
 
-## Specifications
+## [Specifications](- "specifications")
 
 * [Grammar](Grammar.html "c:run")
 * [Configuration](Configuration.html "c:run")

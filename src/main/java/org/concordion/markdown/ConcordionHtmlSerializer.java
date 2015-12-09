@@ -29,6 +29,7 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     private int currentExampleLevel;
     
     private boolean useLegacyExamples;
+    private int depth;
     
     public ConcordionHtmlSerializer(String targetConcordionNamespacePrefix, boolean useLegacyExamples) {
         super(new RunCommandLinkRenderer(SOURCE_CONCORDION_NAMESPACE_PREFIX, targetConcordionNamespacePrefix));
@@ -205,8 +206,13 @@ public class ConcordionHtmlSerializer extends ToHtmlSerializer {
     }
 
     public void visit(RootNode node) {
+        depth++;
         super.visit(node);
-        closeExampleIfNeedeed();
+        depth--;
+        // Use a counter to check it is the root node, since we are getting nested RootNodes in the AST when there is a list in the Markdown
+        if (depth == 0) {
+            closeExampleIfNeedeed();
+        }
     }
 
     private void closeExampleIfNeedeed() {
