@@ -4,7 +4,7 @@
 
 # Concordion Markdown
 
-__Note:__ The 0.1.0 version is a beta release. The syntax may change as we head towards a 1.0.0 version in a few weeks. 
+__Note:__ The 0.1.x version is a beta release. The syntax may change as we head towards a 1.0.0 version in a few weeks. 
 
 We'd really like some feedback to move it towards a 1.0.0. Please post any feedback on our [Google Group](https://groups.google.com/forum/#!forum/concordion) and raise issues on the Github [issues](https://github.com/concordion/concordion-markdown-extension/issues) list.
 
